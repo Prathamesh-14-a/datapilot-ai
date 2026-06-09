@@ -178,19 +178,14 @@ def extract_skills(resume_text: str, skills_list: list) -> list:
 def process_resume(path:str) -> dict:
 
 
-    print("\nTrying PDFPlumber extraction...")
+    
     # trying normal extraction
     resume_text = extract_resume_text(path)
 
     if not text_validation(resume_text):
 
-        print('text quality is poor..')
-        print('switching to OCR extraction')
+        
         resume_text = extract_with_ocr(path)
-    
-    else:
-        print('pyplumber extraction successful...')
-
     
     # clean text
     cleaned_text = clean_resume_text(resume_text)

@@ -24,8 +24,8 @@ from src.ATS.resume_parser import(
 
 
 def generate_recommendation(ats_result):
-
-    priority_skills = ats_result['Priority']
+    ats_result = ats_result or {}
+    priority_skills = ats_result.get('Priority') or []
     high_priority = priority_skills[:2]
 
     medium_priority = priority_skills[2:5]
@@ -80,10 +80,11 @@ def get_summary(ats_score):
 #-----------------------------------------------------------------
 
 def career_insights(ats_result):
-    score = ats_result['ATS score']
+    ats_result = ats_result or {}
+    score = ats_result.get('ATS Score', ats_result.get('ATS score', 0))
     level = get_level(score)
     summary = get_summary(score)
-    strengths = ats_result["Matched"][:3]
+    strengths = (ats_result.get("Matched") or [])[:3]
     recommendations = generate_recommendation(ats_result)
     focus_areas = (
         recommendations['High Priority Skills'] + 

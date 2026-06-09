@@ -29,7 +29,7 @@ def generate_resume_feedback(
     {role}
 
     Readiness Score:
-    {ats_result['Readiness Score']}
+    {ats_result['ATS Score']}
 
     Strengths:
     {', '.join(ats_result['Matched'])}
@@ -51,7 +51,7 @@ def generate_resume_feedback(
 
     6. Learning Recommendations
 
-    Keep the advice practical and actionable.
+    Keep the advice practical and actionable and precise.
     """
     response = generate_response(prompt)
 

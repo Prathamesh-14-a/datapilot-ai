@@ -55,7 +55,7 @@ BENCHMARK_DF = r'd:\Startup\Project\ai-career-coach\data\processed\top_skill_by_
 def load_data(path):
     try:
         df = pd.read_csv(path)
-        print("Dataset loaded successfully")
+    
         return df
     except Exception as e:
         print(f"Failed to load dataset: {e}")
@@ -127,7 +127,7 @@ def calculated_weighted_score(
     2
     )
 
-    return {'Readiness Score': score, 
+    return {'ATS Score': score, 
             'Matched': matched, 
             'Missing': missing, 
             'Priority': priority, 

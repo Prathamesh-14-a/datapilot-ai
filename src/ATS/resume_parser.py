@@ -157,19 +157,14 @@ SKILLS_DB = [
 
 def process_resume(path:str) -> str:
 
-    print("\nTrying PDFPlumber extraction...")
+    
     # trying normal extraction
     resume_text = extract_resume_text(path)
 
     if not text_validation(resume_text):
 
-        print('text quality is poor..')
-        print('switching to OCR extraction')
-        resume_text = extract_with_ocr(path)
         
-    
-    else:
-        print('pyplumber extraction successful...')
+        resume_text = extract_with_ocr(path)
     
     return resume_text
 
