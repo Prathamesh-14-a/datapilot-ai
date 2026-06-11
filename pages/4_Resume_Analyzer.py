@@ -6,6 +6,201 @@ from components.sidebar import show_sidebar
 
 from src.ATS.master_pipeline import full_resume_analysis
 from src.llm.resume_feedback import generate_resume_feedback
+from src.text_to_pdf.text_to_pdf import text_to_pdf
+
+
+
+def _normalize_items(value):
+    if not value:
+        return []
+
+    if isinstance(value, dict):
+        return [str(item) for item in value.values() if item]
+
+    if isinstance(value, (list, tuple, set)):
+        return [str(item) for item in value if item]
+
+    return [str(value)]
+
+
+def _render_chip(text, kind="neutral"):
+    palette = {
+        "neutral": "#E8EEF6",
+        "success": "#D9FBE8",
+        "warning": "#FFF1D6",
+        "danger": "#FDE2E1",
+        "info": "#DDEBFF",
+    }
+
+    color = palette.get(kind, palette["neutral"])
+
+    st.markdown(
+        f"""
+        <span style="
+            display:inline-block;
+            padding:0.35rem 0.7rem;
+            margin:0.2rem 0.35rem 0.2rem 0;
+            border-radius:999px;
+            background:{color};
+            color:#1F2937;
+            font-size:0.88rem;
+            font-weight:600;
+            line-height:1.2;
+        ">{text}</span>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_career_summary(insights):
+    level = insights.get("Level", "Unknown")
+    summary = insights.get("Summary", "")
+    strengths = _normalize_items(insights.get("Strengths"))
+    focus_areas = _normalize_items(insights.get("Focus Areas"))
+
+    level_style = {
+        "Highly Competitive": ("success", "🟢", "#DCFCE7"),
+        "Competitive": ("info", "🔵", "#DBEAFE"),
+        "Moderately Competitive": ("warning", "🟠", "#FEF3C7"),
+        "Needs Improvement": ("danger", "🔴", "#FEE2E2"),
+    }
+    level_kind, level_icon, level_bg = level_style.get(level, ("neutral", "⚪", "#E2E8F0"))
+
+    st.markdown(
+        """
+        <style>
+        .career-card {
+            background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(16,185,129,0.08));
+            border: 1px solid rgba(148,163,184,0.25);
+            border-radius: 18px;
+            padding: 1.25rem;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+            margin-bottom: 1rem;
+        }
+        .career-label {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+        .career-summary-text {
+            color: #334155;
+            font-size: 1rem;
+            line-height: 1.65;
+            margin-bottom: 0;
+        }
+        .section-title {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<div class="career-card">',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        f'<div class="career-label" style="background:{level_bg}; color:#0f172a;">{level_icon} {level}</div>',
+        unsafe_allow_html=True,
+    )
+
+    if level == "Needs Improvement":
+        st.warning(
+            "This resume needs stronger alignment for the selected role. Focus on the skills below to improve your match."
+        )
+
+    left_col, right_col = st.columns([1, 2])
+
+    with left_col:
+        if level == "Needs Improvement":
+            st.markdown(
+                """
+                <div style="margin-bottom:0.35rem; font-size:0.9rem; color:#94A3B8; font-weight:600;">
+                    Career Readiness
+                </div>
+                <div style="font-size:1.8rem; font-weight:700; line-height:1.15; color:#F43F5E;">
+                    Needs Improvement
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        elif level == "Moderately Competitive":
+            st.markdown(
+                """
+                <div style="margin-bottom:0.35rem; font-size:0.9rem; color:#94A3B8; font-weight:600;">
+                    Career Readiness
+                </div>
+                <div style="font-size:1.8rem; font-weight:700; line-height:1.15; color: #FFA500;">
+                    Moderately Competitive
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        elif level == "Competitive":
+            st.markdown(
+                """
+                <div style="margin-bottom:0.35rem; font-size:0.9rem; color:#94A3B8; font-weight:600;">
+                    Career Readiness
+                </div>
+                <div style="font-size:1.8rem; font-weight:700; line-height:1.15; color:#FFFF00;">
+                    Competitive
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        elif level == "Highly Competitive":
+            st.markdown(
+                """
+                <div style="margin-bottom:0.35rem; font-size:0.9rem; color:#94A3B8; font-weight:600;">
+                    Career Readiness
+                </div>
+                <div style="font-size:1.8rem; font-weight:700; line-height:1.15; color:#008000;">
+                    Highly Competitive
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        else:
+            st.metric("Career Readiness", level)
+        st.caption("Your resume is being evaluated against the selected role.")
+
+    with right_col:
+        st.markdown(
+            f'<p class="career-summary-text" style="color:#F5FDFD;">{summary}</p>',
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    skills_left, skills_right = st.columns(2)
+
+    with skills_left:
+        st.markdown("### ✨ Strengths")
+        if strengths:
+            for skill in strengths:
+                _render_chip(skill, "success")
+        else:
+            st.caption("No matched strengths were detected yet.")
+
+    with skills_right:
+        st.markdown("### 🎯 Focus Areas")
+        if focus_areas:
+            for skill in focus_areas:
+                _render_chip(skill, "warning")
+        else:
+            st.caption("No focus areas were identified.")
+
+    with st.expander("See raw insight data", expanded=False):
+        st.json(insights)
 
 # ==========================================
 # AUTHENTICATION
@@ -41,7 +236,9 @@ uploaded_file = st.file_uploader(
 # ==========================================
 
 target_role = st.selectbox(
+    
     "Select Target Role",
+    
     [
         "Data Analyst",
         "Data Scientist",
@@ -164,13 +361,6 @@ if "analysis_result" in st.session_state:
         for skill in ats["Missing"]:
             st.warning(skill)
 
-    st.markdown(
-        "### 🔥 Priority Skills"
-    )
-
-    for skill in ats["Priority"]:
-        st.info(skill)
-
     # ======================================
     # CAREER SUMMARY CARD
     # ======================================
@@ -181,7 +371,7 @@ if "analysis_result" in st.session_state:
         "📈 Career Summary"
     )
 
-    st.write(insights)
+    render_career_summary(insights)
 
     # ======================================
     # LEARNING ROADMAP
@@ -236,3 +426,14 @@ if "feedback" in st.session_state:
         st.markdown(
             st.session_state["feedback"]
         )
+
+if "feedback" in st.session_state:
+
+    pdf_data = text_to_pdf(st.session_state["feedback"])
+
+    st.download_button(
+        label="📥 Download AI Career Report",
+        data=pdf_data,
+        file_name="AI_Career_Report.pdf",
+        mime="application/pdf"
+    )
