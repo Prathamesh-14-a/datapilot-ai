@@ -3,7 +3,8 @@ import streamlit as st
 
 from src.auth.session_manager import is_authenticated
 from components.sidebar import show_sidebar
-from src.database.crud import get_user_resumes, save_resume
+from src.database.crud import get_user_resumes, save_resume , save_analysis , get_analysis_history
+from src.resume_matching.resume_parser import extract_resume_text ,extract_skills ,TECHNICAL_SKILLS
 
 from src.ATS.master_pipeline import full_resume_analysis
 from src.llm.resume_feedback import generate_resume_feedback
@@ -204,30 +205,6 @@ def render_career_summary(insights):
         st.json(insights)
 
 
-def render_resume_history(resumes):
-    st.subheader("🗂 Resume History")
-
-    if not resumes:
-        st.info("No resumes have been uploaded yet.")
-        return
-
-    resume_rows = []
-
-    for resume in resumes:
-        resume_rows.append(
-            {
-                "Resume": resume.resume_name,
-                "Path": resume.resume_path,
-                "Uploaded At": (
-                    resume.uploaded_at.strftime("%Y-%m-%d %H:%M")
-                    if resume.uploaded_at
-                    else "Unknown"
-                ),
-            }
-        )
-
-    st.table(resume_rows)
-
 # ==========================================
 # AUTHENTICATION
 # ==========================================
@@ -329,10 +306,16 @@ if st.button(
     st.session_state["analysis_result"] = result
     st.session_state["target_role"] = target_role
     st.session_state["latest_resume_id"] = saved_resume.id
+    resume_text = extract_resume_text(save_path)
+
+    resume_skills = extract_skills(
+    resume_text,
+    TECHNICAL_SKILLS
+    )
+    st.session_state["resume_skills"] = resume_skills
 
 st.divider()
 
-render_resume_history(get_user_resumes(user_id))
 
 # ==========================================
 # SHOW ANALYSIS RESULTS
@@ -381,7 +364,6 @@ if "analysis_result" in st.session_state:
     st.progress(
         ats["ATS Score"] / 100
     )
-
     # ======================================
     # SKILL BREAKDOWN
     # ======================================
@@ -480,3 +462,28 @@ if "feedback" in st.session_state:
         file_name="AI_Career_Report.pdf",
         mime="application/pdf"
     )
+
+def render_resume_history(resumes):
+    st.subheader("🗂 Resume History")
+
+    if not resumes:
+        st.info("No resumes have been uploaded yet.")
+        return
+
+    resume_rows = []
+
+    for resume in resumes:
+        resume_rows.append(
+            {
+                "Resume": resume.resume_name,
+                "Uploaded At": (
+                    resume.uploaded_at.strftime("%Y-%m-%d %H:%M")
+                    if resume.uploaded_at
+                    else "Unknown"
+                ),
+            }
+        )
+
+    st.table(resume_rows)
+
+render_resume_history(get_user_resumes(user_id))
