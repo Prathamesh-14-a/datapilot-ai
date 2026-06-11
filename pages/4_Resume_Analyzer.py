@@ -3,6 +3,7 @@ import streamlit as st
 
 from src.auth.session_manager import is_authenticated
 from components.sidebar import show_sidebar
+from src.database.crud import get_user_resumes, save_resume
 
 from src.ATS.master_pipeline import full_resume_analysis
 from src.llm.resume_feedback import generate_resume_feedback
@@ -202,6 +203,31 @@ def render_career_summary(insights):
     with st.expander("See raw insight data", expanded=False):
         st.json(insights)
 
+
+def render_resume_history(resumes):
+    st.subheader("🗂 Resume History")
+
+    if not resumes:
+        st.info("No resumes have been uploaded yet.")
+        return
+
+    resume_rows = []
+
+    for resume in resumes:
+        resume_rows.append(
+            {
+                "Resume": resume.resume_name,
+                "Path": resume.resume_path,
+                "Uploaded At": (
+                    resume.uploaded_at.strftime("%Y-%m-%d %H:%M")
+                    if resume.uploaded_at
+                    else "Unknown"
+                ),
+            }
+        )
+
+    st.table(resume_rows)
+
 # ==========================================
 # AUTHENTICATION
 # ==========================================
@@ -211,6 +237,8 @@ if not is_authenticated():
     st.stop()
 
 show_sidebar()
+
+user_id = st.session_state["user_id"]
 
 # ==========================================
 # PAGE HEADER
@@ -278,6 +306,16 @@ if st.button(
             uploaded_file.getbuffer()
         )
 
+    saved_resume = save_resume(
+        user_id=user_id,
+        resume_name=uploaded_file.name,
+        resume_path=save_path,
+    )
+
+    st.success(
+        f"Saved {saved_resume.resume_name} to your resume library."
+    )
+
     with st.spinner(
         "Analyzing your resume..."
     ):
@@ -290,6 +328,11 @@ if st.button(
     # Save results for later use
     st.session_state["analysis_result"] = result
     st.session_state["target_role"] = target_role
+    st.session_state["latest_resume_id"] = saved_resume.id
+
+st.divider()
+
+render_resume_history(get_user_resumes(user_id))
 
 # ==========================================
 # SHOW ANALYSIS RESULTS
