@@ -3,8 +3,17 @@ import streamlit as st
 
 from src.auth.session_manager import is_authenticated
 from components.sidebar import show_sidebar
-from src.database.crud import get_user_resumes, save_resume , save_analysis , get_analysis_history
-from src.resume_matching.resume_parser import extract_resume_text ,extract_skills ,TECHNICAL_SKILLS
+from src.database.crud import (
+    get_analysis_history,
+    get_user_resumes,
+    save_analysis,
+    save_resume,
+)
+from src.resume_matching.resume_parser import (
+    TECHNICAL_SKILLS,
+    extract_resume_text,
+    extract_skills,
+)
 
 from src.ATS.master_pipeline import full_resume_analysis
 from src.llm.resume_feedback import generate_resume_feedback
@@ -205,6 +214,41 @@ def render_career_summary(insights):
         st.json(insights)
 
 
+def render_analysis_history(analyses):
+    st.subheader("🗂 Analysis History")
+
+    if not analyses:
+        st.info("No analysis records have been saved yet.")
+        return
+
+    history_rows = []
+
+    for analysis in analyses:
+        history_rows.append(
+            {
+                "Resume ID": analysis.resume_id,
+                "Target Role": analysis.target_role,
+                "ATS Score": (
+                    f"{analysis.ats_score:.2f}%"
+                    if analysis.ats_score is not None
+                    else "N/A"
+                ),
+                "Match Score": (
+                    f"{analysis.match_score:.2f}%"
+                    if analysis.match_score is not None
+                    else "N/A"
+                ),
+                "Analyzed At": (
+                    analysis.analysis_date.strftime("%Y-%m-%d %H:%M")
+                    if analysis.analysis_date
+                    else "Unknown"
+                ),
+            }
+        )
+
+    st.table(history_rows)
+
+
 # ==========================================
 # AUTHENTICATION
 # ==========================================
@@ -302,6 +346,15 @@ if st.button(
             target_role
         )
 
+    ats_result = result["ats"]
+    save_analysis(
+        user_id=user_id,
+        resume_id=saved_resume.id,
+        ats_score=ats_result.get("ATS Score", 0),
+        match_score=ats_result.get("Coverage", 0),
+        target_role=target_role,
+    )
+
     # Save results for later use
     st.session_state["analysis_result"] = result
     st.session_state["target_role"] = target_role
@@ -313,6 +366,8 @@ if st.button(
     TECHNICAL_SKILLS
     )
     st.session_state["resume_skills"] = resume_skills
+
+    st.success("Analysis saved to your history.")
 
 st.divider()
 
@@ -409,6 +464,9 @@ if "analysis_result" in st.session_state:
     )
 
     st.write(roadmap)
+
+    st.divider()
+    render_analysis_history(get_analysis_history(user_id))
 
     # ======================================
     # AI FEEDBACK BUTTON

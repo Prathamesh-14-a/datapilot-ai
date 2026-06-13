@@ -7,6 +7,10 @@ from src.resume_matching.resume_parser import TECHNICAL_SKILLS
 from src.resume_matching.master_career_intelligent import career_intelligence_pipeline
 from src.llm.skill_improvement import generate_skill_feedback
 from src.text_to_pdf.text_to_pdf import text_to_pdf
+from src.ATS.ats_match import (
+    get_role_skills ,
+    calculated_weighted_score
+)
 
 if not is_authenticated():
     st.warning("Please login first")
@@ -47,10 +51,10 @@ skills = st_tags(
 
 st.caption("Add or remove skills to better reflect your expertise")
 
-analysis_result = st.session_state.get(
-    "analysis_result"
-)
-ats = analysis_result['ats']
+da_skills = get_role_skills(target_role)
+
+ats = calculated_weighted_score(skills , da_skills)
+
 
 st.write(
     'Skills will be matched to market trend skills as per role'
