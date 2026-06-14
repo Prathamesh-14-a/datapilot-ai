@@ -159,3 +159,31 @@ class AIConversation(Base):
     )
 
 
+class AIChatSession(Base):
+
+    __tablename__ = "ai_chat_sessions"
+
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    title = Column(String(255), nullable=False)
+
+    messages_json = Column(Text, nullable=False)
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+

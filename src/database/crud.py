@@ -1,5 +1,7 @@
-from src.database.db_connection import SessionLocal
-from src.database.models import SalaryPrediction, User , AIConversation
+import json
+
+from src.database.db_connection import SessionLocal, engine
+from src.database.models import Base, SalaryPrediction, User, AIConversation, AIChatSession
 from src.database.models import Resume
 from sqlalchemy.orm import joinedload
 from src.database.models import Analysis
@@ -217,6 +219,16 @@ def get_prediction_history(user_id):
 # SAVE AI CONVERSATION
 #------------------------------------------------
 
+_ai_chat_sessions_table_ready = False
+
+
+def _ensure_ai_chat_sessions_table():
+    global _ai_chat_sessions_table_ready
+
+    if not _ai_chat_sessions_table_ready:
+        Base.metadata.create_all(bind=engine)
+        _ai_chat_sessions_table_ready = True
+
 def save_ai_conversation(
     user_id,
     question,
@@ -318,6 +330,78 @@ def delete_ai_conversation(conversation_id):
     except Exception:
         session.rollback()
         raise
+
+    finally:
+        session.close()
+
+
+def save_ai_chat_session(user_id, title, messages, chat_session_id=None):
+    session = SessionLocal()
+
+    try:
+        _ensure_ai_chat_sessions_table()
+        messages_json = json.dumps(messages)
+
+        if chat_session_id:
+            chat_session = (
+                session.query(AIChatSession)
+                .filter(AIChatSession.id == chat_session_id)
+                .first()
+            )
+
+            if chat_session:
+                chat_session.title = title
+                chat_session.messages_json = messages_json
+                session.commit()
+                session.refresh(chat_session)
+                return chat_session
+
+        chat_session = AIChatSession(
+            user_id=user_id,
+            title=title,
+            messages_json=messages_json,
+        )
+
+        session.add(chat_session)
+        session.commit()
+        session.refresh(chat_session)
+
+        return chat_session
+
+    except Exception:
+        session.rollback()
+        raise
+
+    finally:
+        session.close()
+
+
+def get_ai_chat_sessions(user_id):
+    session = SessionLocal()
+
+    try:
+        _ensure_ai_chat_sessions_table()
+        return (
+            session.query(AIChatSession)
+            .filter(AIChatSession.user_id == user_id)
+            .order_by(AIChatSession.updated_at.desc())
+            .all()
+        )
+
+    finally:
+        session.close()
+
+
+def get_ai_chat_session(chat_session_id):
+    session = SessionLocal()
+
+    try:
+        _ensure_ai_chat_sessions_table()
+        return (
+            session.query(AIChatSession)
+            .filter(AIChatSession.id == chat_session_id)
+            .first()
+        )
 
     finally:
         session.close()

@@ -1,10 +1,11 @@
 import streamlit as st
+import json
 
 from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated
 from src.database.crud import (
-	get_ai_conversation_history,
-	save_ai_conversation,
+	get_ai_chat_sessions,
+	save_ai_chat_session,
 )
 from src.llm.career_chat import ask_career_ai
 
@@ -77,18 +78,27 @@ PROMPT_BATCHES = [
 ]
 
 
-def _format_history_items(conversations):
-	messages = []
-	for conversation in conversations:
-		messages.append({"role": "user", "content": conversation.question})
-		if conversation.response:
-			messages.append({"role": "assistant", "content": conversation.response})
-	return messages
+def _load_chat_messages(chat_session):
+	try:
+		return json.loads(chat_session.messages_json)
+	except Exception:
+		return []
+
+
+def _get_chat_title(messages, fallback_question=""):
+	for message in messages:
+		if message.get("role") == "user" and message.get("content"):
+			return message["content"][:70]
+
+	return fallback_question[:70]
 
 
 def _ensure_state():
 	if "mentor_messages" not in st.session_state:
 		st.session_state["mentor_messages"] = []
+
+	if "mentor_chat_session_id" not in st.session_state:
+		st.session_state["mentor_chat_session_id"] = None
 
 	if "mentor_prompt_batch" not in st.session_state:
 		st.session_state["mentor_prompt_batch"] = 0
@@ -101,11 +111,12 @@ def _load_recent_history():
 	user_id = st.session_state.get("user_id")
 	if not user_id:
 		return []
-	return get_ai_conversation_history(user_id)[:12]
+	return get_ai_chat_sessions(user_id)[:12]
 
 
 def _reset_chat():
 	st.session_state["mentor_messages"] = []
+	st.session_state["mentor_chat_session_id"] = None
 	st.session_state["mentor_pending_question"] = None
 
 
@@ -119,10 +130,27 @@ def _queue_question(question):
 	st.session_state["mentor_pending_question"] = question
 
 
-def _render_prompt_cards(prompts):
-	st.markdown("### Suggested Questions")
-	st.caption("Click any prompt to start the chat. Use More prompts to see the next set of ideas.")
+def _load_chat_session(chat_session):
+	st.session_state["mentor_messages"] = _load_chat_messages(chat_session)
+	st.session_state["mentor_chat_session_id"] = chat_session.id
+	st.session_state["mentor_pending_question"] = None
 
+
+def _save_current_chat(user_id, fallback_question):
+	if not st.session_state["mentor_messages"]:
+		return
+
+	title = _get_chat_title(st.session_state["mentor_messages"], fallback_question)
+	chat_session = save_ai_chat_session(
+		user_id=user_id,
+		title=title,
+		messages=st.session_state["mentor_messages"],
+		chat_session_id=st.session_state.get("mentor_chat_session_id"),
+	)
+	st.session_state["mentor_chat_session_id"] = chat_session.id
+
+
+def _render_prompt_cards(prompts):
 	rows = [prompts[i : i + 2] for i in range(0, len(prompts), 2)]
 	for row_index, row in enumerate(rows):
 		cols = st.columns(len(row))
@@ -140,7 +168,7 @@ def _render_prompt_cards(prompts):
 def _render_history_sidebar(conversations):
 	with st.sidebar:
 		st.markdown("## 💬 Chat History")
-		st.caption("Open any previous answer in one click.")
+		st.caption("Open any previous chat in one click.")
 
 		if st.button("➕ New Chat", use_container_width=True):
 			_reset_chat()
@@ -149,16 +177,16 @@ def _render_history_sidebar(conversations):
 			st.info("No previous chats yet.")
 			return
 
-		for conversation in conversations:
-			preview = conversation.question[:70]
-			label = preview if len(conversation.question) <= 70 else f"{preview}..."
+		for chat_session in conversations:
+			label = chat_session.title
+			if len(label) > 70:
+				label = f"{label[:70]}..."
 			if st.button(
 				label,
-				key=f"history_{conversation.id}",
+				key=f"history_{chat_session.id}",
 				use_container_width=True,
 			):
-				st.session_state["mentor_messages"] = _format_history_items([conversation])
-				st.session_state["mentor_pending_question"] = None
+				_load_chat_session(chat_session)
 
 
 def _render_messages():
@@ -197,22 +225,23 @@ st.markdown(
 
 st.title("🤖 AI Mentor")
 st.markdown(
-	'<div class="mentor-hero"><p class="mentor-subtitle">Ask anything about careers, jobs, interviews, resumes, projects, salary, or learning paths. The chat keeps your conversation history and lets you reopen older chats in one click.</p></div>',
+	'<div class="mentor-hero"><p class="mentor-subtitle" style = "color:#CEDCCA">Ask anything about careers, jobs, interviews, resumes, ' \
+	'projects, salary, or learning paths. The chat keeps your conversation history and lets you reopen ' \
+	'older chats in one click.</p></div>',
 	unsafe_allow_html=True,
 )
 
 
 current_batch = PROMPT_BATCHES[st.session_state["mentor_prompt_batch"]]
-prompt_col1, prompt_col2 = st.columns([1, 1])
 
-with prompt_col1:
-	_render_prompt_cards(current_batch[:3])
+st.markdown("### Suggested Questions")
+st.caption("Click any prompt to start the chat. Use More prompts to see the next set of ideas.")
 
-with prompt_col2:
-	_render_prompt_cards(current_batch[3:])
-	if st.button("More prompts", use_container_width=True):
-		_rotate_prompt_batch()
-		st.rerun()
+_render_prompt_cards(current_batch)
+
+if st.button("More prompts", use_container_width=True):
+	_rotate_prompt_batch()
+	st.rerun()
 
 
 st.divider()
@@ -257,9 +286,5 @@ if question_to_answer:
 
 	user_id = st.session_state.get("user_id")
 	if user_id:
-		save_ai_conversation(
-			user_id=user_id,
-			question=question_to_answer,
-			response=answer,
-		)
+		_save_current_chat(user_id, question_to_answer)
 
