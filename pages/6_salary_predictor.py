@@ -5,6 +5,7 @@ import src.salary_prediction.salary_predictor as salary_model
 
 from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated
+from src.database.crud import save_salary_prediction
 from src.resume_matching.resume_parser import TECHNICAL_SKILLS
 from src.text_to_pdf.text_to_pdf import text_to_pdf
 from src.llm.salary_tips import generate_salary_tips
@@ -165,6 +166,28 @@ if submit_prediction:
 		)
 
 	predicted_salary_lpa = predicted_salary / 100000
+
+	user_id = st.session_state.get("user_id")
+	if user_id:
+		try:
+			save_salary_prediction(
+				user_id=user_id,
+				role=job_title,
+				experience=float(experience),
+				location=location,
+				skills=normalized_skills,
+				predicted_salary=predicted_salary,
+			)
+		except Exception as exc:
+			st.warning(f"Salary was predicted, but the history record could not be saved: {exc}")
+		else:
+			st.session_state["latest_salary_prediction"] = {
+				"role": job_title,
+				"experience": float(experience),
+				"location": location,
+				"skills": normalized_skills,
+				"predicted_salary": predicted_salary,
+			}
 
 	st.success("Salary estimate generated successfully.")
 

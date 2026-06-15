@@ -1,8 +1,16 @@
 import streamlit as st
+import pandas as pd
 
 from src.auth.session_manager import (
     is_authenticated,
-    logout
+)
+from src.dashboard.dashboard_service import build_dashboard_snapshot
+
+
+st.set_page_config(
+    page_title="Dashboard",
+    page_icon="🏠",
+    layout="wide",
 )
 
 if not is_authenticated():
@@ -11,6 +19,45 @@ if not is_authenticated():
 from components.sidebar import show_sidebar
 
 show_sidebar()
+
+user_id = st.session_state.get("user_id")
+if not user_id:
+    st.warning("No user profile is loaded for this session.")
+    st.stop()
+
+snapshot = build_dashboard_snapshot(user_id)
+latest_analysis = snapshot["latest_analysis"]
+latest_prediction = snapshot["latest_prediction"]
+latest_resume = snapshot["latest_resume"]
+
+if "show_full_history" not in st.session_state:
+    st.session_state["show_full_history"] = False
+
+
+def _format_ts(value):
+    if not value:
+        return "No history yet"
+    return value.strftime("%d %b %Y, %I:%M %p")
+
+
+def _format_lpa(value):
+    if value is None:
+        return "No history yet"
+    return f"₹{float(value) / 100000:.1f} LPA"
+
+
+def _render_history_table(rows, empty_message):
+    if not rows:
+        st.info(empty_message)
+        return
+
+    st.dataframe(
+        pd.DataFrame(rows),
+        hide_index=True,
+        use_container_width=True,
+    )
+
+
 # Header
 st.title("🏠 Dashboard")
 
@@ -22,26 +69,8 @@ st.caption(
     "Your AI Copilot for Data Careers"
 )
 
-# Metric Section
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric(
-        "ATS Score",
-        "82%"
-    )
-
-with col2:
-    st.metric(
-        "Skill Match",
-        "74%"
-    )
-
-with col3:
-    st.metric(
-        "Expected Salary",
-        "₹8.5 LPA"
-    )
+if latest_resume:
+    st.caption(f"Latest resume in your library: {latest_resume.resume_name} • uploaded {_format_ts(getattr(latest_resume, 'uploaded_at', None))}")
 
 # Quick Actions
 st.subheader("🚀 Quick Actions")
@@ -63,7 +92,7 @@ with col1:
         use_container_width=True
     ):
         st.switch_page(
-            "pages/6_Salary_Predictor.py"
+            "pages/6_salary_predictor.py"
         )
 
 with col2:
@@ -81,21 +110,165 @@ with col2:
         use_container_width=True
     ):
         st.switch_page(
-            "pages/7_AI_Career_Mentor.py"
+            "pages/7_AI_mentor.py"
         )   
+st.divider()
+
+# Metric Section
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    ats_score = (
+        f"{latest_analysis.ats_score:.1f}%"
+        if latest_analysis and latest_analysis.ats_score is not None
+        else "No history yet"
+    )
+    st.metric(
+        "ATS Score",
+        ats_score
+    )
+
+with col2:
+    skill_match = (
+        f"{latest_analysis.match_score:.1f}%"
+        if latest_analysis and latest_analysis.match_score is not None
+        else "No history yet"
+    )
+    st.metric(
+        "Skill Match",
+        skill_match
+    )
+
+with col3:
+    expected_salary = (
+        _format_lpa(latest_prediction.predicted_salary)
+        if latest_prediction
+        else "No history yet"
+    )
+    st.metric(
+        "Expected Salary",
+        expected_salary
+    )
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("Resumes", snapshot["counts"]["resumes"])
+
+with col2:
+    st.metric("Analyses", snapshot["counts"]["analyses"])
+
+with col3:
+    st.metric("Salary Predictions", snapshot["counts"]["predictions"])
+
+with col4:
+    st.metric("AI Chats", snapshot["counts"]["chats"])
+
+analysis_trend = pd.DataFrame(snapshot["analysis_trend"])
+salary_trend = pd.DataFrame(snapshot["salary_trend"])
+
+st.divider()
+
+if not analysis_trend.empty:
+    st.subheader("📈 ATS Trend")
+    chart_df = analysis_trend.set_index("date")[ ["ats_score", "match_score"] ]
+    st.line_chart(chart_df)
+
+st.divider()
+
+if not salary_trend.empty:
+    st.subheader("💹 Salary Trend")
+    chart_df = salary_trend.set_index("date")[ ["salary_lpa"] ]
+    st.line_chart(chart_df)
+
+st.divider()
 
 # Recent Activity
 st.subheader("📜 Recent Activity")
 
-st.info(
-    "Resume analyzed for Data Scientist role"
-)
+activity_items = snapshot["activity_items"]
+show_all_history = st.session_state["show_full_history"]
 
-st.info(
-    "Salary predicted for Data Analyst role"
-)
 
-st.info(
-    "Career guidance conversation started"
-)
+visible_activity_items = activity_items if show_all_history else activity_items[:5]
+
+if visible_activity_items:
+    for item in visible_activity_items:
+        st.markdown(
+            f"**{item['kind']}** · {item['title']}"
+        )
+        st.caption(
+            f"{item['detail']} • {_format_ts(item['timestamp'])}"
+        )
+else:
+    st.info(
+        "No history has been saved yet. Analyze a resume, predict a salary, or start a mentor chat to populate this dashboard."
+    )
+
+if st.button(
+    "Show all history" if not show_all_history else "Show latest 5",
+    use_container_width=False,
+):
+    st.session_state["show_full_history"] = not show_all_history
+    st.rerun()
+st.divider()
+
+history_tabs = st.tabs(["Resume Analyses", "Salary Predictions", "Resume Library", "AI Chats"])
+
+with history_tabs[0]:
+    analysis_rows = [
+        {
+            "Role": analysis.target_role,
+            "ATS Score": f"{analysis.ats_score:.1f}%" if analysis.ats_score is not None else "N/A",
+            "Skill Match": f"{analysis.match_score:.1f}%" if analysis.match_score is not None else "N/A",
+            "Analyzed At": _format_ts(getattr(analysis, "analysis_date", None)),
+        }
+        for analysis in snapshot["analyses"]
+    ]
+    _render_history_table(
+        analysis_rows,
+        "No analysis history yet. Run the Resume Analyzer to save real results here.",
+    )
+
+with history_tabs[1]:
+    prediction_rows = [
+        {
+            "Role": prediction.role,
+            "Experience": prediction.experience,
+            "Location": prediction.location,
+            "Predicted Salary": f"₹{prediction.predicted_salary / 100000:.1f} LPA" if prediction.predicted_salary is not None else "N/A",
+            "Predicted At": _format_ts(getattr(prediction, "prediction_date", None)),
+        }
+        for prediction in snapshot["predictions"]
+    ]
+    _render_history_table(
+        prediction_rows,
+        "No salary prediction history yet. Use Salary Predictor to save real market estimates here.",
+    )
+
+with history_tabs[2]:
+    resume_rows = [
+        {
+            "Resume": resume.resume_name,
+            "Uploaded At": _format_ts(getattr(resume, "uploaded_at", None)),
+        }
+        for resume in snapshot["resumes"]
+    ]
+    _render_history_table(
+        resume_rows,
+        "No resume uploads have been saved yet.",
+    )
+
+with history_tabs[3]:
+    chat_rows = [
+        {
+            "Conversation": chat.title,
+            "Updated At": _format_ts(getattr(chat, "updated_at", None)),
+        }
+        for chat in snapshot["chat_sessions"]
+    ]
+    _render_history_table(
+        chat_rows,
+        "No AI Mentor chats have been saved yet.",
+    )
 
