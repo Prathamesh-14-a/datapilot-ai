@@ -35,6 +35,11 @@ class User(Base):
     back_populates="user"
     )
 
+    job_fit_histories = relationship(
+        "JobFitHistory",
+        back_populates="user"
+    )
+
 # Resume Table
 class Resume(Base):
     __tablename__ = "resumes"
@@ -63,6 +68,11 @@ class Resume(Base):
     analyses = relationship(
     "Analysis",
     back_populates="resume"
+    )
+
+    job_fit_histories = relationship(
+        "JobFitHistory",
+        back_populates="resume"
     )
 
 # Analysis Table
@@ -102,6 +112,45 @@ class Analysis(Base):
     resume = relationship(
         'Resume',
         back_populates="analyses"
+    )
+
+
+# JOB FIT HISTORY TABLE
+class JobFitHistory(Base):
+    __tablename__ = "job_fit_history"
+
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    resume_id = Column(
+        Integer,
+        ForeignKey("resumes.id"),
+        nullable=True
+    )
+
+    best_role = Column(String(255))
+    best_score = Column(Float)
+    predictions_json = Column(Text)
+    missing_skills = Column(Text)
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    user = relationship(
+        "User",
+        back_populates="job_fit_histories"
+    )
+
+    resume = relationship(
+        'Resume',
+        back_populates="job_fit_histories"
     )
 
 

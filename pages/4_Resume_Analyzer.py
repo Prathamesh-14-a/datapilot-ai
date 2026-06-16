@@ -5,9 +5,15 @@ from src.auth.session_manager import is_authenticated
 from components.sidebar import show_sidebar
 from src.database.crud import (
     get_analysis_history,
+    get_job_fit_history,
     get_user_resumes,
     save_analysis,
+    save_job_fit_history,
     save_resume,
+)
+from src.job_fit.predictor import (
+    ROLE_SKILLS,
+    predict_job_fit,
 )
 from src.resume_matching.resume_parser import (
     TECHNICAL_SKILLS,
@@ -362,10 +368,29 @@ if st.button(
     resume_text = extract_resume_text(save_path)
 
     resume_skills = extract_skills(
-    resume_text,
-    TECHNICAL_SKILLS
+        resume_text,
+        TECHNICAL_SKILLS
     )
     st.session_state["resume_skills"] = resume_skills
+
+    # compute job fit for the resume skills and save history
+    job_fit_predictions = predict_job_fit(resume_skills)
+    best_role, best_score = next(iter(job_fit_predictions.items()))
+    normalized_skills = {skill.lower().strip() for skill in resume_skills}
+    missing_skills = [
+        skill
+        for skill in ROLE_SKILLS.get(best_role, [])
+        if skill not in normalized_skills
+    ]
+
+    save_job_fit_history(
+        user_id=user_id,
+        resume_id=saved_resume.id,
+        best_role=best_role,
+        best_score=best_score,
+        predictions=job_fit_predictions,
+        missing_skills=missing_skills,
+    )
 
     st.success("Analysis saved to your history.")
 
@@ -467,6 +492,23 @@ if "analysis_result" in st.session_state:
 
     st.divider()
     render_analysis_history(get_analysis_history(user_id))
+
+    job_fit_histories = get_job_fit_history(user_id)
+    if job_fit_histories:
+        st.divider()
+        st.subheader("🧾 Job Fit History")
+        history_rows = []
+        for history in job_fit_histories:
+            history_rows.append(
+                {
+                    "Resume ID": history.resume_id,
+                    "Best Role": history.best_role,
+                    "Best Fit": f"{history.best_score:.2f}%",
+                    "Missing Skills": history.missing_skills,
+                    "Saved At": history.created_at.strftime("%Y-%m-%d %H:%M"),
+                }
+            )
+        st.table(history_rows)
 
     # ======================================
     # AI FEEDBACK BUTTON

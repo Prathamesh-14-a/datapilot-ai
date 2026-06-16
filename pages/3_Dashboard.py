@@ -164,6 +164,10 @@ with col3:
 with col4:
     st.metric("AI Chats", snapshot["counts"]["chats"])
 
+st.markdown("---")
+
+st.metric("Job Fit Records", snapshot["counts"]["job_fit_history"])
+
 analysis_trend = pd.DataFrame(snapshot["analysis_trend"])
 salary_trend = pd.DataFrame(snapshot["salary_trend"])
 
@@ -213,7 +217,7 @@ if st.button(
     st.rerun()
 st.divider()
 
-history_tabs = st.tabs(["Resume Analyses", "Salary Predictions", "Resume Library", "AI Chats"])
+history_tabs = st.tabs(["Resume Analyses", "Salary Predictions", "Resume Library", "AI Chats", "Job Fit History"])
 
 with history_tabs[0]:
     analysis_rows = [
@@ -270,5 +274,20 @@ with history_tabs[3]:
     _render_history_table(
         chat_rows,
         "No AI Mentor chats have been saved yet.",
+    )
+
+with history_tabs[4]:
+    job_fit_rows = [
+        {
+            "Best Role": history.best_role,
+            "Best Fit": f"{history.best_score:.2f}%" if history.best_score is not None else "N/A",
+            "Missing Skills": history.missing_skills or "N/A",
+            "Saved At": _format_ts(getattr(history, "created_at", None)),
+        }
+        for history in snapshot["job_fit_histories"]
+    ]
+    _render_history_table(
+        job_fit_rows,
+        "No job fit history yet. Analyze a resume to save job fit results here.",
     )
 

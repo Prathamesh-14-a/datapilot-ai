@@ -1,10 +1,17 @@
 import json
 
 from src.database.db_connection import SessionLocal, engine
-from src.database.models import Base, SalaryPrediction, User, AIConversation, AIChatSession
-from src.database.models import Resume
+from src.database.models import (
+    Base,
+    SalaryPrediction,
+    User,
+    AIConversation,
+    AIChatSession,
+    Resume,
+    Analysis,
+    JobFitHistory,
+)
 from sqlalchemy.orm import joinedload
-from src.database.models import Analysis
 
 
 #-------------------------------------------------------
@@ -161,6 +168,71 @@ def get_analysis_history(user_id):
 
         return analyses
     
+    finally:
+        session.close()
+
+
+#------------------------------------------
+# JOB FIT HISTORY
+#------------------------------------------
+_job_fit_history_table_ready = False
+
+
+def _ensure_job_fit_history_table():
+    global _job_fit_history_table_ready
+
+    if not _job_fit_history_table_ready:
+        Base.metadata.create_all(bind=engine)
+        _job_fit_history_table_ready = True
+
+
+def save_job_fit_history(
+    user_id,
+    resume_id,
+    best_role,
+    best_score,
+    predictions,
+    missing_skills,
+):
+    session = SessionLocal()
+
+    try:
+        _ensure_job_fit_history_table()
+
+        job_fit_history = JobFitHistory(
+            user_id=user_id,
+            resume_id=resume_id,
+            best_role=best_role,
+            best_score=best_score,
+            predictions_json=json.dumps(predictions),
+            missing_skills=", ".join(missing_skills),
+        )
+
+        session.add(job_fit_history)
+        session.commit()
+        session.refresh(job_fit_history)
+
+        return job_fit_history
+
+    except Exception:
+        session.rollback()
+        raise
+
+    finally:
+        session.close()
+
+
+def get_job_fit_history(user_id):
+    session = SessionLocal()
+
+    try:
+        _ensure_job_fit_history_table()
+        histories = session.query(JobFitHistory).filter(
+            JobFitHistory.user_id == user_id
+        ).all()
+
+        return histories
+
     finally:
         session.close()
 

@@ -5,6 +5,7 @@ from datetime import datetime
 from src.database.crud import (
 	get_ai_chat_sessions,
 	get_analysis_history,
+	get_job_fit_history,
 	get_prediction_history,
 	get_user_resumes,
 )
@@ -34,6 +35,11 @@ def build_dashboard_snapshot(user_id):
 	predictions = sorted(
 		get_prediction_history(user_id),
 		key=lambda prediction: _safe_timestamp(prediction, "prediction_date"),
+		reverse=True,
+	)
+	job_fit_histories = sorted(
+		get_job_fit_history(user_id),
+		key=lambda history: _safe_timestamp(history, "created_at"),
 		reverse=True,
 	)
 	chat_sessions = get_ai_chat_sessions(user_id)
@@ -89,6 +95,20 @@ def build_dashboard_snapshot(user_id):
 			}
 		)
 
+	for history in job_fit_histories:
+		activity_items.append(
+			{
+				"kind": "Job Fit",
+				"title": history.best_role or "Job fit result",
+				"detail": (
+					f"Best fit {history.best_score:.2f}%"
+					if history.best_score is not None
+					else "Job fit saved to your history"
+				),
+				"timestamp": _safe_timestamp(history, "created_at"),
+			}
+		)
+
 	for chat_session in chat_sessions:
 		activity_items.append(
 			{
@@ -131,16 +151,10 @@ def build_dashboard_snapshot(user_id):
 			"resumes": len(resumes),
 			"analyses": len(analyses),
 			"predictions": len(predictions),
+			"job_fit_history": len(job_fit_histories),
 			"chats": len(chat_sessions),
 		},
 		"resumes": resumes,
 		"analyses": analyses,
 		"predictions": predictions,
-		"chat_sessions": chat_sessions,
-		"latest_analysis": latest_analysis,
-		"latest_prediction": latest_prediction,
-		"latest_resume": latest_resume,
-		"activity_items": activity_items,
-		"analysis_trend": analysis_trend,
-		"salary_trend": salary_trend,
-	}
+		"job_fit_histories": job_fit_histories,
