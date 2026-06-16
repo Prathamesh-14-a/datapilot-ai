@@ -26,9 +26,9 @@ if not user_id:
     st.stop()
 
 snapshot = build_dashboard_snapshot(user_id)
-latest_analysis = snapshot["latest_analysis"]
-latest_prediction = snapshot["latest_prediction"]
-latest_resume = snapshot["latest_resume"]
+latest_analysis = snapshot.get("latest_analysis")
+latest_prediction = snapshot.get("latest_prediction")
+latest_resume = snapshot.get("latest_resume")
 
 if "show_full_history" not in st.session_state:
     st.session_state["show_full_history"] = False
@@ -153,23 +153,23 @@ with col3:
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Resumes", snapshot["counts"]["resumes"])
+    st.metric("Resumes", snapshot.get("counts", {}).get("resumes", 0))
 
 with col2:
-    st.metric("Analyses", snapshot["counts"]["analyses"])
+    st.metric("Analyses", snapshot.get("counts", {}).get("analyses", 0))
 
 with col3:
-    st.metric("Salary Predictions", snapshot["counts"]["predictions"])
+    st.metric("Salary Predictions", snapshot.get("counts", {}).get("predictions", 0))
 
 with col4:
-    st.metric("AI Chats", snapshot["counts"]["chats"])
+    st.metric("AI Chats", snapshot.get("counts", {}).get("chats", 0))
 
 st.markdown("---")
 
-st.metric("Job Fit Records", snapshot["counts"]["job_fit_history"])
+st.metric("Job Fit Records", snapshot.get("counts", {}).get("job_fit_history", 0))
 
-analysis_trend = pd.DataFrame(snapshot["analysis_trend"])
-salary_trend = pd.DataFrame(snapshot["salary_trend"])
+analysis_trend = pd.DataFrame(snapshot.get("analysis_trend", []))
+salary_trend = pd.DataFrame(snapshot.get("salary_trend", []))
 
 st.divider()
 
@@ -190,7 +190,7 @@ st.divider()
 # Recent Activity
 st.subheader("📜 Recent Activity")
 
-activity_items = snapshot["activity_items"]
+activity_items = snapshot.get("activity_items", [])
 show_all_history = st.session_state["show_full_history"]
 
 
@@ -227,7 +227,7 @@ with history_tabs[0]:
             "Skill Match": f"{analysis.match_score:.1f}%" if analysis.match_score is not None else "N/A",
             "Analyzed At": _format_ts(getattr(analysis, "analysis_date", None)),
         }
-        for analysis in snapshot["analyses"]
+        for analysis in snapshot.get("analyses", [])
     ]
     _render_history_table(
         analysis_rows,
@@ -243,7 +243,7 @@ with history_tabs[1]:
             "Predicted Salary": f"₹{prediction.predicted_salary / 100000:.1f} LPA" if prediction.predicted_salary is not None else "N/A",
             "Predicted At": _format_ts(getattr(prediction, "prediction_date", None)),
         }
-        for prediction in snapshot["predictions"]
+        for prediction in snapshot.get("predictions", [])
     ]
     _render_history_table(
         prediction_rows,
@@ -256,7 +256,7 @@ with history_tabs[2]:
             "Resume": resume.resume_name,
             "Uploaded At": _format_ts(getattr(resume, "uploaded_at", None)),
         }
-        for resume in snapshot["resumes"]
+        for resume in snapshot.get("resumes", [])
     ]
     _render_history_table(
         resume_rows,
@@ -269,7 +269,7 @@ with history_tabs[3]:
             "Conversation": chat.title,
             "Updated At": _format_ts(getattr(chat, "updated_at", None)),
         }
-        for chat in snapshot["chat_sessions"]
+        for chat in snapshot.get("chat_sessions", [])
     ]
     _render_history_table(
         chat_rows,
@@ -284,7 +284,7 @@ with history_tabs[4]:
             "Missing Skills": history.missing_skills or "N/A",
             "Saved At": _format_ts(getattr(history, "created_at", None)),
         }
-        for history in snapshot["job_fit_histories"]
+        for history in snapshot.get("job_fit_histories", [])
     ]
     _render_history_table(
         job_fit_rows,

@@ -158,3 +158,4 @@ def build_dashboard_snapshot(user_id):
 		"analyses": analyses,
 		"predictions": predictions,
 		"job_fit_histories": job_fit_histories,
+	}	
