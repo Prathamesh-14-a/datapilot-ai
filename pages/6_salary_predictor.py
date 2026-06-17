@@ -123,7 +123,7 @@ with st.form("salary_prediction_form"):
 			"Experience (years)",
 			min_value=0.0,
 			max_value=40.0,
-			value=3.0,
+			value=0.0,
 			step=0.5,
 		)
 
@@ -228,13 +228,13 @@ if st.button(
 				skills
 		)
 
-        st.session_state["feedback"] = feedback
+        st.session_state["salary_feedback"] = feedback
 
 # ==========================================
 # SHOW AI REPORT
 # ==========================================
 
-if "feedback" in st.session_state:
+if "salary_feedback" in st.session_state:
 
     st.divider()
 
@@ -247,12 +247,12 @@ if "feedback" in st.session_state:
         expanded=True
     ):
         st.markdown(
-            st.session_state["feedback"]
+            st.session_state["salary_feedback"]
         )
 
-if "feedback" in st.session_state:
+if "salary_feedback" in st.session_state:
 
-    pdf_data = text_to_pdf(st.session_state["feedback"])
+    pdf_data = text_to_pdf(st.session_state["salary_feedback"])
 
     st.download_button(
         label="📥 Download AI salary improvement report",

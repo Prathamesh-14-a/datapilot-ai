@@ -75,7 +75,7 @@ if latest_resume:
 # Quick Actions
 st.subheader("🚀 Quick Actions")
 
-col1, col2 = st.columns(2)
+col1, col2  = st.columns(2)
 
 with col1:
 
@@ -93,6 +93,14 @@ with col1:
     ):
         st.switch_page(
             "pages/6_salary_predictor.py"
+        )
+    
+    if st.button(
+        "Job Fit Predictor",
+        use_container_width=True
+    ):
+        st.switch_page(
+            "pages/8_Job_Fit_predictor.py"
         )
 
 with col2:
@@ -150,7 +158,7 @@ with col3:
         expected_salary
     )
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col5= st.columns(5)
 
 with col1:
     st.metric("Resumes", snapshot.get("counts", {}).get("resumes", 0))
@@ -164,9 +172,9 @@ with col3:
 with col4:
     st.metric("AI Chats", snapshot.get("counts", {}).get("chats", 0))
 
-st.markdown("---")
+with col5:
+    st.metric("Job Fit Records", snapshot.get("counts", {}).get("job_fit_history", 0))
 
-st.metric("Job Fit Records", snapshot.get("counts", {}).get("job_fit_history", 0))
 
 analysis_trend = pd.DataFrame(snapshot.get("analysis_trend", []))
 salary_trend = pd.DataFrame(snapshot.get("salary_trend", []))

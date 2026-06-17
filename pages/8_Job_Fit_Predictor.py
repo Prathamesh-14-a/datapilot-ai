@@ -6,6 +6,7 @@ from src.auth.session_manager import is_authenticated
 from src.job_fit.predictor import ROLE_SKILLS, predict_job_fit
 from components.sidebar import show_sidebar
 
+
 st.set_page_config(
 	page_title="AI Job Fit Predictor",
 	page_icon="🤖",
@@ -201,3 +202,5 @@ if st.button(
             The Skill Gap Analysis identifies important skills
             that can help improve your alignment with your target role.
             """)
+
+

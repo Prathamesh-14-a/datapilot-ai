@@ -490,25 +490,7 @@ if "analysis_result" in st.session_state:
 
     st.write(roadmap)
 
-    st.divider()
-    render_analysis_history(get_analysis_history(user_id))
 
-    job_fit_histories = get_job_fit_history(user_id)
-    if job_fit_histories:
-        st.divider()
-        st.subheader("🧾 Job Fit History")
-        history_rows = []
-        for history in job_fit_histories:
-            history_rows.append(
-                {
-                    "Resume ID": history.resume_id,
-                    "Best Role": history.best_role,
-                    "Best Fit": f"{history.best_score:.2f}%",
-                    "Missing Skills": history.missing_skills,
-                    "Saved At": history.created_at.strftime("%Y-%m-%d %H:%M"),
-                }
-            )
-        st.table(history_rows)
 
     # ======================================
     # AI FEEDBACK BUTTON
@@ -530,13 +512,13 @@ if "analysis_result" in st.session_state:
                 st.session_state["target_role"]
             )
 
-        st.session_state["feedback"] = feedback
+        st.session_state["resume_feedback"] = feedback
 
 # ==========================================
 # SHOW AI REPORT
 # ==========================================
 
-if "feedback" in st.session_state:
+if "resume_feedback" in st.session_state:
 
     st.divider()
 
@@ -549,12 +531,12 @@ if "feedback" in st.session_state:
         expanded=True
     ):
         st.markdown(
-            st.session_state["feedback"]
+            st.session_state["resume_feedback"]
         )
 
-if "feedback" in st.session_state:
+if "resume_feedback" in st.session_state:
 
-    pdf_data = text_to_pdf(st.session_state["feedback"])
+    pdf_data = text_to_pdf(st.session_state["resume_feedback"])
 
     st.download_button(
         label="📥 Download AI Career Report",
@@ -586,4 +568,15 @@ def render_resume_history(resumes):
 
     st.table(resume_rows)
 
-render_resume_history(get_user_resumes(user_id))
+with st.expander(
+        "View Analysis History",
+        expanded=False
+    ):
+    render_analysis_history(get_analysis_history(user_id))
+
+with st.expander(
+        "View Resume History",
+        expanded=False
+    ):
+    render_resume_history(get_user_resumes(user_id))
+

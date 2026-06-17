@@ -98,13 +98,13 @@ if st.button(
                 st.session_state["target_role"]
             )
 
-        st.session_state["feedback"] = feedback
+        st.session_state["skill_feedback"] = feedback
 
 # ==========================================
 # SHOW AI REPORT
 # ==========================================
 
-if "feedback" in st.session_state:
+if "skill_feedback" in st.session_state:
 
     st.divider()
 
@@ -117,12 +117,12 @@ if "feedback" in st.session_state:
         expanded=True
     ):
         st.markdown(
-            st.session_state["feedback"]
+            st.session_state["skill_feedback"]
         )
 
-if "feedback" in st.session_state:
+if "skill_feedback" in st.session_state:
 
-    pdf_data = text_to_pdf(st.session_state["feedback"])
+    pdf_data = text_to_pdf(st.session_state["skill_feedback"])
 
     st.download_button(
         label="📥 Download AI Skill Improvement Report",
