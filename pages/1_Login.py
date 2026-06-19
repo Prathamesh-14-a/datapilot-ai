@@ -1,627 +1,513 @@
+# pages/1_Login.py
 import streamlit as st
-import streamlit.components.v1 as components
 from src.auth.auth_service import login
 from src.auth.session_manager import create_session, is_authenticated
 
-import base64
-import os
+import base64, os
 
 def load_logo(path="assets/logo.png"):
     try:
         ext = os.path.splitext(path)[1].lower().replace(".", "")
-        mime = "svg+xml" if ext == "svg" else ext  # handle svg too
+        mime = "svg+xml" if ext == "svg" else ext
         with open(path, "rb") as f:
             data = base64.b64encode(f.read()).decode()
         return f"data:image/{mime};base64,{data}"
-    except FileNotFoundError:
-        return ""  # fallback compass icon shows automatically
+    except:
+        return ""
 
-LOGO_BASE64 = load_logo("assets/logo.png")
+LOGO_B64 = load_logo("assets/logo.png")
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
 st.set_page_config(
-    page_title="Login — DataPilot AI",
-    page_icon="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%232563EB'/></svg>",
+    page_title="DataPilot AI — Login",
+    page_icon="assets/mini_logo.png",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
+# --------------------------------------------------
+# REDIRECT IF ALREADY LOGGED IN
+# --------------------------------------------------
 if is_authenticated():
     st.switch_page("pages/3_Dashboard.py")
 
 # --------------------------------------------------
-# GLOBAL CSS — page shell + right-col form styling
+# GLOBAL CSS (Design System)
 # --------------------------------------------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html, body,
-[data-testid="stApp"],
-[data-testid="stAppViewContainer"],
-[data-testid="stAppViewContainer"] > .main {
-    background: #0B1020 !important;
-    font-family: 'Inter', system-ui, sans-serif !important;
-    color: #F8FAFC !important;
-    margin: 0 !important; padding: 0 !important;
-}
-[data-testid="stAppViewContainer"] > .main > .block-container {
-    padding: 0 !important; max-width: 100% !important; min-height: 100vh !important;
-}
-#MainMenu, header, footer,
-[data-testid="stToolbar"], [data-testid="stDecoration"],
-[data-testid="stStatusWidget"], [data-testid="stSidebar"],
-.stDeployButton { display: none !important; }
-
-[data-testid="stHorizontalBlock"] {
-    gap: 0 !important; padding: 0 !important;
-    min-height: 100vh !important; align-items: stretch !important;
-    background: #0B1020 !important;
-}
-[data-testid="stHorizontalBlock"] > div:first-child {
-    padding: 0 !important; min-height: 100vh !important;
-    flex: 1 1 55% !important; background: #0B1020 !important;
-    border-right: 1px solid #1F2937 !important; overflow: hidden !important;
-}
-[data-testid="stHorizontalBlock"] > div:last-child {
-    background: #0B1020 !important; padding: 0 !important;
-    min-height: 100vh !important; flex: 0 0 45% !important;
-    display: flex !important; align-items: center !important; justify-content: center !important;
-}
-[data-testid="stHorizontalBlock"] > div > div[data-testid="stVerticalBlock"] {
-    padding: 0 !important; gap: 0 !important; height: 100% !important;
-}
-[data-testid="stHorizontalBlock"] > div:first-child iframe {
-    border: none !important; display: block !important;
+:root {
+    --bg: #0B1020;
+    --bg-2: #111827;
+    --border: #1F2937;
+    --primary: #2563EB;
+    --accent: #22D3EE;
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+    --radius: 16px;
 }
 
-/* ── Right panel card shell ── */
-.dp-right-wrap {
-    width: 100%; max-width: 420px; margin: 0 auto;
-    padding: 48px 0; box-sizing: border-box;
-}
-.dp-card-shell {
-    position: relative;
-    background: rgba(17,24,39,0.82);
-    border: 1px solid #1F2937; border-radius: 20px;
-    padding: 40px 36px 32px;
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 0 0 1px rgba(37,99,235,0.07), 0 24px 64px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.3);
-    /* JS will animate this in */
-    opacity: 0; transform: translateY(20px);
-    animation: cardSlideIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
-}
-@keyframes cardSlideIn {
-    to { opacity: 1; transform: translateY(0); }
-}
-.dp-card-shell::before {
-    content: ''; position: absolute;
-    top: 0; left: 22px; right: 22px; height: 1px;
-    background: linear-gradient(90deg,transparent,rgba(37,99,235,.5),rgba(34,211,238,.5),transparent);
-}
-.dp-card-title {
-    font-size: 1.25rem; font-weight: 700; color: #F8FAFC;
-    letter-spacing: -0.02em; margin: 0 0 4px; font-family: 'Inter', sans-serif;
-}
-.dp-card-sub {
-    font-size: 0.8125rem; color: #4B5563; margin: 0 0 4px; font-family: 'Inter', sans-serif;
-}
-.dp-field-label {
-    display: block; font-size: 10.5px; font-weight: 600; color: #6B7280;
-    letter-spacing: 0.09em; text-transform: uppercase;
-    margin: 20px 0 7px; font-family: 'Inter', sans-serif;
-}
-.dp-divider-line {
-    display: flex; align-items: center; gap: 10px;
-    margin: 20px 0 16px; font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: #374151; font-family: 'Inter', sans-serif;
-}
-.dp-divider-line::before, .dp-divider-line::after {
-    content: ''; flex: 1; height: 1px; background: #1F2937;
+html, body, [class*="css"], [data-testid="stAppViewContainer"], .stApp {
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(37,99,235,0.18), transparent 60%),
+                radial-gradient(900px 500px at 100% 0%, rgba(34,211,238,0.10), transparent 55%),
+                var(--bg) !important;
+    color: var(--text) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* ── Input overrides ── */
+#MainMenu, footer, header {visibility: hidden;}
+[data-testid="stSidebar"], [data-testid="collapsedControl"] {display:none !important;}
+[data-testid="stHeader"] {background: transparent;}
+            
+.block-container {
+    padding: 4rem 3rem 3rem 1rem !important;
+    max-width: 1280px !important;
+}
+
+/* ---------------- LEFT SIDE ---------------- */
+.dp-brand {
+    display:flex; align-items:center; gap:12px; margin-bottom:48px; margin-left: -16px;
+}
+.dp-logo {
+    width:44px; height:44px; border-radius:12px;
+    background: linear-gradient(135deg, #2563EB 0%, #22D3EE 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+}
+.dp-logo svg { width:24px; height:24px; }
+.dp-brand-name {
+    font-size: 20px; font-weight: 700; letter-spacing:-0.01em; color: var(--text);
+}
+.dp-brand-name span {
+    background: linear-gradient(135deg, #2563EB, #22D3EE);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.dp-headline {
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0 0 24px 0;
+    background: linear-gradient(180deg, #F8FAFC 0%, #94A3B8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.dp-sub {
+    font-size: 17px; line-height: 1.65; color: var(--muted);
+    max-width: 460px; margin-bottom: 40px;
+}
+.dp-features { display:flex; flex-direction:column; gap:18px; max-width:460px;}
+.dp-feature { display:flex; align-items:flex-start; gap:14px; }
+.dp-feat-ico {
+    width:36px; height:36px; border-radius:10px; flex-shrink:0;
+    background: rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.18);
+    display:flex; align-items:center; justify-content:center;
+}
+.dp-feat-ico svg { width:18px; height:18px; stroke:#22D3EE; }
+.dp-feat-text { font-size:14px; color: var(--text); font-weight:500; line-height:1.5;}
+.dp-feat-text small { display:block; color: var(--muted); font-weight:400; margin-top:2px;}
+
+/* ---------------- RIGHT SIDE CARD ---------------- */
+.dp-card {
+    background: linear-gradient(180deg, rgba(17,24,39,0.7) 0%, rgba(11,16,32,0.7) 100%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    box-shadow:
+        0 30px 80px -20px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(37,99,235,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    margin-top: 12px;
+}
+.dp-card h2 {
+    font-size: 24px; font-weight: 700; letter-spacing:-0.02em;
+    margin:0 0 6px 0; color: var(--text);
+}
+.dp-card p.lead {
+    font-size: 14px; color: var(--muted); margin:0 0 28px 0;
+}
+
+/* Inputs */
+.stTextInput > label {
+    font-size: 13px !important; font-weight: 500 !important;
+    color: var(--text) !important; margin-bottom: 6px !important;
+}
 .stTextInput > div > div > input {
-    background: rgba(11,16,32,0.9) !important;
-    border: 1px solid #1F2937 !important; border-radius: 10px !important;
-    color: #F8FAFC !important; font-family: 'Inter', sans-serif !important;
-    font-size: 0.9375rem !important; padding: 12px 15px !important;
-    height: auto !important; transition: border-color 0.2s, box-shadow 0.2s !important;
+    background: rgba(11,16,32,0.6) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+    height: 46px !important;
 }
+.stTextInput > div > div > input::placeholder { color: #4B5563 !important; }
 .stTextInput > div > div > input:focus {
-    border-color: #2563EB !important;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15) !important; outline: none !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.18) !important;
+    outline: none !important;
 }
-.stTextInput > div > div > input::placeholder { color: #374151 !important; }
-.stTextInput > label { display: none !important; }
-
-/* ── Shake animation for validation error ── */
-@keyframes shake {
-    0%,100%{transform:translateX(0)}
-    20%{transform:translateX(-6px)}
-    40%{transform:translateX(6px)}
-    60%{transform:translateX(-4px)}
-    80%{transform:translateX(4px)}
-}
-.stTextInput.dp-shake > div > div > input {
-    animation: shake 0.4s ease !important;
-    border-color: #EF4444 !important;
-    box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important;
+.stTextInput > div > div {
+    background: transparent !important; border: none !important;
 }
 
-/* ── Primary button ── */
+/* Buttons */
 .stButton > button {
-    width: 100% !important;
-    background: linear-gradient(135deg,#2563EB 0%,#1D4ED8 55%,#1E40AF 100%) !important;
-    color: #fff !important; border: none !important; border-radius: 10px !important;
-    padding: 13px 20px !important; font-family: 'Inter', sans-serif !important;
-    font-size: 0.9375rem !important; font-weight: 600 !important;
-    cursor: pointer !important; height: auto !important;
-    box-shadow: 0 4px 16px rgba(37,99,235,0.38) !important;
-    transition: all 0.2s !important; letter-spacing: 0.01em !important; margin-top: 4px !important;
+    background: linear-gradient(135deg, #2563EB 0%, #22D3EE 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    letter-spacing: 0.01em !important;
+    padding: 12px 20px !important;
+    height: 46px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 10px 24px -8px rgba(37,99,235,0.5) !important;
 }
 .stButton > button:hover {
-    background: linear-gradient(135deg,#3B82F6 0%,#2563EB 55%,#1D4ED8 100%) !important;
-    box-shadow: 0 6px 24px rgba(37,99,235,0.52) !important;
     transform: translateY(-1px) !important;
+    box-shadow: 0 16px 32px -10px rgba(34,211,238,0.5) !important;
+    filter: brightness(1.05) !important;
 }
-.stButton > button:active { transform: scale(0.98) translateY(0) !important; }
+.stButton > button:active { transform: translateY(0) !important; }
 
-/* Secondary button */
-.dp-signup-wrap .stButton > button {
-    background: transparent !important; border: 1px solid #1F2937 !important;
-    color: #22D3EE !important; box-shadow: none !important;
-    font-size: 0.875rem !important; font-weight: 500 !important; margin-top: 0 !important;
+/* Secondary (sign up) button */
+.dp-secondary .stButton > button {
+    background: transparent !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    box-shadow: none !important;
 }
-.dp-signup-wrap .stButton > button:hover {
-    border-color: #22D3EE !important; background: rgba(34,211,238,0.05) !important;
-    box-shadow: none !important; transform: none !important;
+.dp-secondary .stButton > button:hover {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    background: rgba(34,211,238,0.04) !important;
+}
+
+/* Divider */
+.dp-divider {
+    display:flex; align-items:center; gap:12px;
+    margin: 24px 0 16px 0; color: var(--muted); font-size:12px;
+}
+.dp-divider::before, .dp-divider::after {
+    content:""; flex:1; height:1px; background: var(--border);
+}
+
+.dp-signup-row {
+    text-align:center; color: var(--muted); font-size:13px; margin-top: 8px;
 }
 
 /* Alerts */
-.stAlert { background: rgba(17,24,39,0.9) !important; border-radius: 10px !important; font-family: 'Inter', sans-serif !important; }
+.stAlert {
+    background: rgba(17,24,39,0.8) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    color: var(--text) !important;
+}
 
-/* ── Page-level JS-driven interactions on right col ── */
-/* Cursor follow glow — injected via JS */
-.dp-cursor-glow {
-    position: fixed; width: 320px; height: 320px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
-    pointer-events: none; transform: translate(-50%,-50%);
-    transition: left 0.08s ease, top 0.08s ease;
-    z-index: 0;
+/* Footer note */
+.dp-foot {
+    text-align:center; color:#4B5563; font-size:12px; margin-top:32px;
 }
 </style>
 """, unsafe_allow_html=True)
 
+
 # --------------------------------------------------
-# LEFT PANEL — full HTML + JS inside components.html iframe
+# JS + MOTION EFFECTS
 # --------------------------------------------------
-LEFT_PANEL_HTML = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+st.markdown("""
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#0B1020;font-family:'Inter',system-ui,sans-serif;color:#F8FAFC;overflow:hidden;}
+/* Animated aurora orbs */
+.dp-aurora {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.dp-orb {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45;
+    animation: dp-float 18s ease-in-out infinite;
+}
+.dp-orb.o1 { width: 480px; height: 480px; background: #2563EB; top: -120px; left: -120px;}
+.dp-orb.o2 { width: 380px; height: 380px; background: #22D3EE; bottom: -100px; right: -80px; animation-delay: -6s;}
+.dp-orb.o3 { width: 300px; height: 300px; background: #4F46E5; top: 40%; left: 45%; opacity: 0.25; animation-delay: -12s;}
 
-.panel{
-    display:flex;flex-direction:column;justify-content:center;
-    padding:72px 64px;min-height:100vh;position:relative;overflow:hidden;
+@keyframes dp-float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%     { transform: translate(40px,-30px) scale(1.08); }
+    66%     { transform: translate(-30px,40px) scale(0.95); }
 }
 
-/* Grid bg */
-.grid{
-    position:absolute;inset:0;
-    background-image:
-        linear-gradient(rgba(31,41,55,.38) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(31,41,55,.38) 1px,transparent 1px);
-    background-size:48px 48px;pointer-events:none;
-    transition:background-position 0.1s ease;
+/* Constellation canvas */
+#dp-stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55;
 }
 
-/* Ambient glows */
-.g1{position:absolute;top:-160px;left:-160px;width:560px;height:560px;
-    background:radial-gradient(circle,rgba(37,99,235,.2) 0%,transparent 70%);
-    border-radius:50%;pointer-events:none;transition:transform 0.15s ease;}
-.g2{position:absolute;bottom:-120px;right:-60px;width:400px;height:400px;
-    background:radial-gradient(circle,rgba(34,211,238,.12) 0%,transparent 70%);
-    border-radius:50%;pointer-events:none;transition:transform 0.15s ease;}
+/* Make Streamlit content sit above effects */
+[data-testid="stAppViewContainer"] > .main { position: relative; z-index: 2; }
+.block-container { position: relative; z-index: 2; }
 
-/* Mouse-follow spotlight */
-.spotlight{
-    position:absolute;width:600px;height:600px;border-radius:50%;
-    background:radial-gradient(circle,rgba(37,99,235,.07) 0%,transparent 65%);
-    pointer-events:none;transform:translate(-50%,-50%);
-    transition:left .12s ease,top .12s ease;z-index:0;
+/* Reveal on load */
+.dp-reveal { opacity: 0; transform: translateY(14px); animation: dp-rise 0.9s cubic-bezier(.2,.7,.2,1) forwards; }
+.dp-reveal.d1 { animation-delay: 0.05s; }
+.dp-reveal.d2 { animation-delay: 0.18s; }
+.dp-reveal.d3 { animation-delay: 0.32s; }
+@keyframes dp-rise { to { opacity: 1; transform: translateY(0); } }
+
+/* Logo subtle pulse */
+.dp-logo { animation: dp-glow 3.5s ease-in-out infinite; }
+@keyframes dp-glow {
+    0%,100% { box-shadow: 0 8px 24px rgba(37,99,235,0.35); }
+    50%     { box-shadow: 0 12px 40px rgba(34,211,238,0.55); }
 }
 
-/* Canvas for floating particles */
-#particles{position:absolute;inset:0;pointer-events:none;z-index:0;}
-
-.inner{position:relative;z-index:1;max-width:500px;}
-
-/* Logo */
-.logo-wrap{margin-bottom:48px;opacity:0;transform:translateY(-12px);animation:fadeUp .5s cubic-bezier(.16,1,.3,1) .1s forwards;}
-.logo-img{height:44px;width:auto;object-fit:contain;display:block;}
-
-/* Eyebrow with typing cursor */
-.eyebrow{
-    font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-    color:#22D3EE;margin-bottom:13px;
-    opacity:0;animation:fadeUp .5s cubic-bezier(.16,1,.3,1) .25s forwards;
+/* Headline shimmer */
+.dp-headline {
+    background-size: 200% 100% !important;
+    animation: dp-shimmer 6s linear infinite;
+}
+@keyframes dp-shimmer {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 
-/* Headline */
-.headline{
-    font-size:clamp(1.7rem,2.8vw,2.75rem);font-weight:700;line-height:1.15;
-    color:#F8FAFC;letter-spacing:-.025em;margin-bottom:16px;
-    opacity:0;animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .35s forwards;
+/* Card tilt + glow on hover (via JS variables) */
+.dp-card {
+    transform: perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    transition: transform 0.25s ease, box-shadow 0.3s ease;
+    position: relative; overflow: hidden;
 }
-.grad{
-    background:linear-gradient(135deg,#2563EB 0%,#22D3EE 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+.dp-card::before {
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%),
+                rgba(34,211,238,0.12), transparent 40%);
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.dp-card:hover::before { opacity: 1; }
+
+/* Input focus ring upgrade */
+.stTextInput > div > div > input:focus {
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.25),
+                0 0 24px rgba(34,211,238,0.25) !important;
 }
 
-/* Sub */
-.sub{
-    font-size:.9375rem;color:#64748B;line-height:1.7;margin-bottom:32px;
-    opacity:0;animation:fadeUp .6s cubic-bezier(.16,1,.3,1) .45s forwards;
+/* Button shine sweep */
+.stButton > button { position: relative; overflow: hidden; }
+.stButton > button::after {
+    content:""; position:absolute; top:0; left:-120%; width:60%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform: skewX(-20deg); transition: left 0.7s ease;
 }
+.stButton > button:hover::after { left: 130%; }
 
-/* Role pills — stagger in */
-.roles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px;}
-.pill{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:6px 13px;border-radius:999px;
-    border:1px solid #1F2937;background:rgba(17,24,39,.65);
-    font-size:12px;font-weight:500;color:#94A3B8;
-    cursor:default;
-    opacity:0;transform:translateY(8px);
-    transition:border-color .2s, background .2s, color .2s, transform .2s;
+/* Feature card hover lift */
+.dp-feature { transition: transform 0.3s ease; }
+.dp-feature:hover { transform: translateX(6px); }
+.dp-feature:hover .dp-feat-ico {
+    background: rgba(34,211,238,0.18);
+    border-color: rgba(34,211,238,0.4);
 }
-.pill:hover{
-    border-color:#2563EB;background:rgba(37,99,235,.12);
-    color:#E2E8F0;transform:translateY(-2px);
-}
-.pill.active{
-    border-color:#22D3EE;background:rgba(34,211,238,.1);color:#22D3EE;
-}
-.dot{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#2563EB,#22D3EE);flex-shrink:0;}
-
-/* Proof */
-.proof{
-    display:flex;align-items:center;gap:14px;
-    padding-top:26px;border-top:1px solid #1F2937;
-    opacity:0;animation:fadeUp .6s cubic-bezier(.16,1,.3,1) 1.1s forwards;
-}
-.avs{display:flex;}
-.av{
-    width:28px;height:28px;border-radius:50%;border:2px solid #0B1020;
-    margin-right:-8px;display:flex;align-items:center;justify-content:center;
-    font-size:10px;font-weight:700;color:#fff;
-    transition:transform .2s, margin .2s;
-}
-.avs:hover .av{margin-right:2px;}
-.av1{background:linear-gradient(135deg,#2563EB,#3B82F6);}
-.av2{background:linear-gradient(135deg,#7C3AED,#A855F7);}
-.av3{background:linear-gradient(135deg,#059669,#10B981);}
-.av4{background:linear-gradient(135deg,#DC2626,#F87171);}
-.proof-txt{font-size:12px;color:#4B5563;line-height:1.5;padding-left:6px;}
-.proof-txt strong{color:#94A3B8;font-weight:500;}
-
-/* Counter animation */
-.counter{display:inline;font-weight:500;color:#94A3B8;}
-
-@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
 </style>
-</head>
-<body>
 
-<canvas id="particles"></canvas>
-
-<div class="panel">
-  <div class="grid" id="grid"></div>
-  <div class="g1" id="g1"></div>
-  <div class="g2" id="g2"></div>
-  <div class="spotlight" id="spotlight"></div>
-
-  <div class="inner">
-
-    <!-- Logo -->
-    <div class="logo-wrap">
-      <img src="LOGO_SRC_PLACEHOLDER" class="logo-img" alt="DataPilot AI"
-        onerror="this.onerror=null;this.style.display='none';document.getElementById('logo-fallback').style.display='flex'"/>
-      <div id="logo-fallback" style="display:none;align-items:center;gap:10px;">
-        <div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#2563EB,#22D3EE);display:flex;align-items:center;justify-content:center;">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.5"/>
-            <path d="M10 3 L10 10 L15 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="10" cy="10" r="1.5" fill="white"/>
-          </svg>
-        </div>
-        <span style="font-size:20px;font-weight:700;color:#F8FAFC;letter-spacing:-.02em;">DataPilot <span style="color:#22D3EE;">AI</span></span>
-      </div>
-    </div>
-
-    <p class="eyebrow">AI-Powered Career Intelligence</p>
-
-    <h1 class="headline">
-      Navigate Your<br>
-      <span class="grad">Data Career.</span>
-    </h1>
-
-    <p class="sub">
-      Personalized career guidance for Data, Analytics, and Machine Learning
-      professionals — from first role to senior leadership.
-    </p>
-
-    <div class="roles" id="roles">
-      <div class="pill"><div class="dot"></div>Data Analyst</div>
-      <div class="pill"><div class="dot"></div>Data Scientist</div>
-      <div class="pill"><div class="dot"></div>Data Engineer</div>
-      <div class="pill"><div class="dot"></div>ML Engineer</div>
-      <div class="pill"><div class="dot"></div>BI Analyst</div>
-      <div class="pill"><div class="dot"></div>Analytics Engineer</div>
-    </div>
-
-    <div class="proof">
-      <div class="avs" id="avs">
-        <div class="av av1">A</div>
-        <div class="av av2">R</div>
-        <div class="av av3">S</div>
-        <div class="av av4">K</div>
-      </div>
-      <div class="proof-txt">
-        <span class="counter" id="counter">0</span>+ professionals<br>navigating their data careers
-      </div>
-    </div>
-
-  </div>
+<div class="dp-aurora">
+    <div class="dp-orb o1"></div>
+    <div class="dp-orb o2"></div>
+    <div class="dp-orb o3"></div>
 </div>
+<canvas id="dp-stars"></canvas>
 
 <script>
-// ── 1. MOUSE PARALLAX — spotlight + glow drift ──
-const spotlight = document.getElementById('spotlight');
-const g1 = document.getElementById('g1');
-const g2 = document.getElementById('g2');
+(function(){
+    const doc = window.parent.document;
 
-document.addEventListener('mousemove', e => {
-    const x = e.clientX, y = e.clientY;
-    const w = window.innerWidth, h = window.innerHeight;
-    const dx = (x / w - 0.5), dy = (y / h - 0.5);
-
-    spotlight.style.left = x + 'px';
-    spotlight.style.top  = y + 'px';
-
-    g1.style.transform = `translate(${dx * 18}px, ${dy * 18}px)`;
-    g2.style.transform = `translate(${-dx * 12}px, ${-dy * 12}px)`;
-});
-
-// ── 2. PILL STAGGER-IN ANIMATION ──
-document.querySelectorAll('.pill').forEach((pill, i) => {
-    pill.style.animation = `fadeUp 0.5s cubic-bezier(.16,1,.3,1) ${0.55 + i * 0.07}s forwards`;
-});
-
-// ── 3. PILL AUTO-CYCLE HIGHLIGHT ──
-const pills = document.querySelectorAll('.pill');
-let activePill = -1;
-function cyclePill() {
-    if (activePill >= 0) pills[activePill].classList.remove('active');
-    activePill = (activePill + 1) % pills.length;
-    pills[activePill].classList.add('active');
-}
-setTimeout(() => { cyclePill(); setInterval(cyclePill, 1800); }, 1400);
-
-// Click to highlight
-pills.forEach(p => {
-    p.addEventListener('click', () => {
-        pills.forEach(x => x.classList.remove('active'));
-        p.classList.add('active');
-    });
-});
-
-</script>
-</body>
-</html>
-"""
-LEFT_PANEL_HTML = LEFT_PANEL_HTML.replace("LOGO_SRC_PLACEHOLDER", LOGO_BASE64)
-# --------------------------------------------------
-# RIGHT PANEL — JS interactions injected via st.markdown
-# --------------------------------------------------
-RIGHT_JS = """
-<script>
-(function() {
-    // Run after Streamlit finishes rendering
-    function init() {
-        // ── Cursor glow that follows mouse on right panel ──
-        let glow = document.querySelector('.dp-cursor-glow');
-        if (!glow) {
-            glow = document.createElement('div');
-            glow.className = 'dp-cursor-glow';
-            document.body.appendChild(glow);
+    // ---- Constellation canvas ----
+    const canvas = doc.getElementById('dp-stars');
+    if (canvas && !canvas.dataset.init) {
+        canvas.dataset.init = '1';
+        const ctx = canvas.getContext('2d');
+        let w, h, pts = [];
+        const COUNT = 70;
+        function resize(){
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
         }
-        document.addEventListener('mousemove', e => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top  = e.clientY + 'px';
-        });
-
-        // ── Input focus ripple effect ──
-        document.querySelectorAll('.stTextInput input').forEach(inp => {
-            inp.addEventListener('focus', function() {
-                this.closest('.stTextInput').style.transition = 'transform 0.15s ease';
-                this.closest('.stTextInput').style.transform = 'scale(1.01)';
-            });
-            inp.addEventListener('blur', function() {
-                this.closest('.stTextInput').style.transform = 'scale(1)';
-            });
-
-            // ── Live email validation indicator ──
-            if (inp.type === 'email' || inp.placeholder.includes('company')) {
-                inp.addEventListener('input', function() {
-                    const valid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(this.value);
-                    if (this.value.length > 3) {
-                        this.style.borderColor = valid ? '#22D3EE' : '#F59E0B';
-                        this.style.boxShadow   = valid
-                            ? '0 0 0 3px rgba(34,211,238,0.12)'
-                            : '0 0 0 3px rgba(245,158,11,0.12)';
-                    } else {
-                        this.style.borderColor = '';
-                        this.style.boxShadow   = '';
+        function init(){
+            pts = Array.from({length: COUNT}, () => ({
+                x: Math.random()*w, y: Math.random()*h,
+                vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+                r: Math.random()*1.4 + 0.4
+            }));
+        }
+        function draw(){
+            ctx.clearRect(0,0,w,h);
+            for (let p of pts){
+                p.x += p.vx; p.y += p.vy;
+                if (p.x<0||p.x>w) p.vx*=-1;
+                if (p.y<0||p.y>h) p.vy*=-1;
+                ctx.beginPath();
+                ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                ctx.fillStyle = 'rgba(148,197,255,0.7)';
+                ctx.fill();
+            }
+            for (let i=0;i<pts.length;i++){
+                for (let j=i+1;j<pts.length;j++){
+                    const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+                    const d2 = dx*dx+dy*dy;
+                    if (d2 < 14000){
+                        const a = 1 - d2/14000;
+                        ctx.strokeStyle = `rgba(34,211,238,${a*0.18})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(pts[i].x,pts[i].y);
+                        ctx.lineTo(pts[j].x,pts[j].y);
+                        ctx.stroke();
                     }
-                });
+                }
             }
-        });
-
-        // ── Button click ripple ──
-        document.querySelectorAll('.stButton > button').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const circle = document.createElement('span');
-                const d = Math.max(this.offsetWidth, this.offsetHeight);
-                const rect = this.getBoundingClientRect();
-                circle.style.cssText = [
-                    'position:absolute','border-radius:50%','pointer-events:none',
-                    `width:${d}px`, `height:${d}px`,
-                    `left:${e.clientX - rect.left - d/2}px`,
-                    `top:${e.clientY - rect.top  - d/2}px`,
-                    'background:rgba(255,255,255,0.18)',
-                    'transform:scale(0)',
-                    'animation:ripple 0.55s linear',
-                ].join(';');
-                this.style.position = 'relative';
-                this.style.overflow = 'hidden';
-                this.appendChild(circle);
-                setTimeout(() => circle.remove(), 600);
-            });
-        });
-
-        // ── Password strength meter ──
-        const passInputs = document.querySelectorAll('.stTextInput input[type="password"]');
-        if (passInputs.length) {
-            const pass = passInputs[0];
-
-            // Create meter bar
-            let meter = document.getElementById('dp-strength-meter');
-            if (!meter) {
-                meter = document.createElement('div');
-                meter.id = 'dp-strength-meter';
-                meter.style.cssText = [
-                    'height:3px','border-radius:3px','margin-top:6px',
-                    'background:#1F2937','overflow:hidden','transition:all .3s',
-                    'opacity:0',
-                ].join(';');
-                meter.innerHTML = '<div id="dp-strength-bar" style="height:100%;width:0;border-radius:3px;transition:width .35s ease,background .35s ease;"></div>';
-                pass.closest('.stTextInput').appendChild(meter);
-            }
-
-            pass.addEventListener('input', function() {
-                const v = this.value;
-                let score = 0;
-                if (v.length >= 8)  score++;
-                if (/[A-Z]/.test(v)) score++;
-                if (/[0-9]/.test(v)) score++;
-                if (/[^A-Za-z0-9]/.test(v)) score++;
-
-                const bar = document.getElementById('dp-strength-bar');
-                meter.style.opacity = v.length ? '1' : '0';
-
-                const configs = [
-                    {w:'20%', bg:'#EF4444'},
-                    {w:'45%', bg:'#F59E0B'},
-                    {w:'70%', bg:'#3B82F6'},
-                    {w:'100%',bg:'#22D3EE'},
-                ];
-                const c = configs[Math.max(0, score - 1)] || configs[0];
-                bar.style.width      = v.length ? c.w  : '0';
-                bar.style.background = v.length ? c.bg : 'transparent';
-            });
+            requestAnimationFrame(draw);
         }
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize(); init(); draw();
     }
 
-    // Inject ripple keyframe once
-    if (!document.getElementById('dp-ripple-style')) {
-        const s = document.createElement('style');
-        s.id = 'dp-ripple-style';
-        s.textContent = '@keyframes ripple{to{transform:scale(3);opacity:0}}';
-        document.head.appendChild(s);
+    // ---- Card tilt + spotlight ----
+    function bindCard(){
+        const card = doc.querySelector('.dp-card');
+        if (!card || card.dataset.bound) return;
+        card.dataset.bound = '1';
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            const x = e.clientX - r.left, y = e.clientY - r.top;
+            const rx = ((y / r.height) - 0.5) * -4;
+            const ry = ((x / r.width)  - 0.5) *  4;
+            card.style.setProperty('--rx', rx + 'deg');
+            card.style.setProperty('--ry', ry + 'deg');
+            card.style.setProperty('--mx', x + 'px');
+            card.style.setProperty('--my', y + 'px');
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--rx','0deg');
+            card.style.setProperty('--ry','0deg');
+        });
     }
 
-    // Delay to let Streamlit render its widgets
-    if (document.readyState === 'complete') {
-        setTimeout(init, 400);
-    } else {
-        window.addEventListener('load', () => setTimeout(init, 400));
+    // ---- Reveal classes ----
+    function bindReveal(){
+        const brand = doc.querySelector('.dp-brand');
+        const head  = doc.querySelector('.dp-headline');
+        const sub   = doc.querySelector('.dp-sub');
+        const feats = doc.querySelector('.dp-features');
+        const card  = doc.querySelector('.dp-card');
+        [brand, head].forEach(el => el && el.classList.add('dp-reveal','d1'));
+        [sub, card].forEach(el => el && el.classList.add('dp-reveal','d2'));
+        feats && feats.classList.add('dp-reveal','d3');
     }
-    // Also re-run on Streamlit rerenders
-    setTimeout(init, 800);
-    setTimeout(init, 1800);
+
+    const tryBind = () => { bindCard(); bindReveal(); };
+    tryBind();
+    new MutationObserver(tryBind).observe(doc.body, {childList:true, subtree:true});
 })();
 </script>
-"""
-
-# --------------------------------------------------
-# TWO-COLUMN LAYOUT
-# --------------------------------------------------
-col_left, col_right = st.columns([55, 45])
-
-with col_left:
-    components.html(LEFT_PANEL_HTML, height=900, scrolling=False)
-
-with col_right:
-    st.markdown("""
-<div class="dp-right-wrap">
-  <div class="dp-card-shell">
-    <p class="dp-card-title">Welcome back</p>
-    <p class="dp-card-sub">Sign in to your DataPilot AI account</p>
-    <span class="dp-field-label">Login with Email Address</span>
-  </div>
-</div>
 """, unsafe_allow_html=True)
 
-    st.markdown('<span class="dp-field-label">Email</span>', unsafe_allow_html=True)
-    email = st.text_input(
-        "Email",
-        placeholder="you@company.com",
-        label_visibility="collapsed"
+
+# --------------------------------------------------
+# LAYOUT
+# --------------------------------------------------
+left, spacer, right = st.columns([1.1, 0.1, 0.9])
+
+# ---------- LEFT ----------
+with left:
+    st.markdown("""
+    <div class="dp-brand">
+    <img src="LOGO_PLACEHOLDER" style="height:110px;width:auto;object-fit:contain;" alt="DataPilot AI"/>
+    </div>
+
+    <h1 class="dp-headline">Navigate Your<br/>Data Career.</h1>
+    <p class="dp-sub">
+        AI-powered career guidance for Data, Analytics, and Machine Learning
+        professionals. Personalized roadmaps, skill gap analysis, and interview prep.
+    </p>
+
+    <div class="dp-features">
+        <div class="dp-feature">
+            <div class="dp-feat-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/>
+                </svg>
+            </div>
+            <div class="dp-feat-text">Personalized Career Roadmaps
+                <small>Built for Data Analysts, Scientists, Engineers, and ML roles.</small>
+            </div>
+        </div>
+        <div class="dp-feature">
+            <div class="dp-feat-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+            </div>
+            <div class="dp-feat-text">Real-Time Skill Gap Analysis
+                <small>Compare your profile against market-ready job requirements.</small>
+            </div>
+        </div>
+        <div class="dp-feature">
+            <div class="dp-feat-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+            </div>
+            <div class="dp-feat-text">AI Feedback
+                <small>Get AI generated professional feedbacks.</small>
+            </div>
+        </div>
+    </div>
+    """.replace("LOGO_PLACEHOLDER", LOGO_B64), unsafe_allow_html=True)
+
+# ---------- RIGHT ----------
+with right:
+    st.markdown("""
+    <div class="dp-card">
+        <h2>Welcome back</h2>
+        <p class="lead">Sign in to continue to your DataPilot AI workspace.</p>
+    </div><br>
+    """, unsafe_allow_html=True)
+
+
+    # Streamlit form rendered after the heading card
+    email = st.text_input("Email address", placeholder="you@company.com", key="dp_email")
+    password = st.text_input("Password", type="password", placeholder="••••••••••", key="dp_pw")
+
+    login_btn = st.button("Sign in", use_container_width=True, key="dp_login")
+
+    st.markdown('<div class="dp-divider">or</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="dp-secondary">', unsafe_allow_html=True)
+    signup_btn = st.button("Create a new account", use_container_width=True, key="dp_signup")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="dp-foot">By signing in you agree to our Terms & Privacy Policy.</div>',
+        unsafe_allow_html=True
     )
 
-    st.markdown('<span class="dp-field-label">Password</span>', unsafe_allow_html=True)
+# --------------------------------------------------
+# LOGIC (unchanged)
+# --------------------------------------------------
+if login_btn:
+    if not email or not password:
+        st.warning("Please fill all fields")
+    else:
+        try:
+            user = login(email=email, password=password)
+            create_session(user)
+            st.success("Login Successful")
+            st.switch_page("pages/3_Dashboard.py")
+        except Exception as e:
+            st.error(str(e))
 
-    password = st.text_input(
-        "Password",
-        type="password",
-        placeholder="Enter your password",
-        label_visibility="collapsed"
-    )
-
-    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    login_btn = st.button("Sign in to DataPilot AI", use_container_width=True)
-
-    # ── LOGIN LOGIC — untouched ──
-    if login_btn:
-        if not email or not password:
-            st.warning("Please enter your email and password.")
-        else:
-            try:
-                user = login(email=email, password=password)
-                create_session(user)
-                st.success("Signed in successfully.")
-                st.switch_page("pages/3_Dashboard.py")
-            except Exception as e:
-                st.error(str(e))
-
-    st.markdown('<div class="dp-divider-line">or</div>', unsafe_allow_html=True)
-
-    with st.container():
-        st.markdown('<div class="dp-signup-wrap">', unsafe_allow_html=True)
-        if st.button("Create a free account", use_container_width=True):
-            st.switch_page("pages/2_Signup.py")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # Inject right-panel JS interactions
-    st.markdown(RIGHT_JS, unsafe_allow_html=True)
+if signup_btn:
+    st.switch_page("pages/2_Signup.py")
