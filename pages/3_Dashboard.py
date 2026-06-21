@@ -120,8 +120,8 @@ st.markdown(
     .block-container{ padding-top:1.2rem !important; max-width:1320px; position:relative; z-index:1;}
 
     /* Hide default streamlit header chrome */
-    header[data-testid="stHeader"]{ background:transparent;}
-    #MainMenu, footer{ visibility:hidden;}
+    
+    #MainMenu,header, footer{ visibility:hidden;}
 
     /* ── HERO ── */
     .dp-hero{
