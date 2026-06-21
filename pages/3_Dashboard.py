@@ -8,6 +8,26 @@ import streamlit as st
 from src.auth.session_manager import is_authenticated
 from src.dashboard.dashboard_service import build_dashboard_snapshot
 
+
+# pages/3_Dashboard.py  (and every other page)
+
+from components.sidebar import show_sidebar
+
+st.set_page_config(
+    page_title="Dashboard · DataPilot AI",
+    page_icon="assets/mini_logo.png",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+# Mark the active page so the sidebar highlights it
+st.session_state["_active_nav"] = "Dashboard"   # change per page
+
+show_sidebar()
+
+# ---- page content below ----
+st.title("Dashboard")
+
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────
@@ -21,9 +41,6 @@ st.set_page_config(
 if not is_authenticated():
     st.warning("Please login first")
     st.stop()
-
-from components.sidebar import show_sidebar
-show_sidebar()
 
 user_id = st.session_state.get("user_id")
 if not user_id:
@@ -330,7 +347,7 @@ st.markdown(
     """
     <div class="dp-section">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-      <h3>Performance Overview</h3><br>
+      <h3>Performance Overview</h3>
       <span class="dp-section-sub">Your latest career intelligence</span>
     </div>
     """,
