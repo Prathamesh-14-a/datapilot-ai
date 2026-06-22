@@ -34,7 +34,7 @@ st.set_page_config(
     page_title="Resume Analyzer · DataPilot AI",
     page_icon="assets\mini_logo.png",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="expanded"
 )
 
 
@@ -1013,7 +1013,7 @@ if "analysis_result" in st.session_state:
     cs_l, cs_r = st.columns(2)
     with cs_l:
         st.markdown(
-            f'<div class="dp-glass" style="min-height:300px; padding:1rem 1.2rem;margin-top:1rem;"><div style="font-weight:700;display:flex;align-items:center;gap:.5rem;">{SVG["spark"]} Strengths</div>',
+            f'<div padding:1rem 1.2rem;margin-top:1rem;"><div style="font-weight:700;display:flex;align-items:center;gap:.5rem;">{icon("spark", size=12)} Strengths</div>',
             unsafe_allow_html=True,
         )
         if strengths:
@@ -1024,7 +1024,7 @@ if "analysis_result" in st.session_state:
 
     with cs_r:
         st.markdown(
-            f'<div class="dp-glass" style="min-height:150px; padding:1rem 1.2rem;margin-top:1rem;"><div style="font-weight:700;display:flex;align-items:center;gap:.5rem;">{SVG["target"]} Focus Areas</div>',
+            f'<div padding:1rem 1.2rem;margin-top:1rem;"><div style="font-weight:700;display:flex;align-items:center;gap:.5rem;">{icon("target", size=12)} Focus Areas</div>',
             unsafe_allow_html=True,
         )
         if focus_areas:
