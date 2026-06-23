@@ -274,6 +274,28 @@ background: linear-gradient(160deg, rgba(14,26,56,0.85), rgba(8,16,38,0.85));
         line-height: 1.7;
     }
 .dp-report h1, .dp-report h2, .dp-report h3 { color: #FFFFFF; } }
+            
+/* ---- AI report card ---- */
+    .dp-ai-card{
+        position:relative;
+        background:linear-gradient(180deg, rgba(10,15,31,0.95), rgba(5,7,13,0.98));
+        border:1px solid rgba(0,200,255,.3);
+        border-radius:22px; padding:26px 28px;
+        box-shadow: 0 30px 80px -30px rgba(0,200,255,.25);
+    }
+    .dp-ai-head{ display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+    .dp-ai-head .ic{
+        width:38px; height:38px; border-radius:12px;
+        background:linear-gradient(135deg,var(--dp-cyan),var(--dp-blue));
+        display:flex; align-items:center; justify-content:center; color:#001019;
+        box-shadow:0 0 22px rgba(0,200,255,.4);
+    }
+    .dp-ai-head h3{ margin:0; color:#fff; font-family:'Space Grotesk',sans-serif; font-size:20px;}
+    .dp-ai-body{ color:#D5E4F5; font-size:14.5px; line-height:1.75;}
+    .dp-cursor{ display:inline-block; width:8px; height:18px; background:var(--dp-cyan);
+        margin-left:2px; vertical-align:-3px; animation: blink 1s infinite;
+        box-shadow:0 0 10px var(--dp-cyan);}
+    @keyframes blink{ 50%{ opacity:0 } }
 
 /* ---------- Section title ---------- */
     .dp-section-title {
@@ -590,7 +612,7 @@ if st.session_state.get("dp_analyzed"):
 
     # ===== AI CAREER REPORT =====
     st.markdown(
-        f'<div class="dp-section-title"><span class="ico">{SVG["ai"]}</span>AI Improvement Plan</div>',
+        f'<div class="dp-section-title"><span class="ico">{SVG["ai"]}</span>AI Improvement Plan<span class="sh-sub">Personalised, in-depth analysis</span></div>',
         unsafe_allow_html=True,
     )
 
@@ -607,6 +629,23 @@ if st.session_state.get("dp_analyzed"):
 # ==========================================================
 if "skill_feedback" in st.session_state:
     feedback = st.session_state["skill_feedback"]
+
+    st.markdown(
+        """
+        <div class="dp-ai-card">
+            <div class="dp-ai-head">
+                <div class="ic">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L14 8l6 2-6 2-2 6-2-6-6-2 6-2z"/>
+                    </svg>
+                </div>
+                <h3>AI Skill Intelligence</h3>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.markdown('<div class="dp-report">', unsafe_allow_html=True)
     report_slot = st.empty()
