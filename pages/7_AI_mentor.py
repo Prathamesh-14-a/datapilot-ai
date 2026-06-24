@@ -20,7 +20,7 @@ st.set_page_config(
     page_title="AI Mentor · DataPilot AI",
     page_icon="assets/mini_logo.png",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 if not is_authenticated():
