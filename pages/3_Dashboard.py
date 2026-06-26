@@ -70,11 +70,16 @@ def _format_lpa(value):
     return f"₹{float(value) / 100000:.1f} LPA"
 
 def _logo_b64():
-    for p in ["assets/logo.png", "static/logo.png", "logo.png"]:
+    for p in ["assets/mini_logo.png", "static/logo.png", "logo.png"]:
         if Path(p).exists():
             return base64.b64encode(Path(p).read_bytes()).decode()
     return ""
 
+def _logo_b64_():
+    for p in ["assets/logo.png", "static/logo.png", "logo.png"]:
+        if Path(p).exists():
+            return base64.b64encode(Path(p).read_bytes()).decode()
+    return ""
 
 # ─────────────────────────────────────────────────────────────
 # GLOBAL CSS — premium dark SaaS theme
@@ -312,8 +317,8 @@ st.markdown(
 # ─────────────────────────────────────────────────────────────
 # HERO
 # ─────────────────────────────────────────────────────────────
-logo_b64 = _logo_b64()
-logo_html = f'<div class="dp-hero-logo"><img src="data:image/png;base64,{logo_b64}"/></div>' if logo_b64 else ""
+logo_b64_ = _logo_b64_()
+logo_html = f'<div class="dp-hero-logo"><img src="data:image/png;base64,{logo_b64_}"/></div>' if logo_b64_ else ""
 
 st.markdown(
     f"""
@@ -614,6 +619,7 @@ with history_tabs[4]:
 # ─────────────────────────────────────────────────────────────
 # FOOTER
 # ─────────────────────────────────────────────────────────────
+logo_b64 = _logo_b64()
 footer_logo = f'<img src="data:image/png;base64,{logo_b64}"/>' if logo_b64 else ""
 st.markdown(
     f"""
