@@ -9,8 +9,8 @@ from components.sidebar import show_sidebar
 
 
 st.set_page_config(
-    page_title="DataPilot AI — Career Match Engine",
-    page_icon="🚀",
+    page_title="Career Match Engine · DataPilot AI",
+    page_icon="assests/mini_logo.png",
     layout="wide",
 )
 

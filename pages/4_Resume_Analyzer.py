@@ -1122,7 +1122,7 @@ if "analysis_result" in st.session_state:
             """,
             unsafe_allow_html=True,
         )
-    # ===== AI CAREER REPORT =====
+    # ===== AI CAREER REPORT ===== 
     st.markdown(
         f'<div class="dp-section-title"><span class="ico">{SVG["ai"]}</span>AI Career Report<span class="sub">Personalised, in-depth analysis</span></div>',
         unsafe_allow_html=True,
@@ -1159,24 +1159,25 @@ if "resume_feedback" in st.session_state:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="dp-report">', unsafe_allow_html=True)
     report_slot = st.empty()
 
     if st.session_state.pop("_dp_stream", False):
-        # Streaming reveal for fresh generations
         buf = ""
         for ch in feedback:
             buf += ch
             if len(buf) % 6 == 0:
-                report_slot.markdown(buf + "▍")
+                report_slot.markdown(
+                    f'<div class="dp-report">{buf}▍</div>',
+                    unsafe_allow_html=True
+                )
                 time.sleep(0.005)
-        report_slot.markdown(feedback)
-    else:
-        report_slot.markdown(feedback)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    report_slot.markdown(
+        f'<div class="dp-report">{feedback}</div>',
+        unsafe_allow_html=True
+)
 
-    act1, act2, act3 = st.columns([1, 1, 1])
+    act1, act2 = st.columns([1, 1])
     with act1:
         b64 = base64.b64encode(feedback.encode()).decode()
         st.markdown(
@@ -1190,10 +1191,8 @@ if "resume_feedback" in st.session_state:
             """,
             unsafe_allow_html=True,
         )
+    
     with act2:
-        with st.expander("Expand Report", expanded=False):
-            st.markdown(feedback)
-    with act3:
         pdf_data = text_to_pdf(feedback)
         st.download_button(
             label="Download PDF",

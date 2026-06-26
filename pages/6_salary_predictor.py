@@ -1069,7 +1069,7 @@ if "salary_feedback" in st.session_state:
             st.markdown(feedback_text)
 
     # Actions
-    a1, a2, a3 = st.columns([1, 1, 1.2])
+    a1, a2 = st.columns([1, 1])
     with a1:
         b64 = base64.b64encode(feedback.encode()).decode()
         st.markdown(
@@ -1083,10 +1083,8 @@ if "salary_feedback" in st.session_state:
             """,
             unsafe_allow_html=True,
         )
+    
     with a2:
-        with st.expander("Expand Full Report"):
-            st.markdown(feedback_text)
-    with a3:
         pdf_data = text_to_pdf(st.session_state["salary_feedback"])
         st.download_button(
             label="↓  Download PDF Report",

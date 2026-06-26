@@ -647,24 +647,25 @@ if "skill_feedback" in st.session_state:
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="dp-report">', unsafe_allow_html=True)
     report_slot = st.empty()
 
     if st.session_state.pop("_dp_stream", False):
-        # Streaming reveal for fresh generations
-        buf = ""
-        for ch in feedback:
-            buf += ch
-            if len(buf) % 6 == 0:
-                report_slot.markdown(buf + "▍")
-                time.sleep(0.005)
-        report_slot.markdown(feedback)
-    else:
-        report_slot.markdown(feedback)
+          buf = ""
+          for ch in feedback:
+              buf += ch
+              if len(buf) % 6 == 0:
+                  report_slot.markdown(
+                      f'<div class="dp-report">{buf}▍</div>',
+                      unsafe_allow_html=True
+                  )
+                  time.sleep(0.005)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    report_slot.markdown(
+          f'<div class="dp-report">{feedback}</div>',
+          unsafe_allow_html=True
+      )
 
-    act1, act2, act3 = st.columns([1, 1, 1])
+    act1, act2 = st.columns([1, 1])
     with act1:
         b64 = base64.b64encode(feedback.encode()).decode()
         st.markdown(
@@ -678,10 +679,8 @@ if "skill_feedback" in st.session_state:
             """,
             unsafe_allow_html=True,
         )
+  
     with act2:
-        with st.expander("Expand Report", expanded=False):
-            st.markdown(feedback)
-    with act3:
         pdf_data = text_to_pdf(feedback)
         st.download_button(
             label="Download PDF",
