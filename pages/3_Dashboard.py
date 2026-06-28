@@ -370,7 +370,7 @@ st.markdown(
       align-self: center;
     }
     .dp-hero-logo img{
-      height: 48px !important;
+      height: 100px !important;
     }
     .dp-hero-text{
       width: 100% !important;

@@ -72,9 +72,17 @@
 .dp-report {
   padding: clamp(1rem, 2.5vw, 1.4rem) clamp(1rem, 2.5vw, 1.6rem);
   border-radius: clamp(12px, 2vw, 18px);
-  font-size: clamp(0.875rem, 1.8vw, 0.9375rem);
-  line-height: 1.75;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  line-height: 1.8;
 }
+
+.dp-report h1 { font-size: clamp(1.5rem, 4vw, 1.875rem); margin: 1.2rem 0 .6rem; }
+.dp-report h2 { font-size: clamp(1.25rem, 3vw, 1.5rem);  margin: 1rem 0 .5rem; }
+.dp-report h3 { font-size: clamp(1.1rem, 2.5vw, 1.25rem); margin: .875rem 0 .4rem; }
+.dp-report p  { font-size: clamp(1rem, 2.5vw, 1.125rem);  margin: 0 0 .875rem; }
+.dp-report li { font-size: clamp(1rem, 2.5vw, 1.125rem);  margin-bottom: .45rem; }
+.dp-report ul,
+.dp-report ol { padding-left: 1.4rem; margin: .5rem 0 .875rem; }
 
 .dp-ai-card {
   padding: clamp(1rem, 2.5vw, 1.625rem) clamp(1rem, 2.5vw, 1.75rem);

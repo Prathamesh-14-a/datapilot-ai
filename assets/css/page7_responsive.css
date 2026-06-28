@@ -247,28 +247,46 @@
     height: 28px !important;
   }
 
-  /* User message: maintain right alignment */
-  [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] {
-    margin-left: auto !important;
+[data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] {
+    background: linear-gradient(135deg, #1E3A5F, #1a3a6b) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(0, 200, 255, 0.35) !important;
+    box-shadow: 0 4px 24px rgba(0, 200, 255, 0.15) !important;
+}
+
+  /* Assistant message bubble — black background */
+  [data-testid="stChatMessage"]:has(img[alt="assistant"]) [data-testid="stChatMessageContent"],
+  div.stChatMessage.st-emotion-cache-assistant [data-testid="stChatMessageContent"] {
+      background: #0a0a0a !important;
+      color: #E2E8F0 !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+      backdrop-filter: blur(14px);
   }
 
-  /* ---- Chat input dock ---- */
+  /* Chat input typing box — black background */
   [data-testid="stChatInput"] {
-    border-radius: 14px !important;
-    margin: 0 0.5rem !important;
+      background: #000000 !important;
+      border: 1px solid rgba(0, 200, 255, 0.35) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 0 30px rgba(0, 200, 255, 0.12) !important;
   }
 
+    /* Textarea inside chat input */
   [data-testid="stChatInput"] textarea {
-    font-size: 0.9rem !important;
-    min-height: 44px !important;
-    padding: 0.65rem 0.875rem !important;
+      background: #000000 !important;
+      color: #E2E8F0 !important;
+      caret-color: #00C8FF !important;
   }
 
-  [data-testid="stBottomBlockContainer"] {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
-    padding-bottom: 0.75rem !important;
-  }
+[data-testid="stBottomBlockContainer"] {
+    background: linear-gradient(180deg, 
+        rgba(2, 6, 23, 0.0) 0%,
+        rgba(2, 6, 23, 0.85) 30%,
+        rgba(7, 17, 42, 0.98) 100%
+    ) !important;
+    backdrop-filter: blur(12px) !important;
+}
 
   /* ---- Thinking indicator ---- */
   .dp-thinking {
@@ -649,4 +667,84 @@ section[data-testid="stSidebar"] div[style*="font-size:.7rem"] {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ==========================================================================
+   CHAT FONT COLOR — HIGH SPECIFICITY OVERRIDE
+   Fixes mobile grey text issue
+   ========================================================================== */
+
+/* User message — every possible child element */
+[data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] *,
+[data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] p *,
+[data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] div *,
+[data-testid="stChatMessage"]:has(img[alt="user"]) .stMarkdown *,
+[data-testid="stChatMessage"]:has(img[alt="user"]) .stMarkdown p {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* Assistant message — every possible child element */
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) [data-testid="stChatMessageContent"] *,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) [data-testid="stChatMessageContent"] p *,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) [data-testid="stChatMessageContent"] div *,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown *,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown p {
+    color: #E2E8F0 !important;
+    -webkit-text-fill-color: #E2E8F0 !important;
+}
+
+/* Headings inside assistant response */
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown h1,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown h2,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown h3,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown h4 {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* Bold text inside assistant response */
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown strong,
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown b {
+    color: #7FE3FF !important;
+    -webkit-text-fill-color: #7FE3FF !important;
+}
+
+/* Code inside assistant response */
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) .stMarkdown code {
+    color: #00C8FF !important;
+    -webkit-text-fill-color: #00C8FF !important;
+    background: rgba(0, 200, 255, 0.10) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+}
+/* ==========================================================================
+   CHAT TEXT — NUCLEAR OVERRIDE
+   Must be at the very bottom of the file to win specificity
+   ========================================================================== */
+
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] {
+    color: #E2E8F0 !important;
+    -webkit-text-fill-color: #E2E8F0 !important;
+}
+
+html body .stApp [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] p,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] span,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] div,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] li,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] ul,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] ol,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] strong,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] em,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] h1,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] h2,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] h3,
+html body .stApp [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] a {
+    color: #E2E8F0 !important;
+    -webkit-text-fill-color: #E2E8F0 !important;
 }

@@ -234,7 +234,7 @@ html, body, [class*="css"], [data-testid="stAppViewContainer"], .stApp {
   #dp-stars{width:100vw !important;max-width:100vw !important;overflow:hidden !important;}
 
   .dp-brand{justify-content:center !important;margin-left:0 !important;margin-bottom:28px !important;}
-  .dp-brand img{max-width:72px !important;height:auto !important;}
+  .dp-brand img{max-width:400px !important;height:auto !important;}
 
   .dp-headline{font-size:34px !important;text-align:center !important;margin-bottom:16px !important;letter-spacing:-0.02em !important;}
 

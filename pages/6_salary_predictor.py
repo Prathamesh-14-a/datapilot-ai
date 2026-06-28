@@ -1079,7 +1079,7 @@ if "salary_feedback" in st.session_state:
     # Actions
     a1, a2 = st.columns([1, 1])
     with a1:
-        b64 = base64.b64encode(feedback.encode()).decode()
+        b64 = base64.b64encode(feedback_text.encode()).decode()
         st.markdown(
             f"""
             <a href="data:text/plain;base64,{b64}" download="AI_skill_Report.txt"

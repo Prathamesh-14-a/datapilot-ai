@@ -463,14 +463,20 @@ def _render_toggle(collapsed: bool) -> None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 def _render_mobile_fab(collapsed: bool) -> None:
-    """Floating menu button + dim overlay for the mobile drawer.
-    Hidden entirely on desktop via CSS (see _inject_css)."""
     st.markdown('<div class="dp-mobile-overlay"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
-    if st.button("☰", key="dp_mobile_fab", help="Open menu"):
-        st.session_state["dp_sidebar_collapsed"] = False
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    # Add a close button inside the overlay area
+    if not collapsed:
+        st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
+        if st.button("✕", key="dp_mobile_close", help="Close menu"):
+            st.session_state["dp_sidebar_collapsed"] = True
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
+        if st.button("☰", key="dp_mobile_fab", help="Open menu"):
+            st.session_state["dp_sidebar_collapsed"] = False
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _render_header(logo_b64: str) -> None:
@@ -531,8 +537,9 @@ def _nav_item(label: str, icon_key: str, key: str, target_page: str,
     btn_label = label if not collapsed else "\u00A0"
     if st.button(btn_label, key=key, use_container_width=True):
         st.session_state["_active_nav"] = label
+        st.session_state["dp_sidebar_collapsed"] = True
         st.switch_page(target_page)
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)   
 
 
 def _render_section(title: str, items: list, collapsed: bool,
@@ -585,7 +592,14 @@ def show_sidebar() -> None:
     collapsed = st.session_state["dp_sidebar_collapsed"]
 
     _inject_css(collapsed)
-    _render_mobile_fab(collapsed)          # <-- NEW, must be outside `with st.sidebar:`
+
+    # Add-on mobile CSS
+   
+    _mob = Path("assets/css/sidebar_responsive.css")
+    if _mob.exists():
+        st.markdown(f"<style>{_mob.read_text()}</style>", unsafe_allow_html=True)
+
+    _render_mobile_fab(collapsed)         
 
     with st.sidebar:
         _render_toggle(collapsed)

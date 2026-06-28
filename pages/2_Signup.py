@@ -347,7 +347,7 @@ st.markdown(
         .dp-brand::before{width:280px !important;height:280px !important;top:-80px !important;left:50% !important;transform:translateX(-50%) !important;}
 
         .dp-logo{justify-content:center !important;margin-bottom:24px !important;}
-        .dp-logo img{max-width:90px !important;height:auto !important;}
+        .dp-logo img{max-width:400px !important;height:auto !important;}
 
         .dp-badge{font-size:12px !important;padding:6px 14px !important;margin-bottom:16px !important;display:inline-flex !important;}
 

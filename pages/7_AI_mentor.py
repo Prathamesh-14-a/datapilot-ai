@@ -250,6 +250,18 @@ st.markdown(
         transition: all .25s ease;
         box-shadow: 0 0 0 rgba(0,200,255,0);
     }
+    /* Previous chat history buttons — distinct background */
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button {
+        background: linear-gradient(135deg, rgba(7,17,42,0.8), rgba(14,30,60,0.6)) !important;
+        border: 1px solid rgba(148, 184, 255, 0.10) !important;
+        color: #94A3B8 !important;
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
+        background: rgba(0, 200, 255, 0.08) !important;
+        border-color: rgba(0, 200, 255, 0.30) !important;
+        color: #E2E8F0 !important;
+    }
     section[data-testid="stSidebar"] .stButton>button:hover{
         border-color:var(--dp-primary) !important;
         box-shadow:0 0 18px rgba(0,200,255,0.35);
@@ -497,6 +509,18 @@ st.markdown(
         border-color: var(--dp-primary) !important;
         box-shadow: 0 0 0 2px rgba(0,200,255,0.2) !important;
     }
+
+    [data-testid="stChatMessageContent"],
+    [data-testid="stChatMessageContent"] *  {
+        color: #E2E8F0 !important;
+        -webkit-text-fill-color: #E2E8F0 !important;
+    }
+
+    [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"],
+    [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] * {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -581,7 +605,7 @@ def _render_mentor_sidebar(conversations):
                 st.rerun()
             if ts:
                 st.markdown(
-                    f'<div style="font-size:.7rem;color:#64748B;margin:-6px 4px 8px 6px;">{html.escape(ts)}</div>',
+                    f'<div style="font-size:.7rem;color:#ADD8E6;margin:-6px 4px 8px 6px;">{html.escape(ts)}</div>',
                     unsafe_allow_html=True,
                 )
 

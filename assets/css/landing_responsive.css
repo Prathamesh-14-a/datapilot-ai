@@ -1,0 +1,721 @@
+/* ==========================================================================
+   DataPilot AI — Landing Page · Responsive CSS Add-On
+   Append after existing stylesheets. Desktop (1200px+) untouched.
+   Breakpoints: 1200px · 992px · 768px · 576px · 420px
+   ========================================================================== */
+
+/* ==========================================================================
+   FLUID BASE — clamp() values that scale across all breakpoints.
+   These do not override desktop max values; they only tighten the floor.
+   ========================================================================== */
+
+.dp-h1 {
+  font-size: clamp(1.75rem, 8vw, 4.75rem);
+  line-height: 1.08;
+}
+
+.dp-h2 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+.dp-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem);
+  line-height: 1.65;
+}
+
+.dp-cta-box h2 {
+  font-size: clamp(1.4rem, 5vw, 2.75rem);
+}
+
+.dp-cta-box p {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.dp-h2-sub {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+.dp-eyebrow {
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+}
+
+.dp-card h3 {
+  font-size: clamp(1rem, 2.5vw, 1.1875rem);
+}
+
+.dp-card p {
+  font-size: clamp(0.8rem, 1.8vw, 0.90625rem);
+}
+
+.dp-card li {
+  font-size: clamp(0.78rem, 1.7vw, 0.84375rem);
+}
+
+.dp-step h4 {
+  font-size: clamp(1rem, 3vw, 1.125rem);
+}
+
+.dp-step p {
+  font-size: clamp(0.8rem, 1.8vw, 0.84375rem);
+}
+
+.dp-nav-badge {
+  font-size: clamp(0.6rem, 1.3vw, 0.6875rem);
+}
+
+.dp-chip {
+  font-size: clamp(0.78rem, 1.8vw, 0.875rem);
+}
+
+.dp-meta {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+}
+
+.dp-pill {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+}
+
+/* ==========================================================================
+   1200px — Large Tablet / Small Laptop
+   ========================================================================== */
+@media (max-width: 1200px) {
+
+  /* Wrap: tighten horizontal padding */
+  .dp-wrap {
+    padding: 28px 4vw 60px;
+  }
+
+  /* Feature grid: 2 columns at this width */
+  .dp-grid3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  /* Cards: tighten padding */
+  .dp-card {
+    padding: clamp(1.1rem, 2.5vw, 1.75rem);
+  }
+
+  /* Steps: tighten */
+  .dp-step {
+    padding: clamp(1.1rem, 2.5vw, 1.625rem);
+  }
+
+  /* CTA box */
+  .dp-cta-box {
+    padding: 44px 28px;
+  }
+
+  /* Hero logo: slightly smaller */
+  .dp-hero-logo img {
+    height: 110px;
+  }
+}
+
+/* ==========================================================================
+   992px — Tablet
+   ========================================================================== */
+@media (max-width: 992px) {
+
+  /* Wrap */
+  .dp-wrap {
+    padding: 22px 3vw 50px;
+  }
+
+  /* Nav: tighten */
+  .dp-nav {
+    padding: 12px 16px;
+    margin-bottom: 44px;
+    border-radius: 14px;
+  }
+
+  .dp-nav-logo img {
+    height: 30px;
+  }
+
+  /* Hero: reduce vertical padding */
+  .dp-hero {
+    padding: 28px 0 56px;
+  }
+
+  .dp-hero-logo {
+    margin-bottom: 20px;
+    margin-top: -40px;
+  }
+
+  .dp-hero-logo img {
+    height: 100px;
+  }
+
+  /* Section spacing */
+  .dp-section {
+    padding: 56px 0;
+  }
+
+  /* Feature grid: 2 columns */
+  .dp-grid3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Steps: 2 columns on tablet */
+  .dp-steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Chips */
+  .dp-chips {
+    gap: 10px;
+  }
+
+  .dp-chip {
+    padding: 10px 16px;
+  }
+
+  /* CTA box */
+  .dp-cta-box {
+    padding: 40px 24px;
+    border-radius: 22px;
+  }
+
+  /* Footer */
+  .dp-footer {
+    margin-top: 56px;
+  }
+
+  /* Aurora orbs: scale down slightly */
+  .dp-orb.o1 { width: 380px; height: 380px; }
+  .dp-orb.o2 { width: 340px; height: 340px; }
+  .dp-orb.o3 { width: 400px; height: 400px; }
+}
+
+/* ==========================================================================
+   768px — Large Phone / Small Tablet Portrait
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Prevent any horizontal overflow */
+  .stApp, body {
+    overflow-x: hidden;
+  }
+
+  /* Block container: Streamlit default override */
+  .block-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Wrap */
+  .dp-wrap {
+    padding: 16px 0 40px;
+  }
+
+  /* Nav: stack on very small or stay row but compress */
+  .dp-nav {
+    padding: 10px 14px;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dp-nav-logo {
+    gap: 8px;
+  }
+
+  .dp-nav-logo img {
+    height: 26px;
+  }
+
+  .dp-nav-badge {
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
+  /* Hero: compact */
+  .dp-hero {
+    padding: 20px 0 40px;
+  }
+
+  .dp-hero-logo {
+    margin-bottom: 16px;
+    margin-top: -24px;
+  }
+
+  .dp-hero-logo img {
+    height: 82px;
+  }
+
+  /* Hero pill */
+  .dp-pill {
+    padding: 6px 12px;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  /* Hero sub: full width */
+  .dp-sub {
+    max-width: 100%;
+    padding: 0 4px;
+  }
+
+  /* CTA meta row: tighter gap */
+  .dp-meta {
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  /* Feature grid: 1 column */
+  .dp-grid3 {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Cards */
+  .dp-card {
+    padding: 1.1rem 1.1rem;
+    border-radius: 16px;
+  }
+
+  .dp-card .ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+  }
+
+  /* Steps: 1 column */
+  .dp-steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dp-step {
+    padding: 1.1rem 1.1rem;
+    border-radius: 14px;
+  }
+
+  .dp-step .num {
+    font-size: 0.65rem;
+    margin-bottom: 10px;
+  }
+
+  /* Section spacing */
+  .dp-section {
+    padding: 40px 0;
+  }
+
+  /* Section headings */
+  .dp-h2-sub {
+    max-width: 100%;
+    padding: 0 4px;
+    margin-bottom: 32px;
+  }
+
+  /* Chips: smaller padding */
+  .dp-chip {
+    padding: 9px 14px;
+    border-radius: 999px;
+  }
+
+  .dp-chips {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  /* CTA box */
+  .dp-cta-box {
+    padding: 32px 16px;
+    border-radius: 18px;
+  }
+
+  /* CTA buttons — Streamlit 4-column layout becomes too narrow.
+     Override all column children to full-width stack */
+  [data-testid="column"] {
+    min-width: 0 !important;
+  }
+
+  /* The two CTA button columns (c2, c3) need to be full width.
+     Since Streamlit flex layout can't be directly addressed by nth-child
+     reliably, we make all stButton children full-width and ensure height. */
+  div.stButton > button {
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: clamp(0.875rem, 3vw, 0.9375rem) !important;
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Footer: stack vertically */
+  .dp-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 28px 0 20px;
+    margin-top: 40px;
+  }
+
+  .dp-footer img {
+    height: 24px;
+  }
+
+  .dp-foot-brand {
+    gap: 10px;
+  }
+
+  /* Aurora orbs: reduce on mobile for performance */
+  .dp-orb.o1 { width: 260px; height: 260px; top: -80px; left: -80px; opacity: 0.3; }
+  .dp-orb.o2 { width: 220px; height: 220px; opacity: 0.3; }
+  .dp-orb.o3 { width: 280px; height: 280px; opacity: 0.25; }
+
+  /* Grid overlay: slightly less visible on mobile */
+  .dp-grid {
+    opacity: 0.22;
+  }
+
+  /* SVG: never overflow */
+  svg {
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  /* Reveal animation: reduce transform distance on mobile */
+  .dp-reveal {
+    transform: translateY(12px);
+  }
+
+  @keyframes dp-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ==========================================================================
+   576px — Phone
+   ========================================================================== */
+@media (max-width: 576px) {
+
+  /* Wrap: zero horizontal — let block-container handle it */
+  .dp-wrap {
+    padding: 12px 0 32px;
+  }
+
+  /* Nav */
+  .dp-nav {
+    padding: 9px 12px;
+    margin-bottom: 24px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+
+  .dp-nav-logo img {
+    height: 22px;
+  }
+
+  /* Hero: minimum comfortable */
+  .dp-hero {
+    padding: 14px 0 32px;
+  }
+
+  .dp-hero-logo {
+    margin-top: -16px;
+    margin-bottom: 12px;
+  }
+
+  .dp-hero-logo img {
+    height: 68px;
+  }
+
+  /* Hero h1: prevent line-break issues on tiny screens */
+  .dp-h1 {
+    font-size: clamp(1.5rem, 9vw, 2.5rem);
+    letter-spacing: -0.025em;
+  }
+
+  /* Pill */
+  .dp-pill {
+    padding: 5px 10px;
+    font-size: 0.68rem;
+    margin-bottom: 12px;
+  }
+
+  .dp-pill .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Meta dots row */
+  .dp-meta {
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Section */
+  .dp-section {
+    padding: 32px 0;
+  }
+
+  /* Cards: tighter */
+  .dp-card {
+    padding: 0.9rem 0.9rem;
+    border-radius: 14px;
+  }
+
+  .dp-card .ico {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .dp-card ul {
+    margin-top: 2px;
+  }
+
+  .dp-card li {
+    padding: 5px 0 5px 18px;
+  }
+
+  .dp-card li::before {
+    width: 10px;
+    top: 11px;
+  }
+
+  /* Steps */
+  .dp-step {
+    padding: 0.9rem 0.9rem;
+    border-radius: 12px;
+  }
+
+  /* Chips */
+  .dp-chip {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
+  /* Section subtitles */
+  .dp-h2-sub {
+    margin-bottom: 24px;
+  }
+
+  /* CTA box */
+  .dp-cta-box {
+    padding: 24px 12px;
+    border-radius: 16px;
+  }
+
+  /* Buttons */
+  div.stButton > button {
+    font-size: 0.875rem !important;
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Footer */
+  .dp-footer {
+    font-size: 0.75rem;
+  }
+
+  .dp-foot-brand span {
+    font-size: 0.78rem;
+  }
+}
+
+/* ==========================================================================
+   420px — Small Phone (320–420px)
+   ========================================================================== */
+@media (max-width: 420px) {
+
+  /* Block container override */
+  .block-container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Nav: minimal */
+  .dp-nav {
+    padding: 8px 10px;
+    margin-bottom: 20px;
+  }
+
+  .dp-nav-logo img {
+    height: 20px;
+  }
+
+  .dp-nav-badge {
+    font-size: 0.58rem;
+    padding: 2px 7px;
+  }
+
+  /* Hero logo */
+  .dp-hero-logo img {
+    height: 58px;
+  }
+
+  /* Hero h1: minimum legible */
+  .dp-h1 {
+    font-size: clamp(1.35rem, 10vw, 2rem);
+  }
+
+  /* Sub */
+  .dp-sub {
+    font-size: 0.8125rem;
+  }
+
+  /* Pill */
+  .dp-pill {
+    font-size: 0.62rem;
+    padding: 4px 9px;
+  }
+
+  /* Meta */
+  .dp-meta span {
+    font-size: 0.68rem;
+  }
+
+  /* Cards */
+  .dp-card {
+    padding: 0.8rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  .dp-card h3 {
+    font-size: 0.9375rem;
+    margin-bottom: 5px;
+  }
+
+  .dp-card .ico {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    margin-bottom: 8px;
+  }
+
+  /* Steps */
+  .dp-step {
+    padding: 0.8rem 0.875rem;
+  }
+
+  /* Chips */
+  .dp-chip {
+    padding: 7px 11px;
+    font-size: 0.72rem;
+  }
+
+  /* CTA */
+  .dp-cta-box {
+    padding: 20px 10px;
+    border-radius: 14px;
+  }
+
+  /* Buttons: absolute minimum comfortable */
+  div.stButton > button {
+    font-size: 0.8125rem !important;
+    min-height: 48px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Aurora: minimal on small phones */
+  .dp-orb.o1 { width: 180px; height: 180px; opacity: 0.22; }
+  .dp-orb.o2 { width: 160px; height: 160px; opacity: 0.22; }
+  .dp-orb.o3 { width: 200px; height: 200px; opacity: 0.18; }
+
+  /* Section spacing: minimum */
+  .dp-section {
+    padding: 24px 0;
+  }
+
+  /* Footer */
+  .dp-footer {
+    margin-top: 28px;
+    padding: 22px 0 16px;
+  }
+}
+
+/* ==========================================================================
+   OVERFLOW PREVENTION — applies at all widths
+   ========================================================================== */
+
+/* Lock horizontal scroll at root */
+html, .stApp {
+  overflow-x: hidden;
+}
+
+/* All Streamlit columns: never break layout */
+[data-testid="column"] {
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+/* SVG: never trigger horizontal scroll */
+svg {
+  max-width: 100%;
+}
+
+/* Card and step: box model safe */
+.dp-card, .dp-step, .dp-cta-box, .dp-chip {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Grid containers: no overflow */
+.dp-grid3, .dp-steps, .dp-chips {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Footer: no clip */
+.dp-footer {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   TOUCH OPTIMIZATION — applies at mobile widths
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Minimum 48px tap target on all buttons */
+  div.stButton > button {
+    min-height: 48px !important;
+    touch-action: manipulation;
+  }
+
+  /* Chip tap area */
+  .dp-chip {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .dp-orb,
+  .dp-logo,
+  .dp-logo-mark,
+  .dp-reveal,
+  .dp-scroll,
+  .dp-headline,
+  .dp-card,
+  .dp-step,
+  .dp-chip {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

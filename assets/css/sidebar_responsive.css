@@ -1,0 +1,311 @@
+/* ==========================================================================
+   DataPilot AI — Sidebar Mobile Add-On CSS
+   Paste this AFTER the existing _inject_css() st.markdown block.
+   Desktop (>768px) is completely untouched — every rule is inside
+   @media (max-width: 768px) except the base fluid tokens.
+   ========================================================================== */
+
+/* ==========================================================================
+   MOBILE DRAWER — base overrides
+   The existing CSS already injects width/transform via Python f-strings.
+   These rules reinforce and polish the mobile experience.
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Sidebar shell: ensure full-height fixed drawer */
+  section[data-testid="stSidebar"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100dvh !important;       /* dvh covers mobile browser chrome */
+    z-index: 999998 !important;
+    width: clamp(260px, 82vw, 300px) !important;
+    min-width: clamp(260px, 82vw, 300px) !important;
+    max-width: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    /* Premium cubic-bezier slide */
+    transition:
+      transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.32s ease !important;
+    /* Reinforce glassmorphism on mobile */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    /* Prevent sidebar from appearing above the overlay accidentally */
+    isolation: isolate;
+  }
+
+  /* Scrollbar: minimal on mobile */
+  section[data-testid="stSidebar"]::-webkit-scrollbar {
+    width: 3px;
+  }
+  section[data-testid="stSidebar"]::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  section[data-testid="stSidebar"]::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.25);
+    border-radius: 3px;
+  }
+
+  /* Inner padding: more breathing room on mobile */
+  section[data-testid="stSidebar"] > div:first-child {
+    padding-top: 0.5rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* ---- Toggle button: hide on mobile (FAB replaces it) ---- */
+  .dp-toggle-wrap {
+    display: none !important;
+  }
+
+  /* ---- FAB (hamburger): always visible when sidebar is closed ---- */
+  .dp-mobile-fab-wrap {
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
+    z-index: 999999 !important;
+  }
+
+  .dp-mobile-fab-wrap .stButton > button {
+    width: 46px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    background: rgba(10, 15, 28, 0.88) !important;
+    border: 1px solid rgba(56, 189, 248, 0.38) !important;
+    color: #e2e8f0 !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    /* Glow effect */
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(56, 189, 248, 0.22) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    /* Smooth entry animation */
+    animation: dp-fab-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  @keyframes dp-fab-in {
+    from { opacity: 0; transform: scale(0.8) translateY(-4px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .dp-mobile-fab-wrap .stButton > button:active {
+    transform: scale(0.94) !important;
+    transition: transform 0.1s ease !important;
+  }
+
+  /* ---- Overlay: dim + blur background when sidebar is open ---- */
+  .dp-mobile-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(2, 6, 18, 0.65) !important;
+    backdrop-filter: blur(3px) !important;
+    -webkit-backdrop-filter: blur(3px) !important;
+    z-index: 999996 !important;
+    /* Fade in */
+    animation: dp-overlay-in 0.28s ease both;
+  }
+
+  @keyframes dp-overlay-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ---- Header: compact on mobile ---- */
+  .dp-side-header {
+    margin: 10px 10px 12px !important;
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .dp-side-logo img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .dp-side-brand {
+    font-size: 15px !important;
+  }
+
+  .dp-side-tag {
+    font-size: 10px !important;
+  }
+
+  /* ---- Profile card: touch-friendly ---- */
+  .dp-side-profile {
+    margin: 0 10px 12px !important;
+    padding: 11px 12px !important;
+    border-radius: 12px !important;
+    min-height: 54px;
+  }
+
+  .dp-side-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 12px !important;
+  }
+
+  .dp-side-username {
+    font-size: 13px !important;
+    max-width: 170px !important;
+  }
+
+  .dp-side-status {
+    font-size: 10.5px !important;
+  }
+
+  /* ---- Section labels ---- */
+  .dp-side-label {
+    margin: 12px 16px 6px !important;
+    font-size: 10px !important;
+    letter-spacing: 1.4px !important;
+  }
+
+  /* ---- Nav buttons: larger tap targets ---- */
+  section[data-testid="stSidebar"] .stButton {
+    margin: 2px 10px !important;
+  }
+
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 46px !important;
+    font-size: 13px !important;
+    border-radius: 11px !important;
+    padding: 10px 12px 10px 44px !important;
+  }
+
+  /* Active nav: reinforce on mobile */
+  .dp-nav-active .stButton > button {
+    min-height: 46px !important;
+  }
+
+  /* ---- Nav icon: position stable on mobile ---- */
+  .dp-nav-icon {
+    left: 26px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .dp-nav-row:hover .dp-nav-icon {
+    transform: translateY(-50%) scale(1.1) !important;
+  }
+
+  /* ---- Logout ---- */
+  .dp-logout .stButton > button {
+    min-height: 46px !important;
+  }
+
+  /* ---- Divider ---- */
+  .dp-side-divider {
+    margin: 12px 14px !important;
+  }
+
+  /* ---- Footer ---- */
+  .dp-side-foot {
+    margin: 14px 12px 12px !important;
+    padding: 9px 10px !important;
+    font-size: 10px !important;
+    border-radius: 9px !important;
+  }
+
+  /* ---- Main content: push right when sidebar open is NOT needed
+         because sidebar is fixed/overlaying, not pushing layout ---- */
+  .block-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* ---- Tooltip: disable on mobile (tap targets are sufficient) ---- */
+  .dp-nav-row[data-tip]::after {
+    display: none !important;
+  }
+
+  /* ---- Prevent body scroll when overlay is active ---- */
+  body:has(.dp-mobile-overlay) {
+    overflow: hidden !important;
+  }
+}
+
+/* ==========================================================================
+   SMALL PHONE — 480px and below
+   ========================================================================== */
+@media (max-width: 480px) {
+
+  /* Sidebar: slightly narrower on very small phones */
+  section[data-testid="stSidebar"] {
+    width: clamp(240px, 88vw, 280px) !important;
+    min-width: clamp(240px, 88vw, 280px) !important;
+  }
+
+  /* FAB: slightly smaller */
+  .dp-mobile-fab-wrap .stButton > button {
+    width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    font-size: 18px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Nav buttons: still comfortable */
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 44px !important;
+    font-size: 12.5px !important;
+  }
+
+  /* Header: tighter */
+  .dp-side-header {
+    margin: 8px 8px 10px !important;
+    padding: 12px 10px !important;
+  }
+
+  /* Profile: tighter */
+  .dp-side-profile {
+    margin: 0 8px 10px !important;
+    padding: 10px 10px !important;
+  }
+}
+
+/* ==========================================================================
+   TOUCH — applies to any pointer: coarse device (phones, tablets)
+   ========================================================================== */
+@media (pointer: coarse) {
+
+  /* All sidebar buttons: guaranteed minimum touch target */
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 44px !important;
+    touch-action: manipulation;
+  }
+
+  /* FAB */
+  .dp-mobile-fab-wrap .stButton > button {
+    touch-action: manipulation;
+  }
+
+  /* Remove hover transform on touch — avoids sticky hover state on iOS */
+  section[data-testid="stSidebar"] .stButton > button:hover {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  section[data-testid="stSidebar"] {
+    transition: none !important;
+  }
+
+  .dp-mobile-fab-wrap .stButton > button {
+    animation: none !important;
+  }
+
+  .dp-mobile-overlay {
+    animation: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

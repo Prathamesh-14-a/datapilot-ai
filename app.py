@@ -408,6 +408,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+#mobile responsive css
+_responsive_css = Path("assets/css/landing_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 #---------------------------------------------
 # JS
 #---------------------------------------------
