@@ -212,6 +212,10 @@ st.markdown(
     #MainMenu, footer, header {visibility:hidden;}
     .block-container{padding-top:1.2rem !important; padding-bottom:8rem !important; max-width:1400px;}
 
+    [data-testid="stStatusWidget"] {
+    display: none !important;
+}
+
     /* Sidebar (mentor) */
     section[data-testid="stSidebar"]{
         background:linear-gradient(180deg, rgba(2,6,23,0.95), rgba(7,17,42,0.95)) !important;
@@ -520,6 +524,29 @@ st.markdown(
     [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] * {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    /* ==========================================================
+        GLOBAL - Hide Streamlit default UI
+        ========================================================== */
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"],
+    [data-testid="collapsedControl"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"]{
+        display:none !important;
     }
     </style>
     """,

@@ -44,6 +44,10 @@ html, body, [class*="css"] {
     background: #000000 !important;
 }
 
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
+
 /* Aurora background */
 .dp-bg {
     position: fixed;
@@ -405,6 +409,29 @@ st.markdown("""
     0%   { background-position: 0% center; }
     100% { background-position: 200% center; }
 }
+
+/* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+  #MainMenu{
+      display:none !important;
+  }
+
+  footer{
+      display:none !important;
+  }
+
+  [data-testid="stSidebarNav"],
+  [data-testid="stSidebarNavItems"],
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarHeader"],
+  [data-testid="collapsedControl"],
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"]{
+      display:none !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 

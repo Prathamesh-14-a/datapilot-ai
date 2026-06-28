@@ -118,6 +118,11 @@ st.markdown(
     [data-testid="stToolbar"] {
         display: none !important;
     }
+    
+
+    [data-testid="stStatusWidget"] {
+    display: none !important;
+    }
 
     /* ---------- Glass primitives ---------- */
     .dp-glass {
@@ -587,6 +592,28 @@ st.markdown(
     header {
         height: 0px !important;
     }
+    /* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+        #MainMenu{
+            display:none !important;
+        }
+
+        footer{
+            display:none !important;
+        }
+
+        [data-testid="stSidebarNav"],
+        [data-testid="stSidebarNavItems"],
+        [data-testid="stSidebarNavSeparator"],
+        [data-testid="stSidebarHeader"],
+        [data-testid="collapsedControl"],
+        [data-testid="stToolbar"],
+        [data-testid="stDecoration"],
+        [data-testid="stStatusWidget"]{
+            display:none !important;
+        }
 
     
     </style>

@@ -93,6 +93,10 @@ html, body, [class*="css"], .stApp, .main, .block-container {
 .block-container { padding-top: 1.5rem !important; max-width: 1400px; position: relative; z-index: 1; }
 #MainMenu, footer, header { visibility: hidden; }
 
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
+
 /* ---------- HERO ---------- */
 .dp-hero {
   position: relative;
@@ -330,6 +334,29 @@ label, .stSelectbox label { color: var(--dp-text-dim) !important; font-weight: 6
 /* Fade in */
 @keyframes fadeUp { from{opacity:0; transform: translateY(14px);} to{opacity:1; transform:none;} }
 .dp-hero, .dp-card, .dp-footer, .dp-opp-card { animation: fadeUp .6s ease both; }
+
+/* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+  #MainMenu{
+      display:none !important;
+  }
+
+  footer{
+      display:none !important;
+  }
+
+  [data-testid="stSidebarNav"],
+  [data-testid="stSidebarNavItems"],
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarHeader"],
+  [data-testid="collapsedControl"],
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"]{
+      display:none !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 

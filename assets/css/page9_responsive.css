@@ -276,3 +276,43 @@ html, body, .stApp { overflow-x: hidden; }
   .dp-footer-brand .name { font-size: 14px; }
   .dp-footer .meta, .dp-footer .live { font-size: 11px; }
 }
+
+/* ==========================================================
+   MOBILE ONLY (768px and below)
+   Hide Streamlit default UI
+   ========================================================== */
+
+@media (max-width:768px){
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"]{
+        display:none !important;
+    }
+
+    [data-testid="collapsedControl"]{
+        display:none !important;
+    }
+
+    [data-testid="stToolbar"]{
+        display:none !important;
+    }
+
+    [data-testid="stDecoration"]{
+        display:none !important;
+    }
+
+    [data-testid="stStatusWidget"]{
+        display:none !important;
+    }
+
+}

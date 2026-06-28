@@ -108,7 +108,7 @@
 
   /* Hero logo: slightly smaller */
   .dp-hero-logo img {
-    height: 110px;
+    height: 200px;
   }
 }
 
@@ -244,7 +244,7 @@
   }
 
   .dp-hero-logo img {
-    height: 82px;
+    height: 100px;
   }
 
   /* Hero pill */
@@ -423,7 +423,7 @@
   }
 
   .dp-hero-logo img {
-    height: 68px;
+    height: 80px;
   }
 
   /* Hero h1: prevent line-break issues on tiny screens */
@@ -551,7 +551,7 @@
 
   /* Hero logo */
   .dp-hero-logo img {
-    height: 58px;
+    height: 90px;
   }
 
   /* Hero h1: minimum legible */
@@ -718,4 +718,44 @@ svg {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ==========================================================
+   MOBILE ONLY (768px and below)
+   Hide Streamlit default UI
+   ========================================================== */
+
+@media (max-width:768px){
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"]{
+        display:none !important;
+    }
+
+    [data-testid="collapsedControl"]{
+        display:none !important;
+    }
+
+    [data-testid="stToolbar"]{
+        display:none !important;
+    }
+
+    [data-testid="stDecoration"]{
+        display:none !important;
+    }
+
+    [data-testid="stStatusWidget"]{
+        display:none !important;
+    }
+
 }

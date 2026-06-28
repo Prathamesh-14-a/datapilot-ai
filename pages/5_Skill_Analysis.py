@@ -60,6 +60,9 @@ st.markdown("""
 /* Kill default streamlit chrome noise */
 
 #MainMenu,header ,footer{visibility:hidden;}
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
 
 /* Generic glass card */
 .dp-card{
@@ -313,6 +316,29 @@ background: linear-gradient(160deg, rgba(14,26,56,0.85), rgba(8,16,38,0.85));
     }
     .dp-section-title .ico svg { width: 16px; height: 16px; color: var(--dp-cyan); }
     .dp-section-title .sub { color: var(--dp-muted); font-size:.85rem; font-weight: 500; margin-left:.4rem; }
+
+    /* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+  #MainMenu{
+      display:none !important;
+  }
+
+  footer{
+      display:none !important;
+  }
+
+  [data-testid="stSidebarNav"],
+  [data-testid="stSidebarNavItems"],
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarHeader"],
+  [data-testid="collapsedControl"],
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"]{
+      display:none !important;
+  }
 </style>
 """, unsafe_allow_html=True)
 

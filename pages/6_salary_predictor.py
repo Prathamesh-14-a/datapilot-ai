@@ -68,6 +68,9 @@ st.markdown(
 
     .block-container{ padding-top:1rem !important; max-width: 1400px;}
     #MainMenu, header, footer { visibility:hidden; }
+    [data-testid="stStatusWidget"] {
+    display: none !important;
+    }
 
     /* ---- Hero ---- */
     .dp-hero{
@@ -329,6 +332,29 @@ st.markdown(
         .dp-h1{ font-size:36px; }
         .dp-hero{ padding:28px 22px;}
         .dp-mentor{ top:auto; bottom:20px; right:20px;}
+    }
+
+    /* ==========================================================
+        GLOBAL - Hide Streamlit default UI
+        ========================================================== */
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"],
+    [data-testid="collapsedControl"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"]{
+        display:none !important;
     }
     </style>
     """,

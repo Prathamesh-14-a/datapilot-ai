@@ -266,7 +266,34 @@ html, body, [class*="css"], [data-testid="stAppViewContainer"], .stApp {
   .dp-feat-text small{font-size:12px !important;}
 
   .dp-brand-name{font-size:18px !important;}
+
+  [data-testid="stStatusWidget"] {
+    display: none !important;
+    }
 }
+    /* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"],
+    [data-testid="collapsedControl"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"]{
+        display:none !important;
+    }
+    
 </style>
 """, unsafe_allow_html=True)
 

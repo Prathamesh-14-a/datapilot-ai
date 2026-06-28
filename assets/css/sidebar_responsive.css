@@ -309,3 +309,78 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   FAB — mobile only, never show on desktop
+   ========================================================================== */
+
+
+/* FAB — hidden on desktop always */
+@media (min-width: 769px) {
+    .dp-mobile-fab-wrap,
+    .dp-mobile-overlay {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: fixed !important;
+        left: -99999px !important;
+        top: -99999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+}
+
+/* FAB — visible on mobile */
+@media (max-width: 768px) {
+    .dp-mobile-fab-wrap {
+        display: flex !important;
+        position: fixed !important;
+        top: 14px !important;
+        left: 14px !important;
+        z-index: 999999 !important;
+        width: 46px !important;
+        height: 46px !important;
+    }
+}
+
+/* ==========================================================
+   MOBILE ONLY (768px and below)
+   Hide Streamlit default UI
+   ========================================================== */
+
+@media (max-width:768px){
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"]{
+        display:none !important;
+    }
+
+    [data-testid="collapsedControl"]{
+        display:none !important;
+    }
+
+    [data-testid="stToolbar"]{
+        display:none !important;
+    }
+
+    [data-testid="stDecoration"]{
+        display:none !important;
+    }
+
+    [data-testid="stStatusWidget"]{
+        display:none !important;
+    }
+
+}

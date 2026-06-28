@@ -11,9 +11,6 @@ from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated, logout
 from src.dashboard.dashboard_service import build_dashboard_snapshot
 from src.database.crud import get_user
-from components.styles import load_global_styles
-
-load_global_styles()
 
 logo = Path("assets/mini_logo.png")
 b64 = base64.b64encode(logo.read_bytes()).decode()
@@ -146,6 +143,9 @@ p,span,label,div{ color:var(--dp-text); }
 
 header[data-testid="stHeader"]{ background:transparent; }
 #MainMenu, footer{ visibility:hidden; }
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
 [data-testid="stSidebar"]{
   background:linear-gradient(180deg,#070D20 0%,#060B1A 100%);
   border-right:1px solid var(--dp-border);
@@ -490,6 +490,29 @@ hr{ border-color:var(--dp-border) !important; }
 .dp-missing{ color:var(--dp-text-dim); font-size:13px;}
 .dp-missing b{ color:#9FE3FF; }
 
+/* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+  #MainMenu{
+      display:none !important;
+  }
+
+  footer{
+      display:none !important;
+  }
+
+  [data-testid="stSidebarNav"],
+  [data-testid="stSidebarNavItems"],
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarHeader"],
+  [data-testid="collapsedControl"],
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"]{
+      display:none !important;
+  }
+
 </style>
 """
 st.markdown(DP_CSS, unsafe_allow_html=True)
@@ -580,7 +603,7 @@ st.markdown(f"""
         <div class="tag">Career Identity & Professional Insights</div>
     </div>
 </div>
-<br>s
+<br>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------------------------------
 # HERO

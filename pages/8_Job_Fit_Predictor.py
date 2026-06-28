@@ -11,7 +11,7 @@ from pathlib import Path
 
 st.set_page_config(
     page_title="Career Match Engine · DataPilot AI",
-    page_icon="assests/mini_logo.png",
+    page_icon="assets/mini_logo.png",
     layout="wide",
 )
 
@@ -45,6 +45,10 @@ html, body, [class*="css"], .stApp {
 
 [data-testid="stHeader"] { background: transparent; }
 .block-container { padding-top: 2rem; max-width: 1280px; }
+
+[data-testid="stStatusWidget"] {
+    display: none !important;
+}
 
 /* Hero */
 .dp-hero{
@@ -313,8 +317,30 @@ div.stButton > button:hover {
     70%,82%  { transform: translateY(-200px); }
     84%,100% { transform: translateY(-240px); }
 }
-/* Hide streamlit default success/warn for our context */
-</style>
+  /* Hide streamlit default success/warn for our context */
+  /* ==========================================================
+      GLOBAL - Hide Streamlit default UI
+      ========================================================== */
+
+    #MainMenu{
+        display:none !important;
+    }
+
+    footer{
+        display:none !important;
+    }
+
+    [data-testid="stSidebarNav"],
+    [data-testid="stSidebarNavItems"],
+    [data-testid="stSidebarNavSeparator"],
+    [data-testid="stSidebarHeader"],
+    [data-testid="collapsedControl"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"]{
+        display:none !important;
+    }
+  </style>
 """, unsafe_allow_html=True)
 
 _responsive_css = Path("assets/css/page8_responsive.css")

@@ -384,15 +384,28 @@ def _inject_css(collapsed: bool) -> None:
 
         /* Mobile */
         @media (max-width: 768px) {{
-            section[data-testid="stSidebar"] {{
+            section[data-testid="stSidebar"] {{ 
                 width: {width} !important;
                 min-width: {width} !important;
             }}
         }}
 
-        /* Hide mobile-only controls by default (desktop never sees them) */
+     /* Hide mobile-only controls by default (desktop never sees them) */
         .dp-mobile-overlay, .dp-mobile-fab-wrap {{
             display: none !important;
+        }}
+
+        /* Desktop: FAB must NEVER show regardless of collapsed state */
+        @media (min-width: 769px) {{
+            .dp-mobile-fab-wrap {{
+                display: none !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+                opacity: 0 !important;
+            }}
+            .dp-mobile-overlay {{
+                display: none !important;
+            }}
         }}
 
         /* Mobile drawer behavior */
@@ -420,8 +433,7 @@ def _inject_css(collapsed: bool) -> None:
                 z-index: 999996 !important;
             }}
 
-            .dp-mobile-fab-wrap {{
-                display: {"flex" if collapsed else "none"} !important;
+           .dp-mobile-fab-wrap {{
                 position: fixed !important;
                 top: 14px !important;
                 left: 14px !important;
@@ -447,37 +459,49 @@ def _inject_css(collapsed: bool) -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# Components
-# ---------------------------------------------------------------------------
-def _render_toggle(collapsed: bool) -> None:
-    """Top-right toggle button to collapse/expand the sidebar."""
-    st.markdown('<div class="dp-toggle-wrap">', unsafe_allow_html=True)
-    if st.button(
-        "›" if collapsed else "‹",
-        key="dp_sidebar_toggle",
-        help="Expand sidebar" if collapsed else "Collapse sidebar",
-    ):
-        st.session_state["dp_sidebar_collapsed"] = not collapsed
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+def _detect_mobile() -> None:
+    """Inject JS that sets a query param when screen is narrow."""
+    st.markdown("""
+        <script>
+        (function() {
+            const isMobile = window.innerWidth <= 768;
+            const url = new URL(window.location.href);
+            if (isMobile && url.searchParams.get('mobile') !== '1') {
+                url.searchParams.set('mobile', '1');
+                window.location.replace(url.toString());
+            } else if (!isMobile && url.searchParams.get('mobile') === '1') {
+                url.searchParams.delete('mobile');
+                window.location.replace(url.toString());
+            }
+        })();
+        </script>
+    """, unsafe_allow_html=True)
+
 
 def _render_mobile_fab(collapsed: bool) -> None:
-    st.markdown('<div class="dp-mobile-overlay"></div>', unsafe_allow_html=True)
-    # Add a close button inside the overlay area
-    if not collapsed:
-        st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
-        if st.button("✕", key="dp_mobile_close", help="Close menu"):
-            st.session_state["dp_sidebar_collapsed"] = True
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
-        if st.button("☰", key="dp_mobile_fab", help="Open menu"):
-            st.session_state["dp_sidebar_collapsed"] = False
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+    import hashlib
+    _page_key = hashlib.md5(
+        st.session_state.get("_active_nav", "default").encode()
+    ).hexdigest()[:8]
 
+    if not collapsed:
+        st.markdown(
+            '<div class="dp-mobile-overlay"></div>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
+    if not collapsed:
+        if st.button("✕", key=f"dp_mobile_close_{_page_key}"):
+            st.session_state["dp_sidebar_collapsed"] = True
+            st.session_state["_mobile_mode"] = True
+            st.rerun()
+    else:
+        if st.button("☰", key=f"dp_mobile_fab_{_page_key}"):
+            st.session_state["dp_sidebar_collapsed"] = False
+            st.session_state["_mobile_mode"] = True
+            st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 def _render_header(logo_b64: str) -> None:
     logo_img = (
@@ -589,20 +613,23 @@ def _render_footer() -> None:
 def show_sidebar() -> None:
     if "dp_sidebar_collapsed" not in st.session_state:
         st.session_state["dp_sidebar_collapsed"] = False
+
     collapsed = st.session_state["dp_sidebar_collapsed"]
 
     _inject_css(collapsed)
 
-    # Add-on mobile CSS
-   
     _mob = Path("assets/css/sidebar_responsive.css")
     if _mob.exists():
         st.markdown(f"<style>{_mob.read_text()}</style>", unsafe_allow_html=True)
 
-    _render_mobile_fab(collapsed)         
+    # Only render FAB when sidebar has been collapsed via mobile
+    # On desktop, sidebar starts expanded (collapsed=False) and
+    # uses the toggle button inside — FAB is never needed
+    # We track mobile usage via a session flag set when FAB is first clicked
+    if st.session_state.get("_mobile_mode", False) or collapsed:
+        _render_mobile_fab(collapsed)
 
     with st.sidebar:
-        _render_toggle(collapsed)
         _render_header(_logo_b64())
         _render_profile()
 
@@ -611,4 +638,4 @@ def show_sidebar() -> None:
             _render_section(section_title, items, collapsed, active_label)
 
         _render_logout(collapsed)
-        _render_footer()    
+        _render_footer()

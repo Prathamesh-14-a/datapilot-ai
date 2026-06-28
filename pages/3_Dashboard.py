@@ -128,6 +128,10 @@ st.markdown(
     
     #MainMenu,header, footer{ visibility:hidden;}
 
+    [data-testid="stStatusWidget"] {
+    display: none !important;
+}
+
     /* ── HERO ── */
     .dp-hero{
       position:relative; overflow:hidden;
@@ -299,6 +303,9 @@ st.markdown(
     .dp-footer-brand .tag{ color:var(--dp-text-dim); font-size:.8rem;}
     .dp-footer .meta{ color:var(--dp-text-dim); font-size:.8rem; text-align:right;}
 
+    [data-testid="stStatusWidget"] {
+    display: none !important;
+    }
     /* Glass section wrapper */
     .dp-glass{
       border:1px solid var(--dp-border); border-radius:18px;
@@ -556,7 +563,30 @@ st.markdown(
       border-radius: 10px !important;
       backdrop-filter: blur(12px) !important;
     }
-}
+    }
+    /* ==========================================================
+    GLOBAL - Hide Streamlit default UI
+    ========================================================== */
+
+  #MainMenu{
+      display:none !important;
+  }
+
+  footer{
+      display:none !important;
+  }
+
+  [data-testid="stSidebarNav"],
+  [data-testid="stSidebarNavItems"],
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarHeader"],
+  [data-testid="collapsedControl"],
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"],
+  [data-testid="stStatusWidget"]{
+      display:none !important;
+  }
+
     </style>
     """,
     unsafe_allow_html=True,
