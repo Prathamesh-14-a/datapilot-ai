@@ -308,6 +308,255 @@ st.markdown(
     }
 
     @keyframes dpFade { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)} }
+
+    /* Mobile Responsive Add-on */
+
+@media (max-width:768px){
+
+    /* ---------- GLOBAL SAFETY / NO HORIZONTAL SCROLL ---------- */
+    html, body, .stApp{
+      overflow-x: hidden !important;
+    }
+    .block-container{
+      padding-top:.75rem !important;
+      padding-left:1rem !important;
+      padding-right:1rem !important;
+      max-width:100% !important;
+    }
+
+    /* ---------- GENERIC COLUMN STACKING (st.columns) ---------- */
+    div[data-testid="stHorizontalBlock"]{
+      flex-direction: column !important;
+      flex-wrap: wrap !important;
+      gap: 12px !important;
+      row-gap: 12px !important;
+    }
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"],
+    div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]{
+      width: 100% !important;
+      flex: 1 1 100% !important;
+      min-width: 100% !important;
+    }
+
+    /* ---------- SPECIAL CASE: the 5-stat counts row → 2-column grid ---------- */
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]:nth-child(5)),
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(5)){
+      flex-direction: row !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]:nth-child(5)) > div[data-testid="column"],
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(5)) > div[data-testid="stColumn"]{
+      width: calc(50% - 6px) !important;
+      flex: 1 1 calc(50% - 6px) !important;
+      min-width: calc(50% - 6px) !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="column"]:nth-child(5)) > div[data-testid="column"]:nth-child(5),
+    div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"]:nth-child(5)) > div[data-testid="stColumn"]:nth-child(5){
+      width: 100% !important;
+      flex: 1 1 100% !important;
+      min-width: 100% !important;
+    }
+
+    /* ---------- HERO ---------- */
+    .dp-hero{
+      padding: 20px 18px !important;
+      border-radius: 18px !important;
+    }
+    .dp-hero-row{
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 16px !important;
+    }
+    .dp-hero-logo{
+      align-self: center;
+    }
+    .dp-hero-logo img{
+      height: 48px !important;
+    }
+    .dp-hero-text{
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .dp-hero-text h1{
+      font-size: 1.45rem !important;
+      line-height: 1.3 !important;
+      word-break: break-word;
+    }
+    .dp-hero-text .dp-sub{
+      font-size: .85rem !important;
+    }
+    .dp-hero-text .dp-desc{
+      font-size: .85rem !important;
+      max-width: 100% !important;
+      margin-top: 10px !important;
+    }
+    .dp-pill{
+      font-size: .72rem !important;
+      padding: 5px 12px !important;
+      margin-bottom: 10px !important;
+    }
+
+    /* ---------- SECTION HEADERS ---------- */
+    .dp-section{
+      flex-wrap: wrap !important;
+      margin: 18px 0 10px !important;
+      row-gap: 4px;
+    }
+    .dp-section h3{
+      font-size: 1rem !important;
+    }
+    .dp-section .dp-section-sub{
+      font-size: .78rem !important;
+      margin-left: 0 !important;
+      flex-basis: 100%;
+    }
+
+    /* ---------- KPI METRIC CARDS ---------- */
+    [data-testid="stMetric"]{
+      padding: 14px 16px !important;
+      border-radius: 14px !important;
+    }
+    [data-testid="stMetricLabel"] p{
+      font-size: .7rem !important;
+      white-space: normal !important;
+    }
+    [data-testid="stMetricValue"]{
+      font-size: 1.3rem !important;
+      white-space: normal !important;
+      word-break: break-word;
+    }
+
+    /* ---------- QUICK ACTION BUTTONS ---------- */
+    .stButton > button{
+      padding: 14px 16px !important;
+      min-height: 56px !important;
+      font-size: .92rem !important;
+      border-radius: 14px !important;
+    }
+    .dp-feature-desc{
+      margin: -2px 0 16px 4px !important;
+      font-size: .8rem !important;
+    }
+
+    /* ---------- CHARTS ---------- */
+    .dp-glass{
+      padding: 14px 14px !important;
+      border-radius: 14px !important;
+    }
+    [data-testid="stPlotlyChart"]{
+      width: 100% !important;
+    }
+    [data-testid="stPlotlyChart"] > div{
+      width: 100% !important;
+    }
+
+    /* ---------- ACTIVITY ITEMS ---------- */
+    .dp-activity{
+      padding: 12px 12px !important;
+      gap: 10px !important;
+      border-radius: 12px !important;
+    }
+    .dp-activity .ic{
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 8px !important;
+    }
+    .dp-activity .kind{
+      font-size: .66rem !important;
+    }
+    .dp-activity .title{
+      font-size: .88rem !important;
+      word-break: break-word;
+    }
+    .dp-activity .meta{
+      font-size: .74rem !important;
+      word-break: break-word;
+    }
+
+    /* ---------- TABS (horizontally scrollable) ---------- */
+    .stTabs [data-baseweb="tab-list"]{
+      overflow-x: auto !important;
+      flex-wrap: nowrap !important;
+      -webkit-overflow-scrolling: touch;
+      padding: 5px !important;
+      gap: 4px !important;
+    }
+    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar{
+      height: 4px;
+    }
+    .stTabs [data-baseweb="tab"]{
+      padding: 8px 12px !important;
+      font-size: .78rem !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* ---------- DATAFRAMES (horizontal scroll) ---------- */
+    [data-testid="stDataFrame"]{
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    [data-testid="stDataFrame"] *{
+      font-size: .8rem !important;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .dp-footer{
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding: 18px 18px !important;
+      gap: 14px !important;
+      text-align: left !important;
+    }
+    .dp-footer-brand{
+      gap: 10px !important;
+    }
+    .dp-footer-brand img{
+      height: 28px !important;
+    }
+    .dp-footer .meta{
+      text-align: left !important;
+      font-size: .74rem !important;
+    }
+
+    /* ---------- ALERTS / INFO BOXES ---------- */
+    .stAlert{
+      padding: 12px !important;
+      font-size: .85rem !important;
+    }
+
+    /* ---------- FLOATING ORBS (prevent any overflow contribution) ---------- */
+    .stApp::before, .stApp::after{
+      width: 320px !important;
+      height: 320px !important;
+    }
+
+    /* ---------- RESTORE SIDEBAR REOPEN TOGGLE (hidden by header{visibility:hidden}) ---------- */
+    header[data-testid="stHeader"] [data-testid="stSidebarCollapsedControl"],
+    header[data-testid="stHeader"] [data-testid="collapsedControl"],
+    [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"]{
+      visibility: visible !important;
+      opacity: 1 !important;
+      display: flex !important;
+      pointer-events: auto !important;
+      z-index: 999999 !important;
+      position: fixed !important;
+      top: 12px !important;
+      left: 12px !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] *,
+    [data-testid="collapsedControl"] *{
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    [data-testid="stSidebarCollapsedControl"] button,
+    [data-testid="collapsedControl"] button{
+      background: rgba(15,22,40,0.7) !important;
+      border: 1px solid var(--dp-border-strong) !important;
+      border-radius: 10px !important;
+      backdrop-filter: blur(12px) !important;
+    }
+}
     </style>
     """,
     unsafe_allow_html=True,

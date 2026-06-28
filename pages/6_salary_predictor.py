@@ -4,6 +4,7 @@ import streamlit as st
 import base64
 import plotly.graph_objects as go
 from streamlit_tags import st_tags
+from pathlib import Path
 
 import src.salary_prediction.salary_predictor as salary_model
 from components.sidebar import show_sidebar
@@ -13,6 +14,7 @@ from src.resume_matching.resume_parser import TECHNICAL_SKILLS
 from src.text_to_pdf.text_to_pdf import text_to_pdf
 from src.llm.salary_tips import generate_salary_tips
 import streamlit.components.v1 as components
+
 
 # ============================================================
 # PAGE CONFIG + AUTH
@@ -332,6 +334,12 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Mobile/Tablet responsiveness CSS block:
+_responsive_css = Path("assets/css/page6_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # ============================================================
 # HERO

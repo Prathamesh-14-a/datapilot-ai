@@ -1,0 +1,868 @@
+/* ==========================================================================
+   DataPilot AI — Skill Analyzer Responsive CSS
+   ADD-ON ONLY — does not modify desktop (1400px+) styles
+   Breakpoints: 1200px · 992px · 768px · 640px · 480px · 360px
+   ========================================================================== */
+
+/* ==========================================================================
+   FLUID BASE TOKENS
+   Applied globally — clamp() handles the scale automatically.
+   No desktop regressions: clamp() max values match existing desktop values.
+   ========================================================================== */
+
+.dp-h1 {
+  font-size: clamp(1.6rem, 5vw, 2.75rem);
+  letter-spacing: clamp(-0.03em, -0.02em, -0.01em);
+  line-height: 1.1;
+}
+
+.dp-sub {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  line-height: 1.65;
+}
+
+.dp-metric .val {
+  font-size: clamp(1.75rem, 5vw, 2.375rem);
+}
+
+.dp-metric .lbl {
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+}
+
+.dp-section-h h2 {
+  font-size: clamp(1rem, 2.5vw, 1.375rem);
+}
+
+.dp-section-h .sh-sub {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+}
+
+.dp-section-title {
+  font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+  margin: clamp(1.2rem, 3vw, 1.8rem) 0 clamp(0.7rem, 2vw, 1rem);
+}
+
+.dp-card {
+  padding: clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem);
+  border-radius: clamp(12px, 2vw, 18px);
+}
+
+.dp-metric {
+  padding: clamp(1rem, 2vw, 1.375rem) clamp(1rem, 2vw, 1.5rem);
+  border-radius: clamp(12px, 2vw, 18px);
+}
+
+.dp-hero {
+  padding: clamp(1.25rem, 3vw, 2.125rem) clamp(1.25rem, 3vw, 2.25rem);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: clamp(14px, 2.5vw, 24px);
+}
+
+.dp-mile {
+  gap: clamp(0.6rem, 1.5vw, 0.875rem);
+  padding: clamp(0.7rem, 1.5vw, 0.875rem) clamp(0.75rem, 1.5vw, 1rem);
+  border-radius: clamp(10px, 1.5vw, 14px);
+}
+
+.dp-pri-col {
+  padding: clamp(0.9rem, 2vw, 1.125rem);
+  border-radius: clamp(12px, 2vw, 18px);
+}
+
+.dp-report {
+  padding: clamp(1rem, 2.5vw, 1.4rem) clamp(1rem, 2.5vw, 1.6rem);
+  border-radius: clamp(12px, 2vw, 18px);
+  font-size: clamp(0.875rem, 1.8vw, 0.9375rem);
+  line-height: 1.75;
+}
+
+.dp-ai-card {
+  padding: clamp(1rem, 2.5vw, 1.625rem) clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: clamp(14px, 2.5vw, 22px);
+}
+
+.dp-badge {
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  padding: clamp(0.3rem, 0.8vw, 0.375rem) clamp(0.6rem, 1.2vw, 0.75rem);
+}
+
+.dp-chip {
+  font-size: clamp(0.72rem, 1.5vw, 0.78rem);
+  padding: clamp(0.35rem, 0.8vw, 0.4375rem) clamp(0.6rem, 1.2vw, 0.8125rem);
+}
+
+.dp-skill {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+  padding: clamp(0.3rem, 0.7vw, 0.375rem) clamp(0.55rem, 1.2vw, 0.75rem);
+}
+
+.dp-status {
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+  padding: clamp(0.3rem, 0.6vw, 0.375rem) clamp(0.6rem, 1.2vw, 0.75rem);
+}
+
+.stButton > button {
+  font-size: clamp(0.875rem, 1.8vw, 1rem) !important;
+  padding: clamp(0.65rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.125rem) !important;
+  border-radius: clamp(10px, 1.5vw, 14px) !important;
+}
+
+/* ==========================================================================
+   1200px — Large Tablet / Small Laptop
+   ========================================================================== */
+@media (max-width: 1200px) {
+
+  /* Hero: tighten grid gap */
+  .dp-hero {
+    gap: 1.5rem;
+  }
+
+  /* Section headings: reduce margin */
+  .dp-section-h {
+    margin: 1.5rem 0 0.875rem;
+  }
+}
+
+/* ==========================================================================
+   992px — Tablet Landscape
+   ========================================================================== */
+@media (max-width: 992px) {
+
+  /* Hero: stack vertically */
+  .dp-hero {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+
+  /* Hero subtitle: center and constrain */
+  .dp-sub {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Hero feature row: center chips */
+  .dp-feature-row {
+    justify-content: center;
+  }
+
+  /* Orb illustration: reduce height, prevent overflow */
+  .dp-viz {
+    min-height: 180px;
+    overflow: hidden;
+  }
+
+  .dp-viz svg {
+    max-height: 180px;
+  }
+
+  .dp-orb.a {
+    width: 110px;
+    height: 110px;
+  }
+
+  .dp-orb.b {
+    width: 85px;
+    height: 85px;
+  }
+
+  /* Priority matrix: 2 columns on tablet */
+  /* Handled via Streamlit column layout — skill chips stack naturally */
+
+  /* Metric cards: ensure comfortable spacing */
+  .dp-metric {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Section headings: tighter */
+  .dp-section-h {
+    margin: 1.25rem 0 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .dp-section-h .sh-sub {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 0.2rem;
+  }
+}
+
+/* ==========================================================================
+   768px — Tablet Portrait
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Block container: reduce side padding */
+  .block-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    padding-top: 0.75rem;
+  }
+
+  /* Hero: more compact */
+  .dp-hero {
+    padding: 1.25rem 1.1rem;
+    border-radius: 16px;
+    gap: 1rem;
+  }
+
+  /* Center badge in hero */
+  .dp-hero > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dp-badge {
+    align-self: center;
+  }
+
+  /* Hero title: center, scale */
+  .dp-h1 {
+    text-align: center;
+    font-size: clamp(1.5rem, 7vw, 2.2rem);
+  }
+
+  /* SVG visualization: constrain */
+  .dp-viz {
+    min-height: 140px;
+  }
+
+  .dp-viz svg {
+    max-height: 150px;
+  }
+
+  /* Skill gap two-column → 1 column handled by Streamlit,
+     but ensure glass cards don't overflow */
+  .dp-card {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Skill chips: better wrapping */
+  .dp-skill {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
+    margin: 3px;
+  }
+
+  /* Chip containers: wrap naturally */
+  div[style*="margin-top:10px"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.35rem;
+  }
+
+  /* Metric icon: slightly smaller */
+  .dp-metric .ico {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* Priority matrix: equal height disabled on mobile */
+  .dp-pri-col {
+    height: auto !important;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Priority matrix skill items: full width */
+  .dp-pri-col .dp-skill {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    display: flex !important;
+  }
+
+  /* Roadmap milestones: ensure number stays aligned */
+  .dp-mile {
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .dp-mile .num {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .dp-mile .name {
+    font-size: 0.875rem;
+    word-break: break-word;
+  }
+
+  .dp-mile .meta {
+    font-size: 0.72rem;
+  }
+
+  .dp-diff {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    white-space: nowrap;
+    align-self: flex-start;
+    flex-shrink: 0;
+  }
+
+  /* Recommended learning order chips: allow full wrap */
+  .dp-card div[style*="line-height:2"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.4rem;
+    line-height: 1.6 !important;
+  }
+
+  /* Market readiness: text wraps naturally */
+  .dp-card div[style*="white-space:pre-wrap"] {
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+
+  /* AI report card */
+  .dp-ai-card {
+    border-radius: 16px;
+  }
+
+  .dp-ai-head h3 {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+
+  .dp-ai-head .ic {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  /* AI report body */
+  .dp-ai-body {
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  /* Report text container */
+  .dp-report {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .dp-report h1 { font-size: clamp(1.2rem, 5vw, 1.5rem); margin: 1rem 0 0.5rem; }
+  .dp-report h2 { font-size: clamp(1rem, 4vw, 1.25rem); margin: 0.875rem 0 0.4rem; }
+  .dp-report h3 { font-size: clamp(0.9rem, 3.5vw, 1.1rem); margin: 0.75rem 0 0.35rem; }
+  .dp-report p  { margin: 0 0 0.75rem; }
+  .dp-report ul, .dp-report ol { padding-left: 1.25rem; margin: 0.5rem 0 0.75rem; }
+  .dp-report li { margin-bottom: 0.4rem; }
+
+  /* Buttons: full width, bigger tap target */
+  .stButton > button {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+
+  .stDownloadButton > button {
+    width: 100% !important;
+    min-height: 44px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Save/Download action row: stack on small screens */
+  /* These are in st.columns — they'll stack naturally below 640px via Streamlit */
+
+  /* Forms: tag input */
+  .streamlit-tags-input {
+    border-radius: 12px !important;
+  }
+
+  /* Selectbox */
+  div[data-baseweb="select"] > div {
+    min-height: 44px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Text inputs */
+  .stTextInput input {
+    min-height: 44px !important;
+    font-size: 0.875rem !important;
+    padding: 0.6rem 0.875rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* Role description card: reduce font */
+  .dp-card div[style*="font-size:18px"] {
+    font-size: clamp(1rem, 4vw, 1.125rem) !important;
+  }
+
+  .dp-card div[style*="font-size:13px"] {
+    font-size: 0.8rem !important;
+  }
+
+  /* Status + coverage row: allow wrap */
+  .dp-card div[style*="display:flex"] {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Section title sub: wrap gracefully */
+  .dp-section-title .sub {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+  }
+
+  /* Empty state card */
+  .dp-card[style*="text-align:center"] {
+    padding: 2rem 1rem !important;
+  }
+
+  /* Loading timeline */
+  .dp-step {
+    font-size: 0.875rem;
+    padding: 6px 0;
+  }
+
+  .dp-step .tick {
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+}
+
+/* ==========================================================================
+   640px — Large Phone
+   ========================================================================== */
+@media (max-width: 640px) {
+
+  /* Hero: ultra-compact */
+  .dp-hero {
+    padding: 1rem 0.875rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
+
+  /* Hide SVG orbs on small phones to reduce visual noise */
+  .dp-orb {
+    opacity: 0.35;
+    filter: blur(22px);
+  }
+
+  /* Feature chips row: center, tighter gap */
+  .dp-feature-row {
+    gap: 0.4rem;
+    margin-top: 0.875rem;
+  }
+
+  /* Section headings: tighter margin */
+  .dp-section-h {
+    margin: 1rem 0 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .dp-section-h .bar {
+    height: 18px;
+    width: 3px;
+  }
+
+  .dp-section-h h2 {
+    font-size: clamp(0.95rem, 4vw, 1.2rem);
+  }
+
+  /* Metric cards: more compact */
+  .dp-metric {
+    padding: 0.875rem 1rem;
+  }
+
+  .dp-metric .val {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+    margin-top: 4px;
+  }
+
+  .dp-metric .ico {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 8px;
+  }
+
+  /* Priority matrix bucket skills: slightly smaller text */
+  .dp-pri-col .dp-skill span:last-child {
+    font-size: 0.68rem;
+  }
+
+  .dp-pri-h .ttl {
+    font-size: 0.875rem;
+  }
+
+  .dp-pri-badge {
+    font-size: 0.65rem;
+    padding: 3px 7px;
+  }
+
+  /* Roadmap: tighten further */
+  .dp-mile {
+    padding: 0.65rem 0.75rem;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* AI section title */
+  .dp-section-title {
+    margin: 1rem 0 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .dp-section-title .ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .dp-section-title .ico svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* AI card: compact */
+  .dp-ai-card {
+    padding: 0.875rem 1rem;
+    border-radius: 14px;
+  }
+
+  .dp-ai-head {
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Action buttons row: full-width stack */
+  /* st.columns renders as row on ≥640px — below this they naturally stack */
+  .stDownloadButton > button {
+    padding: 0.65rem 1rem !important;
+  }
+
+  /* Inline save/copy link */
+  a[download] {
+    display: block;
+    text-align: center;
+    padding: 0.65rem !important;
+    border-radius: 10px !important;
+    font-size: 0.875rem;
+    min-height: 44px;
+    line-height: 1.5;
+  }
+
+  /* Cards within Streamlit columns: no horizontal clip */
+  .dp-card, .dp-pri-col, .dp-metric {
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Skill search inputs: full width */
+  .stTextInput {
+    width: 100% !important;
+  }
+
+  .stTextInput input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Role card: compact */
+  .dp-card div[style*="SELECTED ROLE"] {
+    font-size: 0.65rem;
+  }
+}
+
+/* ==========================================================================
+   480px — Small Phone
+   ========================================================================== */
+@media (max-width: 480px) {
+
+  /* Reduce block padding to the minimum comfortable amount */
+  .block-container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Hero: minimum comfortable */
+  .dp-hero {
+    padding: 0.875rem 0.75rem;
+  }
+
+  .dp-h1 {
+    font-size: clamp(1.35rem, 8vw, 1.75rem);
+    margin: 0.75rem 0 0.6rem;
+  }
+
+  /* Badge: compact */
+  .dp-badge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    gap: 5px;
+  }
+
+  .dp-badge .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Feature chips: smaller */
+  .dp-chip {
+    font-size: 0.68rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+  }
+
+  /* Metric value: prevent overflow */
+  .dp-metric .val {
+    font-size: clamp(1.4rem, 9vw, 2rem);
+  }
+
+  /* Skill chips: smaller on tiny screens */
+  .dp-skill {
+    font-size: 0.68rem;
+    padding: 0.25rem 0.5rem;
+    gap: 4px;
+    border-radius: 6px;
+  }
+
+  /* Roadmap number badge */
+  .dp-mile .num {
+    width: 26px;
+    height: 26px;
+    font-size: 0.72rem;
+    border-radius: 7px;
+  }
+
+  /* Diff badge on tiny screens */
+  .dp-diff {
+    font-size: 0.6rem;
+    padding: 2px 5px;
+  }
+
+  /* Status badges */
+  .dp-status {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Loading step text */
+  .dp-step {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+
+  /* AI report: tightest comfortable reading */
+  .dp-report {
+    padding: 0.875rem 0.875rem;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+  }
+
+  .dp-report h1 { font-size: 1.1rem; }
+  .dp-report h2 { font-size: 0.975rem; }
+  .dp-report h3 { font-size: 0.9rem; }
+
+  /* Section title: tight */
+  .dp-section-h h2 {
+    font-size: clamp(0.9rem, 4.5vw, 1.1rem);
+  }
+
+  .dp-section-h .sh-sub {
+    font-size: 0.7rem;
+  }
+
+  /* Buttons: minimum touch target */
+  .stButton > button {
+    min-height: 48px !important;
+    font-size: 0.875rem !important;
+    border-radius: 10px !important;
+  }
+}
+
+/* ==========================================================================
+   360px — Smallest Supported Phone
+   ========================================================================== */
+@media (max-width: 360px) {
+
+  .block-container {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+  }
+
+  .dp-hero {
+    padding: 0.75rem 0.65rem;
+    border-radius: 12px;
+  }
+
+  .dp-h1 {
+    font-size: clamp(1.2rem, 9vw, 1.5rem);
+  }
+
+  .dp-card {
+    padding: 0.75rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  .dp-metric {
+    padding: 0.75rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  .dp-metric .val {
+    font-size: clamp(1.25rem, 10vw, 1.75rem);
+  }
+
+  .dp-ai-card {
+    padding: 0.75rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  .dp-report {
+    padding: 0.75rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .dp-mile {
+    padding: 0.6rem 0.65rem;
+  }
+
+  .dp-section-h h2 {
+    font-size: 0.9rem;
+  }
+
+  /* Priority column: very compact */
+  .dp-pri-col {
+    padding: 0.75rem 0.75rem;
+  }
+
+  /* Skill chips: absolute minimum */
+  .dp-skill {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  /* Status: inline-block fallback */
+  .dp-status {
+    font-size: 0.62rem;
+  }
+}
+
+/* ==========================================================================
+   OVERFLOW PREVENTION — global, all breakpoints
+   ========================================================================== */
+
+/* Prevent any SVG from causing horizontal scroll */
+svg {
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* Clamp all direct text in skill/chip contexts */
+.dp-skill, .dp-chip, .dp-badge, .dp-status, .dp-diff {
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Prevent card content from breaking layout */
+.dp-card, .dp-metric, .dp-pri-col, .dp-mile, .dp-ai-card, .dp-report {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Recommended learning order: prevent arrow overflow */
+.dp-skill[style] {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Streamlit column fix: no unintended overflow */
+[data-testid="column"] {
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+/* Streamlit tabs: scrollable on mobile if needed */
+[data-testid="stTabs"] [role="tablist"] {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+}
+
+[data-testid="stTabs"] [role="tablist"]::-webkit-scrollbar {
+  display: none;
+}
+
+/* Selectbox popover: prevent overflow on mobile */
+[data-baseweb="popover"] {
+  max-width: calc(100vw - 1rem) !important;
+}
+
+/* Tag input: prevent overflow */
+.streamlit-tags-input {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ==========================================================================
+   TOUCH TARGETS — minimum 44x44px for all interactive elements
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Streamlit selectbox */
+  div[data-baseweb="select"] {
+    min-height: 44px;
+  }
+
+  /* Any anchor tag used as action button */
+  a[download] {
+    min-height: 44px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Tag remove buttons */
+  .streamlit-tags-input button {
+    min-width: 28px;
+    min-height: 28px;
+  }
+}
+
+/* ==========================================================================
+   SIDEBAR COMPATIBILITY
+   When sidebar is open on mobile, main content should not overflow
+   ========================================================================== */
+@media (max-width: 768px) {
+  [data-testid="stSidebarContent"] ~ .main .block-container {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — respect user preference
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .dp-fade,
+  .dp-orb,
+  .dp-badge .dot,
+  .dp-skill:hover,
+  .dp-card:hover,
+  .dp-metric:hover,
+  .stButton > button:hover {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

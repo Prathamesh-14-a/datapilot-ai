@@ -4,6 +4,7 @@ import time
 import html
 import re
 import base64
+from pathlib import Path
 
 from src.auth.session_manager import is_authenticated
 from components.sidebar import show_sidebar
@@ -13,6 +14,7 @@ from src.resume_matching.master_career_intelligent import career_intelligence_pi
 from src.llm.skill_improvement import generate_skill_feedback
 from src.text_to_pdf.text_to_pdf import text_to_pdf
 from src.ATS.ats_match import get_role_skills, calculated_weighted_score
+
 
 # ----------------------------------------------------------------------
 # AUTH + SHELL
@@ -313,6 +315,12 @@ background: linear-gradient(160deg, rgba(14,26,56,0.85), rgba(8,16,38,0.85));
     .dp-section-title .sub { color: var(--dp-muted); font-size:.85rem; font-weight: 500; margin-left:.4rem; }
 </style>
 """, unsafe_allow_html=True)
+
+# Mobile/Tablet responsiveness CSS block:
+_responsive_css = Path("assets/css/page5_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 # ----------------------------------------------------------------------

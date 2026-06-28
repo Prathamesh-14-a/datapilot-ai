@@ -11,6 +11,8 @@ from src.database.crud import (
     save_ai_chat_session,
 )
 from src.llm.career_chat import ask_career_ai
+from pathlib import Path
+
 
 
 # ============================================================
@@ -499,6 +501,11 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+_responsive_css = Path("assets/css/page7_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 # ============================================================

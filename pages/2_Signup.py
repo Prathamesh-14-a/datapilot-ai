@@ -10,6 +10,7 @@ from src.auth.session_manager import create_session, is_authenticated
 
 import base64
 
+
 def image_to_base64(path):
     with open(path, "rb") as img:
         return base64.b64encode(img.read()).decode()
@@ -334,10 +335,54 @@ st.markdown(
         to   { opacity: 1; transform: translateY(0); }
       }
 
-      @media (max-width: 900px) {
-        .dp-headline { font-size: 40px; }
-        .dp-logo { margin-bottom: 28px; }
-      }
+      @media (max-width:768px){
+        html,body,[data-testid="stAppViewContainer"],.stApp{overflow-x:hidden !important;}
+
+        .block-container{padding-top:1.5rem !important;padding-left:1rem !important;padding-right:1rem !important;max-width:100% !important;}
+
+        [data-testid="stHorizontalBlock"]{flex-direction:column !important;gap:0 !important;}
+        [data-testid="column"]{width:100% !important;flex:1 1 100% !important;min-width:100% !important;}
+
+        .dp-brand{text-align:center !important;}
+        .dp-brand::before{width:280px !important;height:280px !important;top:-80px !important;left:50% !important;transform:translateX(-50%) !important;}
+
+        .dp-logo{justify-content:center !important;margin-bottom:24px !important;}
+        .dp-logo img{max-width:90px !important;height:auto !important;}
+
+        .dp-badge{font-size:12px !important;padding:6px 14px !important;margin-bottom:16px !important;display:inline-flex !important;}
+
+        .dp-headline{font-size:36px !important;text-align:center !important;letter-spacing:-0.025em !important;margin-bottom:14px !important;}
+
+        .dp-sub{font-size:15px !important;text-align:center !important;max-width:100% !important;margin-bottom:28px !important;}
+
+        .dp-features{max-width:100% !important;gap:10px !important;}
+        .dp-feature{padding:12px 14px !important;width:100% !important;box-sizing:border-box !important;}
+        .dp-feature:hover{transform:none !important;}
+        .dp-ico{flex:0 0 34px !important;height:34px !important;}
+        .dp-ico svg{width:16px !important;height:16px !important;}
+        .dp-ftitle{font-size:13.5px !important;}
+        .dp-fdesc{font-size:12px !important;}
+
+        .dp-trust{font-size:12px !important;padding:10px 14px !important;margin-top:24px !important;text-align:center !important;}
+
+        .dp-card{width:100% !important;max-width:100% !important;padding:24px 18px 22px !important;border-radius:16px !important;box-sizing:border-box !important;}
+        .dp-card h2{font-size:21px !important;}
+        .dp-card p.lead{font-size:13px !important;margin-bottom:18px !important;}
+
+        .stTextInput>label,.stPasswordInput>label{font-size:13px !important;}
+        .stTextInput input,.stPasswordInput input,[data-baseweb="input"] input{font-size:14px !important;padding:11px 13px !important;width:100% !important;box-sizing:border-box !important;}
+
+        .stProgress{width:100% !important;}
+        [data-testid="stProgress"]>div{border-radius:999px !important;}
+
+        .stButton>button{width:100% !important;font-size:15px !important;padding:12px 16px !important;box-sizing:border-box !important;}
+
+        .dp-divider{margin:14px 0 10px !important;font-size:12px !important;}
+
+        .dp-foot{font-size:12px !important;margin-top:12px !important;}
+
+        [data-testid="stAppViewContainer"]>section>div{overflow-x:hidden !important;}
+}
     </style>
     """,
     unsafe_allow_html=True,

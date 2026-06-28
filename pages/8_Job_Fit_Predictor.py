@@ -6,6 +6,7 @@ import pandas as pd
 from src.auth.session_manager import is_authenticated
 from src.job_fit.predictor import ROLE_SKILLS, predict_job_fit
 from components.sidebar import show_sidebar
+from pathlib import Path
 
 
 st.set_page_config(
@@ -315,6 +316,11 @@ div.stButton > button:hover {
 /* Hide streamlit default success/warn for our context */
 </style>
 """, unsafe_allow_html=True)
+
+_responsive_css = Path("assets/css/page8_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # ============================================================
 # HERO

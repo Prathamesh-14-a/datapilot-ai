@@ -389,6 +389,58 @@ def _inject_css(collapsed: bool) -> None:
                 min-width: {width} !important;
             }}
         }}
+
+        /* Hide mobile-only controls by default (desktop never sees them) */
+        .dp-mobile-overlay, .dp-mobile-fab-wrap {{
+            display: none !important;
+        }}
+
+        /* Mobile drawer behavior */
+        @media (max-width: 768px) {{
+            section[data-testid="stSidebar"] {{
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                height: 100vh !important;
+                z-index: 999998 !important;
+                width: 82vw !important;
+                min-width: 82vw !important;
+                max-width: 300px !important;
+                transform: translateX({"-100%" if collapsed else "0%"}) !important;
+                transition: transform .32s cubic-bezier(.4,0,.2,1) !important;
+                box-shadow: {"none" if collapsed else "0 0 60px rgba(0,0,0,0.55)"} !important;
+            }}
+
+            .dp-mobile-overlay {{
+                display: {"none" if collapsed else "block"} !important;
+                position: fixed !important;
+                inset: 0 !important;
+                background: rgba(2,6,18,0.6) !important;
+                backdrop-filter: blur(2px) !important;
+                z-index: 999996 !important;
+            }}
+
+            .dp-mobile-fab-wrap {{
+                display: {"flex" if collapsed else "none"} !important;
+                position: fixed !important;
+                top: 14px !important;
+                left: 14px !important;
+                z-index: 999999 !important;
+            }}
+            .dp-mobile-fab-wrap .stButton > button {{
+                width: 46px !important;
+                height: 46px !important;
+                min-height: 46px !important;
+                padding: 0 !important;
+                border-radius: 12px !important;
+                background: rgba(10,15,28,0.85) !important;
+                border: 1px solid rgba(56,189,248,0.35) !important;
+                color: #e2e8f0 !important;
+                font-size: 19px !important;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 0 18px rgba(56,189,248,0.25) !important;
+                backdrop-filter: blur(10px) !important;
+            }}
+        }}
         </style>
         """,
         unsafe_allow_html=True,
@@ -407,6 +459,16 @@ def _render_toggle(collapsed: bool) -> None:
         help="Expand sidebar" if collapsed else "Collapse sidebar",
     ):
         st.session_state["dp_sidebar_collapsed"] = not collapsed
+        st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+def _render_mobile_fab(collapsed: bool) -> None:
+    """Floating menu button + dim overlay for the mobile drawer.
+    Hidden entirely on desktop via CSS (see _inject_css)."""
+    st.markdown('<div class="dp-mobile-overlay"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="dp-mobile-fab-wrap">', unsafe_allow_html=True)
+    if st.button("☰", key="dp_mobile_fab", help="Open menu"):
+        st.session_state["dp_sidebar_collapsed"] = False
         st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -518,14 +580,14 @@ def _render_footer() -> None:
 # Public API
 # ---------------------------------------------------------------------------
 def show_sidebar() -> None:
-    """Render the full collapsible DataPilot AI sidebar."""
-    # Persist collapsed state across pages
     if "dp_sidebar_collapsed" not in st.session_state:
         st.session_state["dp_sidebar_collapsed"] = False
     collapsed = st.session_state["dp_sidebar_collapsed"]
 
+    _inject_css(collapsed)
+    _render_mobile_fab(collapsed)          # <-- NEW, must be outside `with st.sidebar:`
+
     with st.sidebar:
-        _inject_css(collapsed)
         _render_toggle(collapsed)
         _render_header(_logo_b64())
         _render_profile()
@@ -535,4 +597,4 @@ def show_sidebar() -> None:
             _render_section(section_title, items, collapsed, active_label)
 
         _render_logout(collapsed)
-        _render_footer()
+        _render_footer()    

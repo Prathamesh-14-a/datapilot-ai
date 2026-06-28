@@ -11,6 +11,9 @@ from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated, logout
 from src.dashboard.dashboard_service import build_dashboard_snapshot
 from src.database.crud import get_user
+from components.styles import load_global_styles
+
+load_global_styles()
 
 logo = Path("assets/mini_logo.png")
 b64 = base64.b64encode(logo.read_bytes()).decode()

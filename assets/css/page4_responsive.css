@@ -1,0 +1,712 @@
+/* ==========================================================
+   DataPilot AI — Responsive Add-On Stylesheet
+   Covers: Mobile (320–768px) · Small Tablet (768–992px) · Large Tablet (992–1200px)
+   DOES NOT modify desktop (>1200px) appearance.
+   Paste this BELOW the existing <style> block.
+   ========================================================== */
+
+
+/* ==========================================================
+   LARGE TABLET  (992px – 1200px)
+   Mild tightening — layout mostly intact, minor scale reductions
+   ========================================================== */
+
+@media (max-width: 1200px) {
+
+    /* Hero */
+    .dp-h1 {
+        font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+    }
+
+    /* Metric value numbers */
+    .dp-metric .value {
+        font-size: 2rem;
+    }
+
+    /* Hero visual — slightly shorter */
+    .dp-hero-visual {
+        height: 200px;
+    }
+
+    /* Block container breathes a bit */
+    .block-container {
+        padding-left: 1.4rem !important;
+        padding-right: 1.4rem !important;
+    }
+}
+
+
+/* ==========================================================
+   SMALL TABLET  (768px – 992px)
+   Column stacking begins, typography scales down
+   ========================================================== */
+
+@media (max-width: 992px) {
+
+    /* --- Hero --- */
+    .dp-hero {
+        padding: 1.6rem 1.4rem;
+    }
+
+    .dp-h1 {
+        font-size: clamp(1.5rem, 3.5vw, 2rem);
+        margin: .7rem 0 .6rem;
+    }
+
+    .dp-sub {
+        font-size: .95rem;
+        max-width: 100%;
+    }
+
+    /* Hero feature pill row — let them wrap tightly */
+    .dp-feat-row {
+        gap: .4rem;
+        margin-top: 1rem;
+    }
+
+    .dp-feat {
+        font-size: .78rem;
+        padding: .35rem .65rem;
+    }
+
+    /* Hero visual — reduce height on tablet */
+    .dp-hero-visual {
+        height: 160px;
+        margin-top: .8rem;
+    }
+
+    /* Scan doc scales down proportionally */
+    .dp-scan-doc {
+        width: 120px;
+        height: 154px;
+    }
+
+    /* --- Section titles --- */
+    .dp-section-title {
+        font-size: 1.1rem;
+        gap: .5rem;
+        margin: 1.4rem 0 .8rem;
+    }
+
+    .dp-section-title .ico {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    .dp-section-title .sub {
+        font-size: .78rem;
+    }
+
+    /* --- Metric cards --- */
+    .dp-metric {
+        padding: 1.1rem 1.1rem 1rem;
+    }
+
+    .dp-metric .value {
+        font-size: 1.8rem;
+        margin: .6rem 0 .3rem;
+    }
+
+    .dp-metric .label {
+        font-size: .68rem;
+    }
+
+    .dp-metric .meta {
+        font-size: .78rem;
+    }
+
+    /* --- Buttons --- */
+    .stButton > button {
+        padding: .65rem 1rem !important;
+        font-size: .92rem !important;
+    }
+
+    /* --- Chips --- */
+    .dp-chip {
+        font-size: .78rem;
+        padding: .35rem .65rem;
+    }
+
+    /* --- AI report --- */
+    .dp-report {
+        font-size: .9rem;
+        padding: 1.1rem 1.2rem;
+        line-height: 1.65;
+    }
+
+    /* --- Roadmap steps --- */
+    .dp-roadmap {
+        padding-left: 1.4rem;
+    }
+
+    .dp-step {
+        padding: .85rem .95rem;
+    }
+
+    .dp-step .skill {
+        font-size: .92rem;
+    }
+
+    /* --- Glass cards --- */
+    .dp-glass {
+        border-radius: 14px;
+    }
+
+    /* --- Fixed FAB — ensure it doesn't collide with header --- */
+    .dp-fab-wrap {
+        top: 14px;
+        right: 14px;
+    }
+
+    .dp-fab {
+        padding: .55rem .9rem;
+        font-size: .82rem;
+    }
+}
+
+
+/* ==========================================================
+   MOBILE  (320px – 768px)
+   Full vertical stacking, aggressive space recovery
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* --- Global container --- */
+    .block-container {
+        padding: .6rem .75rem 2rem !important;
+        max-width: 100% !important;
+    }
+
+    /* ── Hero ── */
+    .dp-hero {
+        padding: 1.2rem 1rem;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+    }
+
+    /* Stack hero columns — Streamlit columns become divs; override with flex-wrap */
+    /* Streamlit wraps st.columns in [data-testid="column"] */
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .dp-h1 {
+        font-size: clamp(1.35rem, 6vw, 1.75rem);
+        margin: .6rem 0 .5rem;
+        line-height: 1.15;
+    }
+
+    .dp-sub {
+        font-size: .88rem;
+        line-height: 1.55;
+        max-width: 100%;
+    }
+
+    .dp-badge {
+        font-size: .72rem;
+        padding: .28rem .65rem;
+    }
+
+    .dp-feat-row {
+        gap: .35rem;
+        margin-top: .8rem;
+    }
+
+    .dp-feat {
+        font-size: .74rem;
+        padding: .3rem .55rem;
+        border-radius: 8px;
+    }
+
+    /* Hero visual — hide on very small screens to save space */
+    .dp-hero-visual {
+        height: 130px;
+        margin-top: .6rem;
+        border-radius: 12px;
+    }
+
+    .dp-scan-doc {
+        width: 96px;
+        height: 124px;
+    }
+
+    /* ── Section titles ── */
+    .dp-section-title {
+        font-size: 1rem;
+        gap: .45rem;
+        margin: 1.2rem 0 .65rem;
+        flex-wrap: wrap;
+    }
+
+    .dp-section-title .ico {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        flex-shrink: 0;
+    }
+
+    .dp-section-title .ico svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    .dp-section-title .sub {
+        font-size: .74rem;
+        margin-left: 0;
+        width: 100%;
+        padding-left: 2.2rem; /* align under title text */
+    }
+
+    /* ── File uploader ── */
+    [data-testid="stFileUploader"] section {
+        padding: 1.1rem !important;
+        border-radius: 12px !important;
+    }
+
+    /* Larger tap target for browse button */
+    [data-testid="stFileUploader"] button {
+        min-height: 44px !important;
+        font-size: .9rem !important;
+        border-radius: 10px !important;
+    }
+
+    /* ── Selectbox ── */
+    [data-baseweb="select"] > div {
+        border-radius: 10px !important;
+        min-height: 44px !important;
+        font-size: .9rem !important;
+    }
+
+    /* ── Buttons — full width, finger-friendly ── */
+    .stButton > button {
+        width: 100% !important;
+        min-height: 48px !important;
+        padding: .75rem 1rem !important;
+        font-size: .95rem !important;
+        border-radius: 12px !important;
+    }
+
+    .stDownloadButton > button {
+        width: 100% !important;
+        min-height: 44px !important;
+        border-radius: 12px !important;
+    }
+
+    /* ── Metric cards ── */
+    .dp-metric {
+        padding: 1rem 1rem .9rem;
+        border-radius: 14px;
+    }
+
+    .dp-metric::before {
+        /* Prevent the radial glow from overflowing on narrow cards */
+        width: 160px;
+        height: 160px;
+    }
+
+    .dp-metric .value {
+        font-size: 1.65rem;
+        margin: .5rem 0 .25rem;
+    }
+
+    .dp-metric .label {
+        font-size: .66rem;
+        letter-spacing: .1em;
+    }
+
+    .dp-metric .meta {
+        font-size: .76rem;
+    }
+
+    .dp-tier {
+        font-size: .66rem;
+        padding: .2rem .5rem;
+    }
+
+    /* ── Plotly charts ── */
+    /* Streamlit wraps Plotly in an iframe/div with this class */
+    .js-plotly-plot,
+    [data-testid="stPlotlyChart"] {
+        max-height: 240px !important;
+    }
+
+    /* Force plotly container to not overflow */
+    [data-testid="stPlotlyChart"] > div {
+        overflow-x: auto !important;
+    }
+
+    /* ── Insight pills ── */
+    .dp-insight {
+        font-size: .84rem;
+        padding: .7rem .85rem;
+        border-radius: 10px;
+    }
+
+    .dp-insight svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    /* ── Skill chips ── */
+    .dp-chip-row {
+        gap: .35rem;
+    }
+
+    .dp-chip {
+        font-size: .75rem;
+        padding: .3rem .6rem;
+        border-radius: 7px;
+        /* Prevent individual chips from overflowing their container */
+        max-width: 100%;
+        word-break: break-word;
+        hyphens: auto;
+    }
+
+    /* ── Career summary card ── */
+    .dp-career {
+        padding: 1.1rem 1.1rem;
+        border-radius: 14px;
+    }
+
+    .dp-career-summary {
+        font-size: .9rem;
+        line-height: 1.6;
+    }
+
+    .dp-readiness-badge {
+        font-size: .78rem;
+        padding: .4rem .75rem;
+    }
+
+    /* ── Learning Roadmap ── */
+    .dp-roadmap {
+        padding-left: 1.2rem;
+    }
+
+    .dp-roadmap::before {
+        left: 10px;
+    }
+
+    .dp-step {
+        padding: .8rem .9rem;
+        border-radius: 12px;
+        margin-bottom: .8rem;
+    }
+
+    .dp-step .node {
+        left: -28px;
+        width: 24px;
+        height: 24px;
+        font-size: .72rem;
+        top: 16px;
+    }
+
+    .dp-step .skill {
+        font-size: .85rem;
+    }
+
+    /* Roadmap chip rows */
+    .dp-chip-row[style*="margin-left:35px"] {
+        margin-left: 0 !important;
+        margin-bottom: .8rem !important;
+    }
+
+    /* ── AI Report ── */
+    .dp-ai-card {
+        padding: 1rem 1rem;
+        border-radius: 16px;
+    }
+
+    .dp-ai-head h3 {
+        font-size: 1rem;
+    }
+
+    .dp-ai-head .ic {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+    }
+
+    .dp-ai-body {
+        font-size: .86rem;
+        line-height: 1.7;
+    }
+
+    .dp-report {
+        font-size: .86rem;
+        padding: 1rem 1.1rem;
+        line-height: 1.65;
+        border-radius: 14px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* ── Empty states ── */
+    .dp-empty {
+        padding: 1.8rem 1rem;
+        border-radius: 12px;
+    }
+
+    .dp-empty .ico {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+    }
+
+    .dp-empty h4 {
+        font-size: .95rem;
+        margin: .6rem 0 .3rem;
+    }
+
+    .dp-empty p {
+        font-size: .82rem;
+    }
+
+    /* ── Glass card primitives ── */
+    .dp-glass {
+        border-radius: 12px;
+    }
+
+    /* ── Workflow progress ── */
+    .dp-workflow {
+        padding: .9rem 1rem;
+        border-radius: 12px;
+    }
+
+    .dp-wf-step {
+        font-size: .84rem;
+        padding: .38rem 0;
+        gap: .55rem;
+    }
+
+    .dp-wf-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    /* ── Tabs ── */
+    /* Streamlit tab list */
+    [data-testid="stTabs"] [role="tablist"] {
+        gap: 0 !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap !important;
+        border-bottom: 1px solid rgba(148, 184, 255, 0.14);
+        padding-bottom: 0;
+        scrollbar-width: none;
+    }
+
+    [data-testid="stTabs"] [role="tablist"]::-webkit-scrollbar {
+        display: none;
+    }
+
+    [data-testid="stTabs"] [role="tab"] {
+        font-size: .82rem !important;
+        padding: .5rem .75rem !important;
+        white-space: nowrap;
+        min-height: 40px;
+    }
+
+    /* ── History tables ── */
+    /* Make dataframes scroll horizontally instead of overflowing */
+    [data-testid="stDataFrame"],
+    [data-testid="stTable"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+
+    [data-testid="stDataFrame"] table,
+    [data-testid="stTable"] table {
+        min-width: 480px;
+    }
+
+    /* ── Expanders ── */
+    [data-testid="stExpander"] {
+        border-radius: 12px !important;
+    }
+
+    [data-testid="stExpander"] summary {
+        font-size: .88rem !important;
+        padding: .75rem 1rem !important;
+        min-height: 44px;
+    }
+
+    /* ── Text inputs (search bars inside skill breakdown & history) ── */
+    .stTextInput > div > div > input {
+        font-size: .88rem !important;
+        padding: .5rem .75rem !important;
+        border-radius: 9px !important;
+        min-height: 40px !important;
+    }
+
+    /* ── FAB — move to avoid covering content ── */
+    .dp-fab-wrap {
+        top: 10px;
+        right: 10px;
+    }
+
+    .dp-fab {
+        padding: .45rem .75rem;
+        font-size: .78rem;
+        gap: .4rem;
+    }
+
+    .dp-fab svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* ── SVG overflow guard ── */
+    svg {
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    /* ── Action row below AI report ── */
+    /* The two download/copy buttons side by side */
+    [data-testid="column"]:has(a[href^="data:text"]),
+    [data-testid="column"]:has(.stDownloadButton) {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+
+/* ==========================================================
+   EXTRA SMALL MOBILE  (320px – 480px)
+   Final tightening pass for the narrowest viewports
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+    .block-container {
+        padding: .5rem .6rem 1.8rem !important;
+    }
+
+    .dp-hero {
+        padding: 1rem .85rem;
+        border-radius: 14px;
+    }
+
+    .dp-h1 {
+        font-size: clamp(1.2rem, 7vw, 1.5rem);
+    }
+
+    .dp-sub {
+        font-size: .83rem;
+    }
+
+    /* Collapse feature pills to two per row max */
+    .dp-feat {
+        font-size: .7rem;
+        padding: .28rem .5rem;
+    }
+
+    /* Hide hero visual entirely on very narrow screens */
+    .dp-hero-visual {
+        display: none;
+    }
+
+    /* Metric values tighten further */
+    .dp-metric .value {
+        font-size: 1.45rem;
+    }
+
+    /* Badge pill */
+    .dp-badge {
+        font-size: .68rem;
+        padding: .25rem .55rem;
+    }
+
+    .dp-badge .dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* Roadmap — very tight */
+    .dp-roadmap {
+        padding-left: 1rem;
+    }
+
+    .dp-step {
+        padding: .7rem .75rem;
+    }
+
+    .dp-step .node {
+        left: -24px;
+        width: 20px;
+        height: 20px;
+        font-size: .66rem;
+        top: 14px;
+    }
+
+    /* Chips — ensure none escape their container */
+    .dp-chip {
+        font-size: .7rem;
+        padding: .25rem .5rem;
+    }
+
+    /* Section titles */
+    .dp-section-title {
+        font-size: .92rem;
+    }
+
+    /* Workflow */
+    .dp-wf-step {
+        font-size: .8rem;
+    }
+
+    /* AI card */
+    .dp-ai-card {
+        padding: .85rem .85rem;
+    }
+
+    .dp-ai-head h3 {
+        font-size: .92rem;
+    }
+
+    .dp-report {
+        font-size: .82rem;
+        padding: .85rem .9rem;
+    }
+
+    /* History table minimum column sizes */
+    [data-testid="stDataFrame"] table,
+    [data-testid="stTable"] table {
+        min-width: 380px;
+        font-size: .8rem;
+    }
+
+    /* Career summary */
+    .dp-career {
+        padding: .9rem .9rem;
+    }
+
+    .dp-career-summary {
+        font-size: .84rem;
+    }
+
+    /* Empty states */
+    .dp-empty {
+        padding: 1.4rem .85rem;
+    }
+
+    /* Fixed FAB — minimize on tiny screens */
+    .dp-fab span:last-child {
+        /* Hide label text, keep icon only */
+        display: none;
+    }
+
+    .dp-fab {
+        padding: .45rem .55rem;
+        gap: 0;
+    }
+}

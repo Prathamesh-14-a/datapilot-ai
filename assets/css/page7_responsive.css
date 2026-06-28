@@ -1,0 +1,652 @@
+/* ==========================================================================
+   DataPilot AI — AI Mentor · Responsive CSS Add-On
+   Append after existing stylesheet. Desktop (1200px+) is completely untouched.
+   Breakpoints: 1024px · 768px · 480px
+   ========================================================================== */
+
+/* ==========================================================================
+   FLUID BASE TOKENS
+   clamp() handles smooth scaling between breakpoints.
+   Max values mirror existing desktop; nothing changes above 1200px.
+   ========================================================================== */
+
+/* Hero heading — existing rule uses clamp already; reinforce min end */
+.dp-hero h1 {
+  font-size: clamp(1.5rem, 4.5vw, 3rem);
+  margin: clamp(0.75rem, 2vw, 1rem) 0 clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+/* Hero paragraph */
+.dp-hero p {
+  font-size: clamp(0.875rem, 2vw, 1.02rem);
+  line-height: 1.65;
+}
+
+/* Section title */
+.dp-section-title {
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  gap: clamp(6px, 1.5vw, 10px);
+  margin: clamp(0.5rem, 1.5vw, 0.5rem) 0 clamp(0.7rem, 2vw, 0.875rem);
+}
+
+/* Section sub */
+.dp-section-sub {
+  font-size: clamp(0.78rem, 1.8vw, 0.86rem);
+  margin-bottom: clamp(0.7rem, 2vw, 0.875rem);
+}
+
+/* Badge */
+.dp-badge {
+  font-size: clamp(0.65rem, 1.5vw, 0.78rem);
+  padding: clamp(4px, 0.8vw, 6px) clamp(10px, 1.5vw, 14px);
+}
+
+/* Pills */
+.dp-pill {
+  font-size: clamp(0.65rem, 1.5vw, 0.76rem);
+  padding: clamp(4px, 0.8vw, 6px) clamp(9px, 1.5vw, 12px);
+}
+
+/* Insight panel */
+.dp-insights {
+  padding: clamp(0.875rem, 2vw, 1.25rem);
+  border-radius: clamp(12px, 2vw, 20px);
+}
+
+.dp-insights h4 {
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  margin-bottom: clamp(0.6rem, 1.5vw, 0.875rem);
+}
+
+.dp-insight-label {
+  font-size: clamp(0.62rem, 1.3vw, 0.78rem);
+}
+
+.dp-insight-value {
+  font-size: clamp(0.78rem, 1.6vw, 0.92rem);
+}
+
+.dp-insight-row {
+  padding: clamp(6px, 1.2vw, 10px) 0;
+}
+
+/* Thinking indicator */
+.dp-thinking {
+  padding: clamp(0.7rem, 1.5vw, 0.875rem) clamp(0.875rem, 2vw, 1.125rem);
+  border-radius: clamp(10px, 1.5vw, 16px);
+  font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+  max-width: 100%;
+}
+
+/* Sidebar brand */
+.dp-sb-brand {
+  padding: clamp(10px, 1.5vw, 14px) 6px clamp(12px, 2vw, 18px);
+}
+
+.dp-sb-brand-title {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+}
+
+/* ==========================================================================
+   1024px — Tablet
+   ========================================================================== */
+@media (max-width: 1024px) {
+
+  /* Block container: tighten side padding */
+  .block-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 7rem !important;
+  }
+
+  /* Hero: tighten grid gap */
+  .dp-hero {
+    padding: clamp(1.5rem, 3.5vw, 2.375rem) clamp(1.5rem, 3.5vw, 2.75rem);
+    border-radius: clamp(16px, 2.5vw, 24px);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Hero grid: reduce gap on tablet */
+  .dp-hero-grid {
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+  }
+
+  /* Neural SVG: scale down on tablet */
+  .dp-neural svg {
+    height: 220px;
+  }
+
+  /* Prompt cards: min-height reduced on tablet */
+  div[data-testid="stHorizontalBlock"] .stButton > button {
+    min-height: 68px !important;
+    padding: 14px 16px !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Chat message max-width: expand on tablet */
+  [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] {
+    max-width: 700px !important;
+  }
+
+  /* Insight panel: remove sticky on tablet so it doesn't fight layout */
+  .dp-insights {
+    position: relative !important;
+    top: auto !important;
+  }
+}
+
+/* ==========================================================================
+   768px — Large Phone
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Block container: minimal padding, preserve bottom for chat input */
+  .block-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    padding-top: 0.875rem !important;
+    padding-bottom: 6.5rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Prevent any horizontal overflow */
+  .stApp {
+    overflow-x: hidden;
+  }
+
+  /* ---- Hero ---- */
+  .dp-hero {
+    padding: 1.25rem 1.1rem;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+
+  /* Hero grid: single column, center content */
+  .dp-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  /* Hero text: center align */
+  .dp-hero-grid > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Hero paragraph: full width */
+  .dp-hero p {
+    max-width: 100%;
+  }
+
+  /* Pills: center on mobile */
+  .dp-pills {
+    justify-content: center;
+    gap: 6px;
+    margin-top: 0.875rem;
+  }
+
+  /* Neural SVG: move below text, constrain */
+  .dp-neural {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dp-neural svg {
+    width: 100%;
+    max-width: 280px;
+    height: 180px;
+  }
+
+  /* ---- Prompt cards ---- */
+  /* Each card becomes full width by making columns wrap */
+  div[data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap !important;
+  }
+
+  div[data-testid="stHorizontalBlock"] [data-testid="column"] {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  div[data-testid="stHorizontalBlock"] .stButton > button {
+    min-height: 56px !important;
+    padding: 14px 16px !important;
+    font-size: 0.875rem !important;
+    border-radius: 12px !important;
+    text-align: left !important;
+  }
+
+  /* ---- More prompts button ---- */
+  .dp-more .stButton > button {
+    padding: 10px 14px !important;
+    font-size: 0.8rem !important;
+    border-radius: 10px !important;
+    min-height: 44px !important;
+  }
+
+  /* ---- Chat messages ---- */
+  [data-testid="stChatMessage"] {
+    padding: 4px 0 !important;
+  }
+
+  [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] {
+    max-width: calc(100vw - 5rem) !important;
+    padding: 12px 14px !important;
+    font-size: 0.9rem !important;
+    border-radius: 14px !important;
+    line-height: 1.6;
+  }
+
+  /* Chat avatar: scale down */
+  [data-testid="stChatMessage"] img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* User message: maintain right alignment */
+  [data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"] {
+    margin-left: auto !important;
+  }
+
+  /* ---- Chat input dock ---- */
+  [data-testid="stChatInput"] {
+    border-radius: 14px !important;
+    margin: 0 0.5rem !important;
+  }
+
+  [data-testid="stChatInput"] textarea {
+    font-size: 0.9rem !important;
+    min-height: 44px !important;
+    padding: 0.65rem 0.875rem !important;
+  }
+
+  [data-testid="stBottomBlockContainer"] {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* ---- Thinking indicator ---- */
+  .dp-thinking {
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  .dp-thinking .ring {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  .dp-think-steps {
+    gap: 3px;
+  }
+
+  .dp-think-step {
+    font-size: 0.75rem;
+  }
+
+  /* ---- Sidebar buttons: larger tap targets ---- */
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Sidebar search input: touch friendly */
+  .stTextInput input {
+    min-height: 44px !important;
+    font-size: 0.875rem !important;
+    padding: 0.6rem 0.875rem !important;
+  }
+
+  /* ---- Insight panel: release sticky, move to natural flow ---- */
+  .dp-insights {
+    position: relative !important;
+    top: auto !important;
+    margin-top: 1rem;
+    border-radius: 14px;
+  }
+
+  /* ---- Section title ---- */
+  .dp-section-title {
+    margin: 0.75rem 0 0.6rem;
+  }
+
+  .dp-section-title .bar {
+    height: 14px;
+    width: 3px;
+  }
+
+  /* ---- Columns: insight panel stacks below chat ---- */
+  /* Streamlit renders main_col and side_col as stHorizontalBlock;
+     we target the outer columns specifically to avoid prompt card collision */
+  div[data-testid="stVerticalBlock"] > div[data-testid="stHorizontalBlock"]:first-of-type > [data-testid="column"]:last-child {
+    margin-top: 0.75rem;
+  }
+
+  /* Prevent Streamlit column gap from creating horizontal scroll */
+  [data-testid="column"] {
+    min-width: 0 !important;
+    overflow: hidden;
+  }
+
+  /* ---- History timestamp ---- */
+  section[data-testid="stSidebar"] div[style*="font-size:.7rem"] {
+    font-size: 0.68rem !important;
+    margin: -4px 4px 6px 6px !important;
+  }
+
+  /* ---- Warning / info boxes ---- */
+  .stWarning, .stInfo {
+    font-size: 0.8125rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* ---- SVG: global overflow guard ---- */
+  svg {
+    max-width: 100%;
+    overflow: visible;
+  }
+}
+
+/* ==========================================================================
+   480px — Small Phone
+   ========================================================================== */
+@media (max-width: 480px) {
+
+  /* Block container: absolute minimum padding */
+  .block-container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-bottom: 6rem !important;
+  }
+
+  /* Hero: ultra-compact */
+  .dp-hero {
+    padding: 1rem 0.875rem;
+    border-radius: 14px;
+    margin-bottom: 0.875rem;
+  }
+
+  /* Hero heading: smallest comfortable */
+  .dp-hero h1 {
+    font-size: clamp(1.3rem, 8vw, 1.7rem);
+    margin: 0.6rem 0 0.5rem;
+  }
+
+  /* Hero paragraph: tight */
+  .dp-hero p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  /* Badge: compact */
+  .dp-badge {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    gap: 6px;
+  }
+
+  .dp-badge .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Pills: smaller */
+  .dp-pills {
+    gap: 5px;
+    margin-top: 0.75rem;
+  }
+
+  .dp-pill {
+    font-size: 0.65rem;
+    padding: 4px 9px;
+  }
+
+  /* Neural SVG: compact on small phone */
+  .dp-neural svg {
+    max-width: 220px;
+    height: 150px;
+  }
+
+  /* Prompt cards: slightly tighter */
+  div[data-testid="stHorizontalBlock"] .stButton > button {
+    min-height: 52px !important;
+    padding: 12px 13px !important;
+    font-size: 0.8125rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* Chat messages: nearly full width */
+  [data-testid="stChatMessage"] [data-testid="stChatMessageContent"] {
+    max-width: calc(100vw - 4rem) !important;
+    padding: 10px 12px !important;
+    font-size: 0.875rem !important;
+    border-radius: 12px !important;
+  }
+
+  /* Chat avatar: minimal */
+  [data-testid="stChatMessage"] img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  /* Chat input: minimal padding */
+  [data-testid="stChatInput"] {
+    border-radius: 12px !important;
+    margin: 0 0.25rem !important;
+  }
+
+  [data-testid="stChatInput"] textarea {
+    font-size: 0.875rem !important;
+    padding: 0.6rem 0.75rem !important;
+  }
+
+  [data-testid="stBottomBlockContainer"] {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  /* Thinking: compact */
+  .dp-thinking {
+    padding: 0.6rem 0.75rem;
+    gap: 8px;
+    border-radius: 10px;
+  }
+
+  .dp-think-step {
+    font-size: 0.7rem;
+  }
+
+  /* Sidebar brand: compact */
+  .dp-sb-brand {
+    padding: 10px 6px 12px;
+  }
+
+  .dp-sb-brand-mark {
+    width: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+
+  .dp-sb-brand-title {
+    font-size: 0.9rem;
+  }
+
+  .dp-sb-brand-sub {
+    font-size: 0.62rem;
+  }
+
+  .dp-sb-section {
+    font-size: 0.62rem;
+    margin: 10px 4px 6px;
+  }
+
+  /* Sidebar buttons: minimum touch target */
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 48px !important;
+    font-size: 0.8125rem !important;
+    padding: 10px 10px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Insight panel: compact */
+  .dp-insights {
+    padding: 0.875rem;
+    border-radius: 12px;
+  }
+
+  .dp-insights h4 {
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dp-insight-label {
+    font-size: 0.62rem;
+  }
+
+  .dp-insight-value {
+    font-size: 0.8rem;
+  }
+
+  .dp-insight-row {
+    padding: 6px 0;
+  }
+
+  /* Section title: tight */
+  .dp-section-title {
+    font-size: 0.9rem;
+    margin: 0.625rem 0 0.5rem;
+  }
+
+  .dp-section-sub {
+    font-size: 0.78rem;
+    margin-bottom: 0.625rem;
+  }
+
+  /* More prompts button */
+  .dp-more .stButton > button {
+    font-size: 0.75rem !important;
+    padding: 8px 12px !important;
+    min-height: 40px !important;
+  }
+
+  /* Empty state */
+  .dp-empty {
+    padding: 2.5rem 1rem;
+  }
+
+  .dp-empty p {
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================================================================
+   OVERFLOW PREVENTION — all breakpoints
+   ========================================================================== */
+
+/* Hard overflow lock */
+.stApp {
+  overflow-x: hidden;
+}
+
+/* Every Streamlit column: never clip the layout */
+[data-testid="column"] {
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+/* Chat message content: never exceed viewport */
+[data-testid="stChatMessageContent"] {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+}
+
+/* SVG: never trigger horizontal scroll */
+svg {
+  max-width: 100%;
+}
+
+/* Neural SVG container: prevent bleed */
+.dp-neural {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* Insight panel values: truncate long strings */
+.dp-insight-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 55%;
+}
+
+/* Pills: wrap, no overflow */
+.dp-pills {
+  flex-wrap: wrap;
+}
+
+/* Sidebar history timestamp: no overflow */
+section[data-testid="stSidebar"] div[style*="font-size:.7rem"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Chat input textarea: contain within viewport */
+[data-testid="stChatInput"] {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   TOUCH UX — minimum 44px tap targets
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* All sidebar buttons */
+  section[data-testid="stSidebar"] .stButton > button {
+    min-height: 44px !important;
+  }
+
+  /* Chat send button */
+  [data-testid="stChatInput"] button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Streamlit text input */
+  .stTextInput > div {
+    min-height: 44px !important;
+  }
+
+  /* More prompts trigger */
+  .dp-more .stButton > button {
+    min-height: 44px !important;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .dp-neural svg,
+  .dp-badge .dot,
+  .dp-thinking .ring,
+  .dp-cursor::after {
+    animation: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

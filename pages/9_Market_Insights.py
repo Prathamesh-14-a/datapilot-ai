@@ -7,6 +7,7 @@ import base64
 from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated
 
+
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
@@ -331,6 +332,13 @@ label, .stSelectbox label { color: var(--dp-text-dim) !important; font-weight: 6
 .dp-hero, .dp-card, .dp-footer, .dp-opp-card { animation: fadeUp .6s ease both; }
 </style>
 """, unsafe_allow_html=True)
+
+
+_responsive_css = Path("assets/css/page10_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 
 # --------------------------------------------------
 # LOAD DATA  (UNCHANGED)

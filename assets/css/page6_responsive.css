@@ -1,0 +1,958 @@
+/* ==========================================================================
+   DataPilot AI — Salary Intelligence · Responsive CSS Add-On
+   Append after existing stylesheet. Desktop (1400px+) is untouched.
+   Breakpoints: 1200px · 992px · 768px · 576px · 400px
+   ========================================================================== */
+
+/* ==========================================================================
+   FLUID TOKENS — clamp() replaces rigid px values globally
+   Max values mirror existing desktop; min values keep mobile readable.
+   ========================================================================== */
+
+/* Hero */
+.dp-hero {
+  padding: clamp(1.25rem, 4vw, 2.625rem) clamp(1.25rem, 4vw, 2.875rem);
+  border-radius: clamp(16px, 3vw, 28px);
+  margin-bottom: clamp(1rem, 3vw, 1.75rem);
+}
+
+/* Hero title */
+.dp-h1 {
+  font-size: clamp(1.75rem, 6vw, 3.375rem);
+  margin: clamp(0.75rem, 2vw, 1.125rem) 0 clamp(0.6rem, 1.5vw, 0.875rem);
+  line-height: 1.08;
+}
+
+/* Hero subtitle */
+.dp-sub {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  line-height: 1.7;
+  max-width: 100%;
+}
+
+/* Section titles */
+.dp-section-title {
+  font-size: clamp(1rem, 2.5vw, 1.375rem);
+  margin: clamp(1.2rem, 3vw, 1.75rem) 0 clamp(0.5rem, 1.5vw, 0.875rem);
+  gap: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+.dp-section-title .bar {
+  height: clamp(16px, 2vw, 22px);
+  width: clamp(3px, 0.4vw, 4px);
+}
+
+.dp-section-sub {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+  margin: clamp(-0.5rem, -1vw, -0.375rem) 0 clamp(0.75rem, 2vw, 0.875rem) clamp(0.75rem, 2vw, 1rem);
+}
+
+/* Glass card */
+.dp-card {
+  padding: clamp(1rem, 2.5vw, 1.375rem) clamp(1rem, 2.5vw, 1.5rem);
+  border-radius: clamp(12px, 2vw, 20px);
+}
+
+/* Metric card */
+.dp-metric {
+  padding: clamp(1rem, 2.5vw, 1.375rem) clamp(1rem, 2.5vw, 1.375rem) clamp(1.1rem, 2.5vw, 1.5rem);
+  border-radius: clamp(12px, 2vw, 20px);
+}
+
+.dp-metric .value {
+  font-size: clamp(1.6rem, 5vw, 2.375rem);
+  margin-top: clamp(0.4rem, 1vw, 0.625rem);
+}
+
+.dp-metric .label {
+  font-size: clamp(0.62rem, 1.3vw, 0.75rem);
+}
+
+.dp-metric .meta {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+  margin-top: clamp(0.3rem, 0.8vw, 0.375rem);
+}
+
+.dp-metric .icon {
+  width: clamp(32px, 5vw, 42px);
+  height: clamp(32px, 5vw, 42px);
+  border-radius: clamp(8px, 1.5vw, 12px);
+  margin-bottom: clamp(0.6rem, 1.5vw, 0.875rem);
+}
+
+/* Feature chips */
+.dp-feature-chips {
+  gap: clamp(0.4rem, 1.5vw, 0.625rem);
+  margin-top: clamp(0.875rem, 2.5vw, 1.375rem);
+}
+
+.dp-chip {
+  font-size: clamp(0.72rem, 1.5vw, 0.8125rem);
+  padding: clamp(0.4rem, 0.8vw, 0.5rem) clamp(0.7rem, 1.5vw, 0.875rem);
+  border-radius: clamp(8px, 1.5vw, 10px);
+  gap: clamp(5px, 1vw, 8px);
+}
+
+/* Badge */
+.dp-badge {
+  font-size: clamp(0.62rem, 1.3vw, 0.75rem);
+  padding: clamp(0.3rem, 0.7vw, 0.4375rem) clamp(0.65rem, 1.3vw, 0.875rem);
+  gap: clamp(5px, 1vw, 8px);
+}
+
+/* Roadmap milestone */
+.dp-milestone {
+  padding: clamp(0.875rem, 2vw, 1.125rem) clamp(0.875rem, 2vw, 1.25rem) clamp(0.875rem, 2vw, 1.125rem) clamp(3rem, 7vw, 3.5rem);
+  border-radius: clamp(10px, 1.5vw, 16px);
+  margin-bottom: clamp(0.6rem, 1.5vw, 0.875rem);
+}
+
+.dp-milestone .num {
+  width: clamp(26px, 4vw, 32px);
+  height: clamp(26px, 4vw, 32px);
+  border-radius: clamp(7px, 1.2vw, 10px);
+  font-size: clamp(0.72rem, 1.5vw, 0.875rem);
+  left: clamp(10px, 2vw, 14px);
+  top: clamp(14px, 2.5vw, 18px);
+}
+
+.dp-milestone h4 {
+  font-size: clamp(0.875rem, 1.8vw, 0.9375rem);
+}
+
+.dp-milestone p {
+  font-size: clamp(0.78rem, 1.5vw, 0.8125rem);
+  margin: clamp(3px, 0.6vw, 6px) 0 0;
+}
+
+.dp-milestone .tags {
+  gap: clamp(5px, 1vw, 8px);
+  margin-top: clamp(0.5rem, 1vw, 0.625rem);
+}
+
+.dp-tag {
+  font-size: clamp(0.62rem, 1.2vw, 0.6875rem);
+  padding: clamp(3px, 0.5vw, 4px) clamp(7px, 1.2vw, 10px);
+}
+
+/* Opportunity matrix */
+.dp-opp {
+  padding: clamp(0.875rem, 2vw, 1.125rem) clamp(0.875rem, 2vw, 1.25rem);
+  border-radius: clamp(10px, 1.5vw, 18px);
+}
+
+.dp-opp h5 {
+  font-size: clamp(0.8rem, 1.6vw, 0.875rem);
+}
+
+.dp-opp .quad {
+  font-size: clamp(0.6rem, 1.2vw, 0.6875rem);
+}
+
+.dp-opp ul {
+  font-size: clamp(0.78rem, 1.5vw, 0.8125rem);
+  line-height: 1.75;
+}
+
+/* Stage pill */
+.dp-stage {
+  font-size: clamp(0.62rem, 1.3vw, 0.75rem);
+  padding: clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 12px);
+  gap: clamp(5px, 1vw, 8px);
+}
+
+/* AI card */
+.dp-ai-card {
+  padding: clamp(1rem, 2.5vw, 1.625rem) clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: clamp(14px, 2.5vw, 22px);
+}
+
+.dp-ai-head h3 {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+.dp-ai-head .ic {
+  width: clamp(30px, 4.5vw, 38px);
+  height: clamp(30px, 4.5vw, 38px);
+  border-radius: clamp(8px, 1.5vw, 12px);
+  flex-shrink: 0;
+}
+
+.dp-ai-body {
+  font-size: clamp(0.8125rem, 1.8vw, 0.90625rem);
+  line-height: 1.75;
+}
+
+/* Loading timeline */
+.dp-load {
+  padding: clamp(1rem, 3vw, 1.625rem) clamp(1rem, 3vw, 1.875rem);
+  border-radius: clamp(12px, 2vw, 20px);
+}
+
+.dp-load-step {
+  font-size: clamp(0.8rem, 1.8vw, 0.875rem);
+  gap: clamp(0.6rem, 1.5vw, 0.875rem);
+  padding: clamp(0.5rem, 1vw, 0.625rem) 0;
+}
+
+.dp-load-step .tick {
+  width: clamp(18px, 3vw, 24px);
+  height: clamp(18px, 3vw, 24px);
+  font-size: clamp(0.65rem, 1.3vw, 0.8125rem);
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.dp-empty {
+  padding: clamp(2rem, 6vw, 3.75rem) clamp(1rem, 3vw, 1.875rem);
+  border-radius: clamp(14px, 2.5vw, 22px);
+}
+
+.dp-empty h3 {
+  font-size: clamp(1.1rem, 3.5vw, 1.375rem);
+  margin: clamp(0.75rem, 2vw, 1.125rem) 0 clamp(0.4rem, 1vw, 0.5rem);
+}
+
+.dp-empty p {
+  font-size: clamp(0.8125rem, 1.8vw, 0.875rem);
+}
+
+/* Buttons */
+.stButton > button,
+.stForm button[kind="formSubmit"] {
+  font-size: clamp(0.875rem, 2vw, 0.9375rem) !important;
+  padding: clamp(0.7rem, 1.5vw, 0.875rem) clamp(1rem, 2vw, 1.375rem) !important;
+  border-radius: clamp(10px, 1.5vw, 14px) !important;
+  min-height: 44px !important;
+}
+
+.stDownloadButton > button {
+  border-radius: clamp(8px, 1.5vw, 12px) !important;
+  min-height: 44px !important;
+}
+
+/* Streamlit form wrapper */
+div[data-testid="stForm"] {
+  padding: clamp(1rem, 3vw, 1.625rem) !important;
+  border-radius: clamp(14px, 2.5vw, 22px) !important;
+}
+
+/* Form controls */
+.stTextInput input,
+.stNumberInput input,
+.stSelectbox > div > div,
+.stMultiSelect > div > div {
+  border-radius: clamp(8px, 1.5vw, 12px) !important;
+  min-height: 44px !important;
+  font-size: clamp(0.8125rem, 1.8vw, 0.875rem) !important;
+}
+
+/* ==========================================================================
+   1200px — Large Tablet / Small Laptop
+   ========================================================================== */
+@media (max-width: 1200px) {
+
+  /* Hero: tighten column gap */
+  .dp-hero {
+    gap: 1.5rem;
+  }
+
+  /* Metric value: slightly tighter at this width */
+  .dp-metric .value {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+  }
+
+  /* Opportunity matrix items: slightly smaller */
+  .dp-opp ul {
+    padding-left: 1rem;
+  }
+}
+
+/* ==========================================================================
+   992px — Tablet Landscape
+   ========================================================================== */
+@media (max-width: 992px) {
+
+  /* Block container: reduce outer padding */
+  .block-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Hero: stack vertically, center content */
+  .dp-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  /* Hero subtitle: center and allow full width */
+  .dp-sub {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Hero feature chips: center row */
+  .dp-feature-chips {
+    justify-content: center;
+  }
+
+  /* Hero right column SVG: constrain */
+  .dp-hero iframe {
+    max-height: 220px !important;
+    width: 100% !important;
+  }
+
+  /* Metric cards: maintain 3-col but scale down */
+  .dp-metric .value {
+    font-size: clamp(1.4rem, 4.5vw, 2rem);
+  }
+
+  /* Opportunity matrix: allow overflow scroll if 3-col is too tight */
+  .dp-opp {
+    height: auto !important;
+  }
+
+  /* Milestone: tighten left padding for number badge */
+  .dp-milestone {
+    padding-left: clamp(2.8rem, 7vw, 3.5rem);
+  }
+
+  /* Section title sub: allow wrap */
+  .dp-section-sub {
+    margin-left: 0;
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  /* AI card head: wrap gracefully */
+  .dp-ai-head {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* Form columns: reduce label font */
+  div[data-testid="stForm"] label {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* ==========================================================================
+   768px — Tablet Portrait
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Block container: minimal side padding */
+  .block-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    padding-top: 0.75rem !important;
+  }
+
+  /* Hero: compact */
+  .dp-hero {
+    border-radius: 18px;
+  }
+
+  /* Badge: center on mobile */
+  .dp-badge {
+    align-self: center;
+  }
+
+  /* Metric card layout: make value not overflow */
+  .dp-metric .value {
+    font-size: clamp(1.3rem, 6vw, 1.875rem);
+    word-break: break-word;
+  }
+
+  /* Metric icon: slightly smaller */
+  .dp-metric .icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Market position card (mc2 verdict): full height auto */
+  .dp-card[style*="height:100%"] {
+    height: auto !important;
+    padding: 1.25rem 1.25rem !important;
+  }
+
+  /* Market verdict font */
+  .dp-card div[style*="font-size:22px"] {
+    font-size: clamp(1.1rem, 4vw, 1.375rem) !important;
+  }
+
+  .dp-card div[style*="font-size:13.5px"] {
+    font-size: 0.825rem !important;
+    line-height: 1.65;
+  }
+
+  /* Breakdown progress bar cards: tighter */
+  .dp-card[style*="margin-bottom:12px"] {
+    padding: 0.875rem 1rem !important;
+  }
+
+  /* Career compensation insight card */
+  .dp-card div[style*="font-size:14.2px"] {
+    font-size: 0.875rem !important;
+    line-height: 1.7;
+  }
+
+  .dp-card div[style*="font-size:15px"] {
+    font-size: 0.9rem !important;
+  }
+
+  .dp-card div[style*="font-size:12px"] {
+    font-size: 0.72rem !important;
+  }
+
+  /* Career stage inline badge in card */
+  .dp-card .dp-stage {
+    margin-top: 0.5rem;
+  }
+
+  /* Roadmap: ensure number stays visually aligned */
+  .dp-milestone .num {
+    left: 10px;
+    top: 16px;
+  }
+
+  /* Opportunity matrix columns: add margin between on tablet */
+  .dp-opp {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Plotly chart containers: max-height to prevent towering graphs */
+  [data-testid="stPlotlyChart"] {
+    max-height: 320px;
+    overflow: hidden;
+  }
+
+  /* AI body text */
+  .dp-ai-body {
+    font-size: 0.875rem;
+  }
+
+  /* AI report action links */
+  a[download] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    font-size: 0.875rem;
+    border-radius: 10px !important;
+    padding: 0.65rem !important;
+  }
+
+  /* Buttons: full width and touch-friendly */
+  .stButton > button,
+  .stForm button[kind="formSubmit"] {
+    width: 100% !important;
+    min-height: 48px !important;
+  }
+
+  .stDownloadButton > button {
+    min-height: 46px !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Form: tighten */
+  div[data-testid="stForm"] {
+    padding: 1.1rem !important;
+    border-radius: 16px !important;
+  }
+
+  /* Tag input */
+  .streamlit-tags-input {
+    border-radius: 10px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Selectbox */
+  div[data-baseweb="select"] > div {
+    min-height: 44px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Number input */
+  .stNumberInput input {
+    min-height: 44px !important;
+  }
+
+  /* Role description helper text */
+  div[style*="font-size:12.5px"][style*="margin-top:-6px"] {
+    font-size: 0.78rem !important;
+  }
+
+  /* Skill count badge */
+  div[style*="font-size:12.5px"][style*="font-weight:600"] {
+    font-size: 0.78rem !important;
+    margin-top: 0.35rem;
+  }
+
+  /* Info disclaimer */
+  .stInfo {
+    font-size: 0.8125rem !important;
+  }
+
+  /* Loading timeline: tighter */
+  .dp-load {
+    border-radius: 14px;
+  }
+
+  /* Empty state: compact */
+  .dp-empty svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Columns within Streamlit: prevent overflow */
+  [data-testid="column"] {
+    min-width: 0 !important;
+    overflow: hidden;
+  }
+}
+
+/* ==========================================================================
+   576px — Large Phone
+   ========================================================================== */
+@media (max-width: 576px) {
+
+  /* Block container: minimal */
+  .block-container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Hero: ultra-compact */
+  .dp-hero {
+    border-radius: 14px;
+    gap: 1rem;
+  }
+
+  /* Hero SVG iframe: constrain height */
+  .dp-hero iframe {
+    max-height: 180px !important;
+    min-height: 160px !important;
+  }
+
+  /* Metric value on 3-column layout */
+  .dp-metric .value {
+    font-size: clamp(1.1rem, 7vw, 1.6rem);
+  }
+
+  /* Metric value override for career level and potential (font-size:28px) */
+  .dp-metric .value[style*="font-size:28px"] {
+    font-size: clamp(1rem, 5vw, 1.375rem) !important;
+  }
+
+  /* Career insight card: inner layout wrap */
+  .dp-card div[style*="display:flex"][style*="align-items:center"][style*="justify-content:space-between"] {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* AI head: wrap on small */
+  .dp-ai-head {
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dp-ai-head h3 {
+    font-size: clamp(0.95rem, 4vw, 1.125rem);
+  }
+
+  /* Milestone: tighter */
+  .dp-milestone {
+    padding-left: 2.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dp-milestone .num {
+    width: 24px;
+    height: 24px;
+    font-size: 0.72rem;
+    left: 9px;
+    top: 15px;
+  }
+
+  /* Tags wrap in milestone */
+  .dp-milestone .tags {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* Opportunity items: compact */
+  .dp-opp ul {
+    padding-left: 0.875rem;
+  }
+
+  /* Feature chips: smaller on phones */
+  .dp-chip {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+  }
+
+  /* Stage pill: compact */
+  .dp-stage {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+
+  /* Form: slightly tighter */
+  div[data-testid="stForm"] {
+    padding: 0.875rem !important;
+    border-radius: 14px !important;
+  }
+
+  /* Plotly: reduce bar chart height */
+  [data-testid="stPlotlyChart"] {
+    max-height: 280px;
+  }
+
+  /* Radar chart: allow natural height */
+  [data-testid="stPlotlyChart"]:last-of-type {
+    max-height: 320px;
+  }
+
+  /* Action buttons column: stack if they overflow */
+  a[download],
+  .stDownloadButton > button {
+    width: 100% !important;
+  }
+
+  /* Section title: compact */
+  .dp-section-title {
+    gap: 0.5rem;
+    margin: 1rem 0 0.5rem;
+  }
+
+  .dp-section-title .bar {
+    height: 16px;
+  }
+
+  /* Section sub: allow wrap */
+  .dp-section-sub {
+    margin-left: 0 !important;
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* ==========================================================================
+   400px — Smallest Supported Phones
+   ========================================================================== */
+@media (max-width: 400px) {
+
+  /* Block container: absolute minimum */
+  .block-container {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+  }
+
+  /* Hero */
+  .dp-hero {
+    border-radius: 12px;
+    padding: 0.875rem 0.75rem;
+  }
+
+  /* Hero title: minimum readable */
+  .dp-h1 {
+    font-size: clamp(1.4rem, 9vw, 1.75rem);
+  }
+
+  /* Badge: compact */
+  .dp-badge {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Metric: minimum */
+  .dp-metric {
+    padding: 0.75rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  .dp-metric .value {
+    font-size: clamp(1rem, 8vw, 1.4rem);
+    margin-top: 0.3rem;
+  }
+
+  .dp-metric .icon {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Cards */
+  .dp-card {
+    padding: 0.75rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  /* AI card */
+  .dp-ai-card {
+    padding: 0.75rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  /* Milestone */
+  .dp-milestone {
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    border-radius: 10px;
+  }
+
+  .dp-milestone .num {
+    width: 22px;
+    height: 22px;
+    font-size: 0.65rem;
+    border-radius: 6px;
+    left: 8px;
+    top: 13px;
+  }
+
+  .dp-milestone h4 {
+    font-size: 0.8125rem;
+  }
+
+  .dp-milestone p {
+    font-size: 0.75rem;
+  }
+
+  /* Opportunity matrix */
+  .dp-opp {
+    padding: 0.75rem 0.875rem;
+    border-radius: 10px;
+  }
+
+  /* Load */
+  .dp-load {
+    padding: 0.875rem 0.875rem;
+    border-radius: 12px;
+  }
+
+  .dp-load-step {
+    font-size: 0.78rem;
+  }
+
+  /* Empty state */
+  .dp-empty {
+    padding: 2rem 0.875rem;
+    border-radius: 14px;
+  }
+
+  .dp-empty h3 {
+    font-size: 1rem;
+  }
+
+  .dp-empty p {
+    font-size: 0.78rem;
+  }
+
+  /* Buttons */
+  .stButton > button,
+  .stForm button[kind="formSubmit"] {
+    font-size: 0.8125rem !important;
+    padding: 0.65rem 0.875rem !important;
+    min-height: 48px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Section titles */
+  .dp-section-title {
+    font-size: 0.9375rem;
+  }
+
+  /* AI body */
+  .dp-ai-body {
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+
+  /* Tags */
+  .dp-tag {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+
+  /* Stage pill */
+  .dp-stage {
+    font-size: 0.6rem;
+    padding: 3px 7px;
+  }
+
+  /* Chips */
+  .dp-chip {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.55rem;
+  }
+}
+
+/* ==========================================================================
+   OVERFLOW PREVENTION — all breakpoints
+   ========================================================================== */
+
+/* Global overflow lock */
+.stApp {
+  overflow-x: hidden;
+}
+
+/* Ensure every card-like element never clips layout */
+.dp-card,
+.dp-metric,
+.dp-milestone,
+.dp-opp,
+.dp-ai-card,
+.dp-load,
+.dp-empty {
+  min-width: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Chips and badges: clamp width */
+.dp-chip,
+.dp-badge,
+.dp-stage,
+.dp-tag {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* SVG: never cause horizontal scroll */
+svg {
+  max-width: 100%;
+}
+
+/* Plotly: responsive container */
+[data-testid="stPlotlyChart"] {
+  width: 100% !important;
+  overflow: hidden;
+}
+
+[data-testid="stPlotlyChart"] > div {
+  width: 100% !important;
+}
+
+/* Streamlit columns: prevent overflow */
+[data-testid="column"] {
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+/* Selectbox popover: clamp to viewport */
+[data-baseweb="popover"] {
+  max-width: calc(100vw - 1.5rem) !important;
+  box-sizing: border-box !important;
+}
+
+/* st_tags: prevent overflow */
+.streamlit-tags-input {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  flex-wrap: wrap !important;
+}
+
+/* Text truncation for long skill names in tags */
+.streamlit-tags-input span {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Download anchor: box model */
+a[download] {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Stacked columns on very narrow: no overflow */
+.stHorizontalBlock {
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+/* Streamlit info block */
+.stInfo {
+  border-radius: clamp(8px, 1.5vw, 12px) !important;
+  font-size: clamp(0.78rem, 1.6vw, 0.875rem) !important;
+}
+
+/* ==========================================================================
+   TOUCH UX — minimum 44px tap targets everywhere
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* All interactive Streamlit controls */
+  div[data-baseweb="select"],
+  .stNumberInput,
+  .stTextInput > div,
+  .stMultiSelect > div {
+    min-height: 44px !important;
+  }
+
+  /* Download button */
+  .stDownloadButton > button {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Action anchor link */
+  a[download] {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* ==========================================================================
+   SIDEBAR COMPATIBILITY — prevent layout break when sidebar opens on mobile
+   ========================================================================== */
+@media (max-width: 768px) {
+  [data-testid="stSidebarContent"] ~ .main .block-container {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+/* Disable animations on elements */
+@media (prefers-reduced-motion: reduce) {
+  .dp-badge .dot,
+  .dp-load-step.active .tick,
+  .dp-cursor {
+    animation: none !important;
+  }
+
+  .dp-card:hover,
+  .stButton > button:hover,
+  .stForm button[kind="formSubmit"]:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Override keyframe animations separately */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

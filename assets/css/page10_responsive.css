@@ -1,0 +1,1100 @@
+/*
+ * ============================================================
+ *  DataPilot AI — Responsive Add-On CSS
+ *  PASTE THIS *BELOW* YOUR EXISTING DP_CSS STYLESHEET.
+ *  Nothing here removes or overrides desktop rules.
+ *  All breakpoints use max-width so desktop (> 1200px)
+ *  is untouched.
+ * ============================================================
+ */
+
+/* ─────────────────────────────────────────────
+   SHARED STREAMLIT RESETS  (all viewports)
+   Prevent horizontal scroll introduced by
+   Streamlit's own padding / margin defaults.
+───────────────────────────────────────────── */
+.stApp,
+.block-container,
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"] {
+  overflow-x: hidden;
+}
+
+/* Ensure Streamlit's default wide-layout gutter
+   doesn't push content off screen on narrow views */
+.block-container {
+  padding-left: max(1rem, 2vw) !important;
+  padding-right: max(1rem, 2vw) !important;
+  box-sizing: border-box;
+}
+
+/* ─────────────────────────────────────────────
+   1600px  — trim generous gutter on very wide
+───────────────────────────────────────────── */
+@media (max-width: 1600px) {
+  .block-container {
+    max-width: 1360px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   1400px  — slight squeeze on score / stat grids
+───────────────────────────────────────────── */
+@media (max-width: 1400px) {
+  .dp-score-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dp-grid-4[style*="repeat(5"] {
+    /* Activity Footprint override */
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   1200px  — collapse hero to single column
+───────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  /* Hero */
+  .dp-hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 24px 22px;
+  }
+
+  /* Hide decorative SVG network on medium screens to reclaim space */
+  .dp-hero > div:last-child > svg {
+    display: none;
+  }
+
+  /* Score grid */
+  .dp-score-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Activity footprint */
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   992px  — tablet landscape
+───────────────────────────────────────────── */
+@media (max-width: 992px) {
+  /* Logo */
+  .dp-logo {
+    padding: 14px 18px;
+    gap: 14px;
+    border-radius: 18px;
+  }
+  .dp-logo img,
+  .dp-logo-img {
+    width: 52px;
+    height: 52px;
+  }
+  .dp-logo .nm {
+    font-size: 26px;
+  }
+  .dp-logo .tag {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Hero left */
+  .dp-hero-left {
+    gap: 16px;
+  }
+  .dp-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+    border-radius: 18px;
+    flex-shrink: 0;
+  }
+  .dp-name {
+    font-size: 24px;
+  }
+  .dp-headline {
+    font-size: 14px;
+  }
+
+  /* Grids */
+  .dp-score-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dp-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* Completion widget */
+  .dp-completion {
+    padding: 14px 16px;
+    gap: 14px;
+  }
+  .dp-ring {
+    width: 56px;
+    height: 56px;
+  }
+  .dp-completion .meta .v {
+    font-size: 20px;
+  }
+
+  /* Tab bar — allow horizontal scroll if tabs overflow */
+  .stTabs [data-baseweb="tab-list"] {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+  .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+    display: none;
+  }
+  .stTabs [data-baseweb="tab"] {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   768px  — tablet portrait
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Global spacing */
+  .block-container {
+    padding-top: 0.75rem !important;
+  }
+
+  /* Logo */
+  .dp-logo {
+    padding: 12px 14px;
+    gap: 12px;
+    border-radius: 16px;
+  }
+  .dp-logo img,
+  .dp-logo-img {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    padding: 7px;
+  }
+  .dp-logo .nm {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .dp-logo .tag {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+
+  /* Hero */
+  .dp-hero {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+  .dp-hero-left {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .dp-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    border-radius: 14px;
+  }
+  .dp-name {
+    font-size: 20px;
+    margin: 2px 0 4px;
+  }
+  .dp-headline {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .dp-pill {
+    font-size: 11px;
+    padding: 4px 10px;
+    margin: 3px 4px 0 0;
+  }
+
+  /* Eyebrow badges */
+  .dp-eyebrow {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+
+  /* Completion */
+  .dp-completion {
+    flex-direction: row;
+    padding: 14px 14px;
+    gap: 12px;
+    border-radius: 14px;
+  }
+  .dp-ring {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+  .dp-completion .meta .t {
+    font-size: 10px;
+  }
+  .dp-completion .meta .v {
+    font-size: 18px;
+  }
+  .dp-missing {
+    font-size: 12px;
+  }
+
+  /* Section headers */
+  .dp-sec {
+    margin: 20px 0 10px;
+  }
+  .dp-sec h3 {
+    font-size: 16px;
+  }
+  .dp-sec .sub {
+    font-size: 12px;
+  }
+
+  /* Score grid */
+  .dp-score-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .dp-score {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .dp-score .val {
+    font-size: 22px;
+  }
+
+  /* All dp-grid-* to 2 cols */
+  .dp-grid-2,
+  .dp-grid-3,
+  .dp-grid-4 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+  }
+
+  /* Activity footprint */
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* AI / activity cards */
+  .dp-aicard {
+    padding: 14px;
+    border-radius: 12px;
+    min-height: 110px;
+  }
+  .dp-aicard .ico {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+  .dp-aicard .t {
+    font-size: 11px;
+  }
+  .dp-aicard .v {
+    font-size: 15px;
+  }
+  .dp-aicard .d {
+    font-size: 12px;
+  }
+
+  /* Insight cards */
+  .dp-insight {
+    padding: 14px 14px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+  .dp-insight .ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .dp-insight .txt {
+    font-size: 13px;
+  }
+
+  /* Timeline */
+  .dp-timeline {
+    padding-left: 22px;
+  }
+  .dp-tl-title {
+    font-size: 13px;
+  }
+  .dp-tl-sub {
+    font-size: 12px;
+  }
+  .dp-tl-time {
+    font-size: 11px;
+  }
+
+  /* Info grid inside identity card */
+  .dp-card [style*="grid-template-columns:130px"] {
+    grid-template-columns: 100px 1fr !important;
+    font-size: 13px !important;
+  }
+
+  /* Resume / asset cards */
+  .dp-asset {
+    padding: 14px;
+    border-radius: 12px;
+    min-height: 150px;
+  }
+  .dp-asset .nm {
+    font-size: 13px;
+  }
+  .dp-asset .meta {
+    font-size: 11px;
+  }
+
+  /* Skill chips */
+  .dp-chip {
+    font-size: 11.5px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin: 3px 5px 3px 0;
+  }
+
+  /* Cards */
+  .dp-card {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+
+  /* Buttons — 44px touch target */
+  .stButton > button,
+  .stDownloadButton > button,
+  .stFormSubmitButton > button {
+    min-height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    padding: 10px 16px !important;
+    width: 100%;
+  }
+
+  /* Forms */
+  .stTextInput input,
+  .stTextArea textarea,
+  .stSelectbox div[data-baseweb="select"] > div,
+  .stNumberInput input {
+    font-size: 15px !important; /* prevents iOS zoom on focus */
+    border-radius: 10px !important;
+    min-height: 44px !important;
+  }
+
+  /* Streamlit columns inside form on mobile — stack */
+  [data-testid="stHorizontalBlock"] {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+  [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    width: 100% !important;
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  /* Checkboxes */
+  .stCheckbox label {
+    font-size: 14px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Tabs */
+  .stTabs [data-baseweb="tab"] {
+    padding: 9px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* SVG — Network illustration */
+  .dp-hero > div:last-child svg {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   600px  — large phone landscape / small tablet
+───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  /* Score grid → 2 cols, more compact */
+  .dp-score-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dp-score .val {
+    font-size: 20px;
+  }
+  .dp-score .lbl {
+    font-size: 10px;
+  }
+
+  /* All grids → 2 cols */
+  .dp-grid-2,
+  .dp-grid-3,
+  .dp-grid-4 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .dp-hero {
+    padding: 16px 14px;
+  }
+
+  /* Typography scale-down */
+  .dp-name {
+    font-size: 18px;
+  }
+
+  /* Completion */
+  .dp-ring {
+    width: 48px;
+    height: 48px;
+  }
+  .dp-completion .meta .v {
+    font-size: 16px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   480px  — phone portrait (most common)
+───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Logo — ultra compact */
+  .dp-logo {
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .dp-logo img,
+  .dp-logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 6px;
+  }
+  .dp-logo .nm {
+    font-size: 18px;
+  }
+  .dp-logo .tag {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+  }
+
+  /* Hero — vertical stack avatar + text */
+  .dp-hero {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+  .dp-hero-left {
+    gap: 12px;
+    align-items: center;
+  }
+  .dp-avatar {
+    width: 54px;
+    height: 54px;
+    font-size: 18px;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .dp-name {
+    font-size: 17px;
+    line-height: 1.15;
+  }
+  .dp-headline {
+    font-size: 12px;
+  }
+  .dp-pill {
+    font-size: 10.5px;
+    padding: 3px 8px;
+    gap: 4px;
+  }
+
+  /* Pills: allow wrap */
+  .dp-hero-left > div:last-child > div[style*="margin-top"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* Completion */
+  .dp-completion {
+    padding: 12px 12px;
+    gap: 10px;
+    border-radius: 12px;
+    margin-top: 12px !important;
+  }
+  .dp-ring {
+    width: 44px;
+    height: 44px;
+  }
+  .dp-completion .meta .v {
+    font-size: 15px;
+  }
+  .dp-completion .meta .t {
+    font-size: 9px;
+  }
+  .dp-missing {
+    font-size: 11px;
+  }
+
+  /* Section headers */
+  .dp-sec {
+    margin: 16px 0 8px;
+    gap: 8px;
+  }
+  .dp-sec h3 {
+    font-size: 15px;
+  }
+  .dp-sec .sub {
+    display: none; /* hide subtitle on very small screens */
+  }
+  .dp-sec .bar {
+    width: 3px;
+    height: 15px;
+  }
+
+  /* All grids → single column */
+  .dp-grid-2,
+  .dp-grid-3,
+  .dp-grid-4 {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+  .dp-score-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Cards */
+  .dp-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .dp-aicard {
+    min-height: auto;
+    padding: 12px;
+  }
+  .dp-asset {
+    min-height: auto;
+    padding: 12px;
+  }
+
+  /* Insight */
+  .dp-insight .txt {
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  /* Info grid — stack to single col */
+  .dp-card [style*="grid-template-columns:130px"],
+  .dp-card [style*="grid-template-columns:100px"] {
+    grid-template-columns: 1fr !important;
+    gap: 4px 0 !important;
+  }
+  .dp-card [style*="grid-template-columns:130px"] .dp-mute,
+  .dp-card [style*="grid-template-columns:100px"] .dp-mute {
+    font-size: 10px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 8px;
+  }
+
+  /* Skill chip */
+  .dp-chip {
+    font-size: 11px;
+    padding: 5px 9px;
+  }
+
+  /* Timeline */
+  .dp-timeline {
+    padding-left: 18px;
+  }
+  .dp-tl-item {
+    padding-bottom: 14px;
+  }
+
+  /* Buttons */
+  .stButton > button,
+  .stDownloadButton > button,
+  .stFormSubmitButton > button {
+    min-height: 48px !important;
+    font-size: 14px !important;
+  }
+
+  /* Form inputs */
+  .stTextInput input,
+  .stTextArea textarea,
+  .stSelectbox div[data-baseweb="select"] > div,
+  .stNumberInput input {
+    font-size: 16px !important; /* critical: prevents iOS zoom */
+  }
+
+  /* Tabs */
+  .stTabs [data-baseweb="tab"] {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+  }
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+    padding: 4px;
+    border-radius: 12px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   430px  — iPhone Pro Max and similar
+───────────────────────────────────────────── */
+@media (max-width: 430px) {
+  .block-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .dp-logo .nm {
+    font-size: 17px;
+  }
+  .dp-logo .tag {
+    font-size: 8.5px;
+  }
+
+  .dp-name {
+    font-size: 16px;
+  }
+  .dp-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .dp-hero {
+    padding: 12px 10px;
+  }
+
+  /* Score grid stays 2 col but more compact */
+  .dp-score-grid {
+    gap: 6px;
+  }
+  .dp-score {
+    padding: 12px;
+  }
+  .dp-score .val {
+    font-size: 18px;
+  }
+
+  /* Activity footprint 2-col */
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Ensure no element bleeds past viewport */
+  * {
+    max-width: 100%;
+  }
+  img, svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   390px  — iPhone 14 / 15 default
+───────────────────────────────────────────── */
+@media (max-width: 390px) {
+  .block-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .dp-logo {
+    padding: 9px 10px;
+    gap: 8px;
+  }
+  .dp-logo img,
+  .dp-logo-img {
+    width: 36px;
+    height: 36px;
+    padding: 5px;
+    border-radius: 8px;
+  }
+  .dp-logo .nm {
+    font-size: 15px;
+  }
+  .dp-logo .tag {
+    display: none; /* Too cramped — hide tagline */
+  }
+
+  .dp-hero {
+    padding: 10px 10px;
+    border-radius: 12px;
+  }
+  .dp-hero-left {
+    gap: 10px;
+  }
+  .dp-avatar {
+    width: 46px;
+    height: 46px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+  .dp-name {
+    font-size: 15px;
+  }
+  .dp-headline {
+    font-size: 11.5px;
+  }
+  .dp-pill {
+    font-size: 10px;
+    padding: 3px 7px;
+  }
+
+  .dp-eyebrow {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+  .dp-eyebrow .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .dp-completion {
+    padding: 10px 10px;
+    gap: 8px;
+  }
+  .dp-ring {
+    width: 40px;
+    height: 40px;
+  }
+  .dp-completion .meta .v {
+    font-size: 14px;
+  }
+
+  .dp-score-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dp-score .val {
+    font-size: 16px;
+  }
+
+  /* Tabs */
+  .stTabs [data-baseweb="tab"] {
+    padding: 7px 8px !important;
+    font-size: 10px !important;
+  }
+
+  .dp-card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+  .dp-aicard {
+    padding: 10px;
+  }
+
+  .dp-chip {
+    font-size: 10.5px;
+    padding: 4px 8px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   360px  — common Android default
+───────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .block-container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .dp-logo {
+    padding: 8px 10px;
+  }
+  .dp-logo .nm {
+    font-size: 14px;
+  }
+
+  .dp-name {
+    font-size: 14px;
+  }
+  .dp-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .dp-score-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .dp-score {
+    padding: 10px;
+  }
+  .dp-score .val {
+    font-size: 15px;
+  }
+  .dp-score .lbl {
+    font-size: 9px;
+  }
+
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Tabs: icon-only if labels too long */
+  .stTabs [data-baseweb="tab"] {
+    padding: 6px 6px !important;
+    font-size: 9.5px !important;
+  }
+
+  .dp-card {
+    padding: 10px;
+  }
+  .dp-aicard {
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .dp-insight {
+    padding: 10px 10px;
+  }
+  .dp-chip {
+    font-size: 10px;
+    padding: 4px 7px;
+    border-radius: 6px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   320px  — minimum supported width (SE, Galaxy A)
+───────────────────────────────────────────── */
+@media (max-width: 320px) {
+  .block-container {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .dp-logo {
+    padding: 7px 8px;
+    border-radius: 10px;
+  }
+  .dp-logo img,
+  .dp-logo-img {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+  }
+  .dp-logo .nm {
+    font-size: 13px;
+  }
+
+  .dp-hero {
+    padding: 10px 8px;
+  }
+  .dp-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+  .dp-name {
+    font-size: 13px;
+  }
+  .dp-headline {
+    font-size: 11px;
+  }
+  .dp-pill {
+    font-size: 9.5px;
+    padding: 2px 6px;
+  }
+
+  /* Completion ring tiny */
+  .dp-ring {
+    width: 36px;
+    height: 36px;
+  }
+  .dp-completion .meta .v {
+    font-size: 13px;
+  }
+
+  .dp-score-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .dp-score .val {
+    font-size: 14px;
+  }
+
+  .dp-aicard {
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .dp-aicard .ico {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+  }
+  .dp-aicard .t {
+    font-size: 9.5px;
+  }
+  .dp-aicard .v {
+    font-size: 13px;
+  }
+
+  .dp-card {
+    padding: 8px;
+    border-radius: 8px;
+  }
+  .dp-chip {
+    font-size: 9.5px;
+    padding: 3px 6px;
+  }
+
+  .stTabs [data-baseweb="tab"] {
+    padding: 5px 6px !important;
+    font-size: 9px !important;
+  }
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 2px;
+    padding: 3px;
+  }
+
+  .stButton > button,
+  .stDownloadButton > button,
+  .stFormSubmitButton > button {
+    font-size: 13px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   FOLDABLE DEVICES  (wide inner screen in portrait)
+   Typically 717-884px when unfolded
+───────────────────────────────────────────── */
+@media (min-width: 600px) and (max-width: 884px) and (min-height: 800px) {
+  /* Foldable unfolded: 2-col hero + 3-col grids */
+  .dp-hero {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+  .dp-hero > div:last-child svg {
+    display: block; /* show network again */
+  }
+  .dp-score-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dp-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   LARGE TABLETS (iPad Pro, Surface Pro landscape)
+───────────────────────────────────────────── */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .dp-grid-4[style*="repeat(5"] {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .dp-score-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .dp-hero {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   ACCESSIBILITY & UX POLISH
+───────────────────────────────────────────── */
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .dp-card,
+  .dp-card:hover,
+  .dp-score:hover,
+  .dp-aicard:hover,
+  .dp-logo,
+  .dp-logo:hover,
+  .dp-logo img:hover,
+  .dp-logo-img:hover {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* Focus visible for keyboard users */
+.stButton > button:focus-visible,
+.stTextInput input:focus-visible,
+.stTextArea textarea:focus-visible,
+.stSelectbox div[data-baseweb="select"] > div:focus-visible {
+  outline: 2px solid #00C8FF !important;
+  outline-offset: 2px !important;
+}
+
+/* Prevent all horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Touch-friendly tap targets on mobile */
+@media (max-width: 768px) {
+  .stCheckbox [data-baseweb="checkbox"],
+  .stRadio [data-baseweb="radio"] {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Ensure select dropdowns are easy to tap */
+  .stSelectbox div[data-baseweb="select"] {
+    min-height: 44px !important;
+  }
+
+  /* Give labels enough space */
+  .stTextInput label,
+  .stTextArea label,
+  .stSelectbox label {
+    margin-bottom: 4px !important;
+  }
+
+  /* Quick Actions columns — stack on mobile */
+  [data-testid="stHorizontalBlock"] .stButton {
+    width: 100%;
+  }
+}
+
+/* Line-clamp long text inside small cards */
+@media (max-width: 480px) {
+  .dp-aicard .d {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; /* stylelint-disable-line */
+    line-clamp: 2;
+  }
+  .dp-tl-sub {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; /* stylelint-disable-line */
+    line-clamp: 2;
+  }
+}

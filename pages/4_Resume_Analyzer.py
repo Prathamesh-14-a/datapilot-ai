@@ -27,6 +27,8 @@ from src.llm.resume_feedback import generate_resume_feedback
 from src.text_to_pdf.text_to_pdf import text_to_pdf
 
 
+
+
 # ==========================================================
 # PAGE CONFIG
 # ==========================================================
@@ -585,10 +587,20 @@ st.markdown(
     header {
         height: 0px !important;
     }
+
+    
     </style>
     """,
     unsafe_allow_html=True,
+
+
 )
+
+# Mobile/Tablet responsiveness CSS block:
+_responsive_css = Path("assets/css/page4_responsive.css")
+if _responsive_css.exists():
+    with open(_responsive_css, "r") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 # ==========================================================

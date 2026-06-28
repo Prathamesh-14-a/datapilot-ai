@@ -5,6 +5,7 @@ from src.auth.session_manager import create_session, is_authenticated
 
 import base64, os
 
+
 def load_logo(path="assets/logo.png"):
     try:
         ext = os.path.splitext(path)[1].lower().replace(".", "")
@@ -214,6 +215,57 @@ html, body, [class*="css"], [data-testid="stAppViewContainer"], .stApp {
 /* Footer note */
 .dp-foot {
     text-align:center; color:#4B5563; font-size:12px; margin-top:32px;
+}
+
+@media (max-width:768px){
+  html,body,[class*="css"],[data-testid="stAppViewContainer"],.stApp{overflow-x:hidden !important;}
+
+  .block-container{padding:2rem 1rem 2rem 1rem !important;max-width:100% !important;}
+
+  [data-testid="column"]{width:100% !important;flex:1 1 100% !important;min-width:100% !important;}
+  [data-testid="stHorizontalBlock"]{flex-direction:column !important;gap:0 !important;}
+
+  .dp-aurora{overflow:hidden !important;}
+  .dp-orb.o1{width:260px;height:260px;top:-80px;left:-80px;}
+  .dp-orb.o2{width:220px;height:220px;bottom:-60px;right:-60px;}
+  .dp-orb.o3{width:180px;height:180px;opacity:0.15;}
+  .dp-orb{animation-duration:24s !important;filter:blur(60px) !important;}
+
+  #dp-stars{width:100vw !important;max-width:100vw !important;overflow:hidden !important;}
+
+  .dp-brand{justify-content:center !important;margin-left:0 !important;margin-bottom:28px !important;}
+  .dp-brand img{max-width:72px !important;height:auto !important;}
+
+  .dp-headline{font-size:34px !important;text-align:center !important;margin-bottom:16px !important;letter-spacing:-0.02em !important;}
+
+  .dp-sub{font-size:15px !important;text-align:center !important;margin:0 auto 28px auto !important;max-width:100% !important;}
+
+  .dp-features{max-width:100% !important;gap:14px !important;}
+  .dp-feature{width:100% !important;padding:12px !important;background:rgba(34,211,238,0.04);border:1px solid rgba(34,211,238,0.1);border-radius:12px;}
+  .dp-feature:hover{transform:none !important;}
+
+  .dp-card{padding:24px 18px !important;margin-top:28px !important;width:100% !important;box-sizing:border-box !important;transform:none !important;}
+  .dp-card:hover::before{opacity:0 !important;}
+  .dp-card h2{font-size:20px !important;}
+  .dp-card p.lead{font-size:13px !important;}
+
+  .stTextInput>label{font-size:13px !important;}
+  .stTextInput>div>div>input{font-size:14px !important;height:48px !important;padding:12px 14px !important;width:100% !important;box-sizing:border-box !important;}
+
+  .stButton>button{width:100% !important;font-size:15px !important;height:48px !important;padding:12px 16px !important;box-sizing:border-box !important;}
+  .stButton>button::after{display:none !important;}
+
+  .dp-divider{margin:18px 0 12px 0 !important;font-size:12px !important;}
+
+  .dp-signup-row{font-size:13px !important;}
+  .dp-foot{font-size:11px !important;margin-top:20px !important;}
+
+  .dp-feat-ico{width:32px !important;height:32px !important;flex-shrink:0 !important;}
+  .dp-feat-ico svg{width:16px !important;height:16px !important;}
+  .dp-feat-text{font-size:13px !important;}
+  .dp-feat-text small{font-size:12px !important;}
+
+  .dp-brand-name{font-size:18px !important;}
 }
 </style>
 """, unsafe_allow_html=True)
