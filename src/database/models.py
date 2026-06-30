@@ -1,8 +1,9 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String, DateTime , ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime , ForeignKey , Index
 from datetime import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy import Float , Text
+import uuid
 
 
 class Base(DeclarativeBase):
@@ -233,6 +234,24 @@ class AIChatSession(Base):
         DateTime,
         default=datetime.utcnow,
         onupdate=datetime.utcnow
+    )
+
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    token_hash = Column(String(128), nullable=False, unique=True, index=True)
+    expires_at = Column(DateTime, nullable=False)
+    used_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    requested_ip = Column(String(64), nullable=True)
+
+    user = relationship("User", backref="password_reset_tokens")
+
+    __table_args__ = (
+        Index("ix_prt_user_active", "user_id", "used_at"),
     )
 
 

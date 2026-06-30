@@ -1108,7 +1108,7 @@ if "salary_feedback" in st.session_state:
         b64 = base64.b64encode(feedback_text.encode()).decode()
         st.markdown(
             f"""
-            <a href="data:text/plain;base64,{b64}" download="AI_skill_Report.txt"
+            <a href="data:text/plain;base64,{b64}" download="AI_salary_Report.txt"
                style="display:block;text-align:center;padding:.7rem;border-radius:12px;
                       background:rgba(255,255,255,0.04);border:1px solid var(--dp-border-strong);
                       color:var(--dp-text);text-decoration:none;font-weight:600;">

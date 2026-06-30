@@ -588,5 +588,7 @@ if login_btn:
         except Exception as e:
             st.error(str(e))
 
+st.page_link("pages/11_Forget_Password.py", label="Forgot password?")
+
 if signup_btn:
     st.switch_page("pages/2_Signup.py")

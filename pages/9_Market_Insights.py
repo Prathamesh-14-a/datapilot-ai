@@ -500,7 +500,8 @@ c1, c2 = st.columns(2)
 with c1:
     selected_role = st.selectbox(
         "Target Role",
-        sorted(exp_df["Standardized_Job_Title"].unique())
+        sorted(exp_df["Standardized_Job_Title"].unique()) ,
+        index = 2
     )
 with c2:
     selected_location = st.selectbox(
