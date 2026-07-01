@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="DataPilot AI Logo" width="120"/>
+<img src="assets/logo.png" alt="DataPilot AI Logo" width="250"/>
 
 # DataPilot AI
 
