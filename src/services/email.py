@@ -3,6 +3,7 @@ import os
 import smtplib
 import ssl
 from email.message import EmailMessage
+from urllib.parse import quote
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,6 +23,9 @@ print("FROM:", SMTP_FROM)
 print("BASE URL:", APP_BASE_URL)
 
 def send_email(to_email: str, subject: str, html_body: str, text_body: str) -> None:
+    if not SMTP_HOST:
+        raise RuntimeError("SMTP is not configured. Set SMTP_HOST in your environment to send reset emails.")
+
     msg = EmailMessage()
     msg["From"] = SMTP_FROM
     msg["To"] = to_email
@@ -42,10 +46,14 @@ def send_email(to_email: str, subject: str, html_body: str, text_body: str) -> N
                 s.login(SMTP_USER, SMTP_PASS)
             s.send_message(msg)
 
-def send_password_reset_email(to_email: str, raw_token: str) -> None:
-    # Streamlit multi-page URL convention: ?token=...
-    reset_url = f"{APP_BASE_URL}/ResetPassword?token={raw_token}"
+
+def send_password_reset_email(to_email: str, raw_token: str) -> str:
+    reset_url = f"{APP_BASE_URL.rstrip('/')}/ResetPassword?token={quote(raw_token, safe='')}"
     print(reset_url)
+
+    if not SMTP_HOST:
+        return reset_url
+
     subject = "Reset your password"
     text_body = (
         f"We received a request to reset your password.\n\n"
@@ -58,3 +66,4 @@ def send_password_reset_email(to_email: str, raw_token: str) -> None:
       <p>If you didn't request this, you can ignore this email.</p>
     """
     send_email(to_email, subject, html_body, text_body)
+    return reset_url

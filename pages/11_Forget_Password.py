@@ -1,6 +1,7 @@
 # pages/11_ForgotPassword.py
+import os
 import streamlit as st
-from src.database.db_connection import SessionLocal           # adjust import to your project
+from src.database.db_connection import SessionLocal
 from src.database.models import User
 from src.services.passwd_reset import create_reset_token
 from src.services.email import send_password_reset_email
@@ -24,16 +25,19 @@ if submitted:
             if user:
                 try:
                     raw_token = create_reset_token(db, user)
-                    print(raw_token)
-                    send_password_reset_email(user.email, raw_token)
-                    print("EMAIL SENT")
-
+                    reset_link = send_password_reset_email(user.email, raw_token)
+                    if not reset_link:
+                        st.error("Unable to send reset email right now.")
+                    else:
+                        st.success("If an account exists for that email, a reset link has been sent.")
+                        if not os.getenv("SMTP_HOST"):
+                            st.info("Email service is not configured, so here is the reset link for local testing:")
+                            st.code(reset_link)
                 except Exception as e:
                     st.exception(e)
-                    raise
-            # Always show the same message (prevents email enumeration)
-            st.success("If an account exists for that email, a reset link has been sent.")
+            else:
+                st.success("If an account exists for that email, a reset link has been sent.")
         finally:
             db.close()
 
-st.page_link("pages/1_Login.py", label="← Back to login")  # adjust filename
+st.page_link("pages/1_Login.py", label="← Back to login")
