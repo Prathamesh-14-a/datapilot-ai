@@ -319,11 +319,9 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 **Prathamesh Ambulge**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Prathamesh--14--a-181717?style=flat-square&logo=github)](https://github.com/Prathamesh-14-a)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white)]
-(https://www.linkedin.com/in/pratham-data-analyst/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pratham-data-analyst/)
 [![Portfolio](https://img.shields.io/badge/Portfolio-Visit-000000?style=flat-square&logo=vercel&logoColor=white)](#)
-[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat-square&logo=gmail&logoColor=white)]
-(prathmeshambulge56@gmail.com)
+[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat-square&logo=gmail&logoColor=white)](prathmeshambulge56@gmail.com)
 
 ---
 
