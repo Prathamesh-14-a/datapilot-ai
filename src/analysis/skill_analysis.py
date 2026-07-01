@@ -308,7 +308,7 @@ def main():
     plot_heatmap(role_df_filtered)
 
 
-    save_outputs(filtered_skill_df, role_df_filtered)
+    # save_outputs(filtered_skill_df, role_df_filtered)
 
 
 # =========================================

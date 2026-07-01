@@ -113,8 +113,8 @@ def company_analysis(df):
     return df["Company Name"].value_counts().head(10)
 
 
-# EXPORT RESULTS
-# -------------------------------
+#EXPORT RESULTS
+#-------------------------------
 def save_outputs(role_count, location_count):
     role_count.to_csv("data/processed/role_distribution.csv")
     location_count.to_csv("data/processed/location_distribution.csv")

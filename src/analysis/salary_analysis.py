@@ -184,7 +184,7 @@ def main():
     salary_by_location(salary_df)
     remote_vs_onsite(salary_df)
 
-    save_outputs(salary_df, premium_skill_df , filtered_location_df)
+    save_outputs(salary_df, premium_skill_df , filtered_location_df) 
 
 
 # -------------------------------------------------
