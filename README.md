@@ -131,10 +131,13 @@ Aggregates and visualizes hiring trends using `pandas`, `plotly`, `matplotlib`, 
 |:---:|:---:|:---:|
 | ![Dashboard](reports/dashboard_images/dashboard.png) | ![Resume Analyzer](reports/dashboard_images/resume_analyzer.png) | ![Skill Gap](reports/dashboard_images/skill_gap.png) |
 
-| Salary Predictor | AI Career Mentor | Market Intelligence |
+| Salary Predictor | AI Career Mentor | Job Fit Predictor |
 |:---:|:---:|:---:|
-| ![Salary Predictor](reports/dashboard_images/salary_predictor.png) | ![AI Mentor](reports/dashboard_images/ai_mentor.png) | ![Market Intelligence](reports/dashboard_images/market_intelligence.png) |
+| ![Salary Predictor](reports/dashboard_images/salary_predictor.png) | ![AI Mentor](reports/dashboard_images/ai_mentor.png) | ![Job Fit Predictor](reports/dashboard_images/job_fit.png) |
 
+| Market Intelligence |
+|:---:|
+| ![Market Intelligence](reports/dashboard_images/market_insights.png) |
 ---
 
 ## Architecture
