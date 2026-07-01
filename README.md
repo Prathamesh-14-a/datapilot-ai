@@ -319,7 +319,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## Author
 
-**Prathamesh Ambul**
+**Prathamesh Ambulge**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Prathamesh--14--a-181717?style=flat-square&logo=github)](https://github.com/Prathamesh-14-a)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pratham-data-analyst/)
