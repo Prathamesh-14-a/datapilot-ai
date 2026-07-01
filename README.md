@@ -137,7 +137,7 @@ Aggregates and visualizes hiring trends using `pandas`, `plotly`, `matplotlib`, 
 
 | Market Intelligence |
 |:---:|
-| ![Market Intelligence](reports/dashboard_images/market_insights.png) |
+| ![Market Intelligence](reports/dashboard_images/market_insight.png) |
 ---
 
 ## Architecture
