@@ -135,9 +135,9 @@ Aggregates and visualizes hiring trends using `pandas`, `plotly`, `matplotlib`, 
 |:---:|:---:|:---:|
 | ![Salary Predictor](reports/dashboard_images/salary_predictor.png) | ![AI Mentor](reports/dashboard_images/ai_mentor.png) | ![Job Fit Predictor](reports/dashboard_images/job_fit.png) |
 
-| Market Intelligence |
-|:---:|
-| ![Market Intelligence](reports/dashboard_images/market_insight.png) |
+| Market Intelligence | Profile |
+|:---:|:---:|
+| ![Market Intelligence](reports/dashboard_images/market_insight.png) | ![Profile](reports/dashboard_images/profile.png) |
 ---
 
 ## Architecture
