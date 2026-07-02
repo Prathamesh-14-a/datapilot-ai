@@ -38,7 +38,7 @@ def _retry_delay_seconds(attempt):
 def generate_response(prompt: str):
     last_error = None
 
-    for attempt in range(3):
+    for attempt in range(5):
         try:
             response = client.models.generate_content(
                 model="gemini-2.5-flash",

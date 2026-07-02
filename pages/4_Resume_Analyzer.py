@@ -5,6 +5,7 @@ import textwrap
 from pathlib import Path
 
 import streamlit as st
+import logging
 import plotly.graph_objects as go
 
 from src.auth.session_manager import is_authenticated
@@ -789,13 +790,42 @@ if analyze_clicked:
 
     import tempfile
 
-    # Create a temporary file for analysis
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
-        tmp.write(uploaded_file.getbuffer())
-        save_path = Path(tmp.name)
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
 
-    # Upload to Cloudinary
-    resume_url, public_id = upload_resume(uploaded_file)
+    # Read uploaded file bytes once and reuse everywhere to avoid stream consumption issues on mobile
+    try:
+        pdf_bytes = uploaded_file.getbuffer().tobytes()
+    except Exception:
+        # fallback
+        uploaded_file.seek(0)
+        pdf_bytes = uploaded_file.read()
+
+    logger.info(f"File selected: {uploaded_file.name}")
+    logger.info(f"File size bytes: {len(pdf_bytes)}")
+
+    # Create a temporary file for analysis (write bytes, flush and close)
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+    try:
+        tmp.write(pdf_bytes)
+        tmp.flush()
+        tmp.close()
+        save_path = Path(tmp.name)
+        logger.info(f"Temporary file created: {save_path} ({save_path.stat().st_size} bytes)")
+    except Exception as e:
+        logger.exception("Failed to write temporary file")
+        st.error("Internal error creating temporary file for analysis.")
+        st.stop()
+
+    # Upload to Cloudinary using raw bytes (upload_resume was updated to accept bytes)
+    logger.info("Starting Cloudinary upload")
+    try:
+        resume_url, public_id = upload_resume(pdf_bytes, uploaded_file.name)
+        logger.info(f"Cloudinary upload finished: {resume_url}")
+    except Exception:
+        logger.exception("Cloudinary upload failed")
+        st.error("Failed to upload resume to cloud storage.")
+        st.stop()
 
     saved_resume = save_resume(
             user_id=user_id,
@@ -818,7 +848,9 @@ if analyze_clicked:
         time.sleep(0.25)
 
     # ===== BACKEND CALLS (unchanged) =====
+    logger.info("Starting full resume analysis")
     result = full_resume_analysis(save_path, target_role)
+    logger.info("Full resume analysis completed")
     ats_result = result["ats"]
     save_analysis(
         user_id=user_id,
