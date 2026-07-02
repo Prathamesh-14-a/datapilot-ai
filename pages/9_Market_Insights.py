@@ -937,7 +937,7 @@ with right_col:
 # FOOTER
 # --------------------------------------------------
 def _logo_b64():
-    for p in [ASSETS_DIR / "mini_logo.png", ROOT_DIR / "static" / "logo.png", ROOT_DIR / "logo.png"]:
+    for p in [ASSETS_DIR / "mini_logo.png"]:
         if p.exists():
             return base64.b64encode(p.read_bytes()).decode()
     return ""

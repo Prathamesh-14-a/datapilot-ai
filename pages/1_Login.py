@@ -566,7 +566,7 @@ with right:
 
     login_btn = st.button("Sign in", use_container_width=True, key="dp_login")
 
-    st.page_link("pages/11_Forget_Password.py", label="Forgot password?")
+    #st.page_link("pages/11_Forget_Password.py", label="Forgot password?")
 
     st.markdown('<div class="dp-divider">or</div>', unsafe_allow_html=True)
 

@@ -614,12 +614,18 @@ with st.form("salary_prediction_form"):
         st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
         st.markdown("**Skills**")
         resume_skills = st.session_state.get("resume_skills", [])
-        skills = st_tags(
+
+        TECHNICAL_SKILLS = [skill.lower() for skill in TECHNICAL_SKILLS]
+
+        skills_ = st_tags(
             label="",
             value=resume_skills,
             suggestions=TECHNICAL_SKILLS,
             key="salary_skills_tags",
         )
+        
+        skills = list(dict.fromkeys(skill.strip().lower() for skill in skills_))
+
         skill_count = len([s for s in skills if s.strip()])
         st.markdown(
             f"<div style='margin-top:6px;color:#7DD3FC;font-size:12.5px;font-weight:600;'>"

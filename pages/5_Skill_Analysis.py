@@ -445,11 +445,16 @@ st.markdown('<div class="dp-section-h"><div class="bar"></div><h2>Your Skills</h
 
 resume_skills = st.session_state.get("resume_skills", [])
 
-skills = st_tags(
+TECHNICAL_SKILLS = [skill.lower() for skill in TECHNICAL_SKILLS]
+
+skills_ = st_tags(
     label="",
     value=resume_skills,
-    suggestions=TECHNICAL_SKILLS,
+    suggestions=TECHNICAL_SKILLS
 )
+
+skills = list(dict.fromkeys(skill.strip().lower() for skill in skills_))
+
 
 st.markdown(
     f"""<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
