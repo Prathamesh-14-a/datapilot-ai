@@ -8,6 +8,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 from src.auth.session_manager import is_authenticated
+from src.utils.cloudinary_helper import upload_resume
 from components.sidebar import show_sidebar
 from src.database.crud import (
     get_analysis_history,
@@ -786,16 +787,22 @@ if analyze_clicked:
         st.error("Please upload a resume first.")
         st.stop()
 
-    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    save_path = UPLOADS_DIR / uploaded_file.name
-    with save_path.open("wb") as f:
-        f.write(uploaded_file.getbuffer())
+    import tempfile
+
+    # Create a temporary file for analysis
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+        tmp.write(uploaded_file.getbuffer())
+        save_path = Path(tmp.name)
+
+    # Upload to Cloudinary
+    resume_url, public_id = upload_resume(uploaded_file)
 
     saved_resume = save_resume(
-        user_id=user_id,
-        resume_name=uploaded_file.name,
-        resume_path=save_path,
-    )
+            user_id=user_id,
+            resume_name=uploaded_file.name,
+            resume_url=resume_url ,
+            public_id=public_id,
+        )
 
     steps = [
         "Parsing Resume",
@@ -1319,3 +1326,8 @@ with hist_tab2:
         if q:
             rows = [r for r in rows if q.lower() in str(r["Resume"]).lower()]
         st.dataframe(rows, use_container_width=True, hide_index=True)
+
+try:
+    save_path.unlink()
+except Exception:
+    pass

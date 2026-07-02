@@ -64,7 +64,8 @@ def get_user_by_email(email):
 def save_resume(
         user_id, 
         resume_name , 
-        resume_path
+        resume_url ,
+        public_id
 ):
     session = SessionLocal()
 
@@ -72,7 +73,8 @@ def save_resume(
         resume = Resume(
             user_id = user_id,
             resume_name = resume_name,
-            resume_path = resume_path
+            resume_url = resume_url  ,
+            cloudinary_public_id = public_id
         )
 
         session.add(resume)

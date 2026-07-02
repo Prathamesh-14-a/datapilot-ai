@@ -54,7 +54,10 @@ class Resume(Base):
     )
 
     resume_name = Column(String(255))
-    resume_path = Column(String(500))
+
+    resume_url = Column(String(1000))
+
+    cloudinary_public_id = Column(String(255))
 
     uploaded_at = Column(
         DateTime,
@@ -67,8 +70,8 @@ class Resume(Base):
     )
 
     analyses = relationship(
-    "Analysis",
-    back_populates="resume"
+        "Analysis",
+        back_populates="resume"
     )
 
     job_fit_histories = relationship(
