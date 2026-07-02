@@ -4,7 +4,8 @@ import pandas as pd
 from pathlib import Path
 from src.job_fit.role_skills import ROLE_SKILLS
 
-BASE_DIR = Path('d:/Startup/Project/ai-career-coach/src')
+
+BASE_DIR = Path(__file__).resolve().parent
 
 model = joblib.load(
     BASE_DIR / "models" / "job_model.pkl"
