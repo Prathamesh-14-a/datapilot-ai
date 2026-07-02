@@ -9,10 +9,11 @@ import streamlit as st
 
 from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated, logout
+from src.config.paths import ASSETS_DIR
 from src.dashboard.dashboard_service import build_dashboard_snapshot
 from src.database.crud import get_user
 
-logo = Path("assets/mini_logo.png")
+logo = ASSETS_DIR / "mini_logo.png"
 b64 = base64.b64encode(logo.read_bytes()).decode()
 
 LOGO_SRC = f'<img src="data:image/png;base64,{b64}" class="dp-logo-img">'
@@ -22,7 +23,7 @@ LOGO_SRC = f'<img src="data:image/png;base64,{b64}" class="dp-logo-img">'
 # ---------------------------------------------------------------------------
 st.set_page_config(
     page_title="Profile · DataPilot AI",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )

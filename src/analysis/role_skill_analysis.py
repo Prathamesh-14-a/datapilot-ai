@@ -1,13 +1,16 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import ast
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+from src.config.paths import DATA_DIR
 
 
 # -------------------- LOAD DATA --------------------
 def load_data():
-    df_skill = pd.read_csv(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_with_skills.csv")
-    df_enha = pd.read_csv(r"d:\Startup\Project\ai-career-coach\data\processed\Enhanced_skills_dataset.csv")
+    df_skill = pd.read_csv(DATA_DIR / 'processed' / 'jobs_with_skills.csv')
+    df_enha = pd.read_csv(DATA_DIR / 'processed' / 'Enhanced_skills_dataset.csv')
     return df_skill, df_enha
 
 
@@ -118,17 +121,18 @@ def main():
     matrix = create_matrix(role_skill)
 
     matrix.to_csv(
-        r"d:\Startup\Project\ai-career-coach\data\processed\role_skill_matrix.csv" ,
-        index = False
+        DATA_DIR / 'processed' / 'role_skill_matrix.csv',
+        index=False
     )
 
     top_skills.to_csv(
-         r"d:\Startup\Project\ai-career-coach\data\processed\top_skill_by_role_cleaned.csv" ,
-         index = False
+        DATA_DIR / 'processed' / 'top_skill_by_role_cleaned.csv',
+        index=False
     )
 
     role_skill.to_csv(
-         r"d:\Startup\Project\ai-career-coach\data\processed\role_skills_insights.csv"
+        DATA_DIR / 'processed' / 'role_skills_insights.csv',
+        index=False
     )
 
     role_skill = normalize_skills(role_skill, df_skill)

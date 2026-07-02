@@ -6,6 +6,7 @@ from pathlib import Path
 import base64
 from components.sidebar import show_sidebar
 from src.auth.session_manager import is_authenticated
+from src.config.paths import ASSETS_DIR, DATA_DIR
 
 
 # --------------------------------------------------
@@ -13,7 +14,7 @@ from src.auth.session_manager import is_authenticated
 # --------------------------------------------------
 st.set_page_config(
     page_title="Market Insights · DataPilot AI",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide"
 )
 
@@ -361,7 +362,7 @@ label, .stSelectbox label { color: var(--dp-text-dim) !important; font-weight: 6
 """, unsafe_allow_html=True)
 
 
-_responsive_css = Path("assets/css/page10_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page10_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -370,11 +371,11 @@ if _responsive_css.exists():
 # --------------------------------------------------
 # LOAD DATA  (UNCHANGED)
 # --------------------------------------------------
-skill_df = pd.read_csv("d:/Startup/Project/ai-career-coach/data/processed/top_skill_by_role_cleaned.csv")
-location_df = pd.read_csv("d:/Startup/Project/ai-career-coach/data/processed/location_distribution.csv")
-salary_df = pd.read_csv("d:/Startup/Project/ai-career-coach/data/processed/salary_jobs.csv")
-jobs_df = pd.read_csv("d:/Startup/Project/ai-career-coach/data/processed/jobs_with_skills.csv")
-exp_df = pd.read_csv("d:/Startup/Project/ai-career-coach/data/Salary Prediction Data/salary_final_data.csv")
+skill_df = pd.read_csv(DATA_DIR / "processed" / "top_skill_by_role_cleaned.csv")
+location_df = pd.read_csv(DATA_DIR / "processed" / "location_distribution.csv")
+salary_df = pd.read_csv(DATA_DIR / "processed" / "salary_jobs.csv")
+jobs_df = pd.read_csv(DATA_DIR / "processed" / "jobs_with_skills.csv")
+exp_df = pd.read_csv(DATA_DIR / "Salary Prediction Data" / "salary_final_data.csv")
 
 # --------------------------------------------------
 # HERO
@@ -936,9 +937,9 @@ with right_col:
 # FOOTER
 # --------------------------------------------------
 def _logo_b64():
-    for p in ["assets/mini_logo.png", "static/logo.png", "logo.png"]:
-        if Path(p).exists():
-            return base64.b64encode(Path(p).read_bytes()).decode()
+    for p in [ASSETS_DIR / "mini_logo.png", ROOT_DIR / "static" / "logo.png", ROOT_DIR / "logo.png"]:
+        if p.exists():
+            return base64.b64encode(p.read_bytes()).decode()
     return ""
 
 logo_b64 = _logo_b64()

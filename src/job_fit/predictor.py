@@ -1,22 +1,21 @@
 
 import joblib
 import pandas as pd
-from pathlib import Path
+
+from src.config.paths import MODELS_DIR
 from src.job_fit.role_skills import ROLE_SKILLS
 
 
-BASE_DIR = Path(__file__).resolve().parent
-
 model = joblib.load(
-    BASE_DIR / "models" / "job_model.pkl"
+    MODELS_DIR / "job_model.pkl"
 )
 
 label_encoder = joblib.load(
-    BASE_DIR / "models" / "label_encoder.pkl"
+    MODELS_DIR / "label_encoder.pkl"
 )
 
 skill_vocab = joblib.load(
-    BASE_DIR / "models" / "skill_vocab.pkl"
+    MODELS_DIR / "skill_vocab.pkl"
 )
 
 def encode_resume_skills(

@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from src.auth.session_manager import is_authenticated
+from src.config.paths import ASSETS_DIR, ROOT_DIR
 from src.dashboard.dashboard_service import build_dashboard_snapshot
 
 
@@ -15,7 +16,7 @@ from components.sidebar import show_sidebar
 
 st.set_page_config(
     page_title="Dashboard · DataPilot AI",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -33,7 +34,7 @@ st.title("Dashboard")
 # ─────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="DataPilot AI — Dashboard",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -70,15 +71,15 @@ def _format_lpa(value):
     return f"₹{float(value) / 100000:.1f} LPA"
 
 def _logo_b64():
-    for p in ["assets/mini_logo.png", "static/logo.png", "logo.png"]:
-        if Path(p).exists():
-            return base64.b64encode(Path(p).read_bytes()).decode()
+    for p in [ASSETS_DIR / "mini_logo.png", ROOT_DIR / "static" / "logo.png", ROOT_DIR / "logo.png"]:
+        if p.exists():
+            return base64.b64encode(p.read_bytes()).decode()
     return ""
 
 def _logo_b64_():
-    for p in ["assets/logo.png", "static/logo.png", "logo.png"]:
-        if Path(p).exists():
-            return base64.b64encode(Path(p).read_bytes()).decode()
+    for p in [ASSETS_DIR / "logo.png", ROOT_DIR / "static" / "logo.png", ROOT_DIR / "logo.png"]:
+        if p.exists():
+            return base64.b64encode(p.read_bytes()).decode()
     return ""
 
 # ─────────────────────────────────────────────────────────────

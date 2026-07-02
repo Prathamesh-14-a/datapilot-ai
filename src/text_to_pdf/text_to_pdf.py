@@ -1,12 +1,9 @@
-from io import BytesIO
 from fpdf import FPDF
-import os
 
-from streamlit import pdf
-
+from src.config.paths import SRC_DIR
 
 
-FONT_PATH = r"d:/Startup/Project/ai-career-coach/src/fonts/DejaVuSans.ttf"
+FONT_PATH = SRC_DIR / "fonts" / "DejaVuSans.ttf"
 
 def text_to_pdf(text_content):
     """
@@ -18,7 +15,7 @@ def text_to_pdf(text_content):
     pdf.add_page()
 
     # Unicode font
-    pdf.add_font("DejaVu", "", FONT_PATH)
+    pdf.add_font("DejaVu", "", str(FONT_PATH))
 
     pdf.set_font("DejaVu", size=12)
 

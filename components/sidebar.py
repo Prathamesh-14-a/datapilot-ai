@@ -16,27 +16,28 @@ from pathlib import Path
 import streamlit as st
 
 from src.auth.session_manager import logout
+from src.config.paths import ASSETS_DIR, PAGES_DIR
 
 
-LOGO_PATH = "assets/mini_logo.png"
+LOGO_PATH = ASSETS_DIR / "mini_logo.png"
 
 # ---------------------------------------------------------------------------
 # Navigation registry — single source of truth
 # ---------------------------------------------------------------------------
 NAV_SECTIONS = [
     ("Workspace", [
-        ("Dashboard",          "dashboard", "pages/3_Dashboard.py"),
-        ("Resume Analyzer",    "resume",    "pages/4_Resume_Analyzer.py"),
-        ("Skill Gap Analysis", "skills",    "pages/5_Skill_Analysis.py"),
-        ("Salary Predictor",   "salary",    "pages/6_salary_predictor.py"),
+        ("Dashboard",          "dashboard", str(PAGES_DIR / "3_Dashboard.py")),
+        ("Resume Analyzer",    "resume",    str(PAGES_DIR / "4_Resume_Analyzer.py")),
+        ("Skill Gap Analysis", "skills",    str(PAGES_DIR / "5_Skill_Analysis.py")),
+        ("Salary Predictor",   "salary",    str(PAGES_DIR / "6_salary_predictor.py")),
     ]),
     ("Intelligence", [
-        ("AI Career Mentor",   "mentor",    "pages/7_AI_mentor.py"),
-        ("Job Fit Predictor",  "jobfit",    "pages/8_Job_Fit_Predictor.py"),
-        ("Market Insights",    "market",    "pages/9_Market_Insights.py"),
+        ("AI Career Mentor",   "mentor",    str(PAGES_DIR / "7_AI_mentor.py")),
+        ("Job Fit Predictor",  "jobfit",    str(PAGES_DIR / "8_Job_Fit_Predictor.py")),
+        ("Market Insights",    "market",    str(PAGES_DIR / "9_Market_Insights.py")),
     ]),
     ("Account", [
-        ("Profile",            "profile",   "pages/10_Profile.py"),
+        ("Profile",            "profile",   str(PAGES_DIR / "10_Profile.py")),
     ]),
 ]
 
@@ -46,7 +47,7 @@ NAV_SECTIONS = [
 # ---------------------------------------------------------------------------
 def _logo_b64() -> str:
     try:
-        return base64.b64encode(Path(LOGO_PATH).read_bytes()).decode()
+        return base64.b64encode(LOGO_PATH.read_bytes()).decode()
     except Exception:
         return ""
 
@@ -618,7 +619,7 @@ def show_sidebar() -> None:
 
     _inject_css(collapsed)
 
-    _mob = Path("assets/css/sidebar_responsive.css")
+    _mob = ASSETS_DIR / "css" / "sidebar_responsive.css"
     if _mob.exists():
         st.markdown(f"<style>{_mob.read_text()}</style>", unsafe_allow_html=True)
 

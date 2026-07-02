@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import re
+from src.config.paths import DATA_DIR
 
 
 #Scrapping Data from the Internshala Job portal
@@ -131,6 +132,6 @@ print(df.head())
 print(df.shape)
 print("Scrapping Completed Successfully!")
 
-data.to_csv(r"d:\Startup\Project\ai-career-coach\data\raw\jobs_raw.csv", index=False)
-df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_filtered.csv", index=False)
+data.to_csv(DATA_DIR / "raw" / "jobs_raw.csv", index=False)
+df.to_csv(DATA_DIR / "processed" / "jobs_filtered.csv", index=False)
 print("Data saved to CSV files successfully!")

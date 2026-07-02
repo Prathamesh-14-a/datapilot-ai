@@ -1,12 +1,10 @@
 import pandas as pd
 from src.resume_matching.resume_parser import (
-    extract_resume_text ,
-    extract_skills
-    
+    extract_resume_text,
+    extract_skills,
 )
-from src.ATS.resume_parser import(
-    SKILLS_DB
-)
+from src.ATS.resume_parser import SKILLS_DB
+from src.config.paths import DATA_DIR
 
 
 
@@ -21,7 +19,7 @@ data visualization, and statistical analysis.
 job_description_skills = extract_skills(job_description, SKILLS_DB)
 
 # Extract Resume skills
-resume_file = r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_Resume_Updated.pdf"
+resume_file = DATA_DIR / "resume" / "Pratham_Resume_Updated.pdf"
 resume_text = extract_resume_text(resume_file)
 resume_skills = extract_skills(resume_text, SKILLS_DB)
 
@@ -48,7 +46,7 @@ score = (len(matched_skills) / len(job_description_skills)) * 100
 
 # print(f"\nATS Score: {score:.2f}%")
 
-BENCHMARK_DF = r'd:\Startup\Project\ai-career-coach\data\processed\top_skill_by_role_cleaned.csv'
+BENCHMARK_DF = DATA_DIR / "processed" / "top_skill_by_role_cleaned.csv"
 
 #    IMPORT DATASET
 # ----------------------------------
@@ -137,7 +135,7 @@ def calculated_weighted_score(
 # MAIN
 #-----------------------------------------------------
 def main():
-    resume_file = r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_Resume_Updated.pdf"
+    resume_file = DATA_DIR / "resume" / "Pratham_Resume_Updated.pdf"
     resume_text = extract_resume_text(resume_file)
     resume_skills = extract_skills(resume_text, SKILLS_DB)
 

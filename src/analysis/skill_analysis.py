@@ -3,19 +3,20 @@
 # =========================================
 import logging
 from pathlib import Path
-import pandas as pd
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from wordcloud import WordCloud
+
+from src.config.paths import DATA_DIR, REPORTS_DIR
 
 
 # =========================================
 # CONFIGURATION
 # =========================================
-BASE_PATH = Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / "data" / "processed"
-REPORT_PATH = BASE_PATH / "reports" / "dashboard_images"
+DATA_PATH = DATA_DIR / "processed"
+REPORT_PATH = REPORTS_DIR / "dashboard_images"
 
 SKILL_FILE = DATA_PATH / "skill_frequencies.csv"
 ROLE_FILE = DATA_PATH / "role_skill_mapping.csv"

@@ -6,6 +6,7 @@ import re
 import os
 from pathlib import Path
 import sys
+from src.config.paths import DATA_DIR
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -196,32 +197,32 @@ def main():
     data_analyst_df = cleaning_scrape_data(data_analyst_df)
     print(data_analyst_df.head())
     print(data_analyst_df.shape)
-    data_analyst_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\Salary Prediction Data\data_analyst_jobs.csv" , index=False)
+    data_analyst_df.to_csv(DATA_DIR / "Salary Prediction Data" / "data_analyst_jobs.csv", index=False)
 
     data_scientist_df = scrape_jobs("data scientist" , 50)
     data_scientist_df = cleaning_scrape_data(data_scientist_df)
     print(data_scientist_df.head())
     print(data_scientist_df.shape)
-    data_scientist_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\Salary Prediction Data\data_scientist_jobs.csv" , index=False)
+    data_scientist_df.to_csv(DATA_DIR / "Salary Prediction Data" / "data_scientist_jobs.csv", index=False)
 
     data_engineer_df = scrape_jobs("data engineer" , 70)
     data_engineer_df = cleaning_scrape_data(data_engineer_df)
     print(data_engineer_df.head())
     print(data_engineer_df.shape)
-    data_engineer_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\Salary Prediction Data\data_engineer_jobs.csv" , index=False)
+    data_engineer_df.to_csv(DATA_DIR / "Salary Prediction Data" / "data_engineer_jobs.csv", index=False)
 
     ml_df = scrape_jobs("machine learning engineer" , 30)
     ml_df = cleaning_scrape_data(ml_df)
     print(ml_df.head())
     print(ml_df.shape)
-    ml_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\Salary Prediction Data\ml_engineer_jobs.csv" , index=False)
+    ml_df.to_csv(DATA_DIR / "Salary Prediction Data" / "ml_engineer_jobs.csv", index=False)
 
 
     business_df = scrape_jobs("business analyst" , 40)
     business_df = cleaning_scrape_data(business_df)
     print(business_df.head())
     print(business_df.shape)
-    business_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\Salary Prediction Data\business_analyst_jobs.csv" , index=False)
+    business_df.to_csv(DATA_DIR / "Salary Prediction Data" / "business_analyst_jobs.csv", index=False)
 
     
 

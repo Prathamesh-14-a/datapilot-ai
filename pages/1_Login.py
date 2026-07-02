@@ -1,28 +1,32 @@
 # pages/1_Login.py
+import base64
+from pathlib import Path
+
 import streamlit as st
+
 from src.auth.auth_service import login
 from src.auth.session_manager import create_session, is_authenticated
+from src.config.paths import ASSETS_DIR, PAGES_DIR
 
-import base64, os
 
-
-def load_logo(path="assets/logo.png"):
+def load_logo(path: Path | None = None):
     try:
-        ext = os.path.splitext(path)[1].lower().replace(".", "")
+        target = path or (ASSETS_DIR / "logo.png")
+        ext = target.suffix.lower().replace(".", "")
         mime = "svg+xml" if ext == "svg" else ext
-        with open(path, "rb") as f:
+        with target.open("rb") as f:
             data = base64.b64encode(f.read()).decode()
         return f"data:image/{mime};base64,{data}"
-    except:
+    except Exception:
         return ""
 
-LOGO_B64 = load_logo("assets/logo.png")
+LOGO_B64 = load_logo(ASSETS_DIR / "logo.png")
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
 st.set_page_config(
     page_title="DataPilot AI — Login",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -31,7 +35,7 @@ st.set_page_config(
 # REDIRECT IF ALREADY LOGGED IN
 # --------------------------------------------------
 if is_authenticated():
-    st.switch_page("pages/3_Dashboard.py")
+    st.switch_page(str(PAGES_DIR / "3_Dashboard.py"))
 
 # --------------------------------------------------
 # GLOBAL CSS (Design System)

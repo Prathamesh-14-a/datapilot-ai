@@ -4,13 +4,15 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+from src.config.paths import ASSETS_DIR
+
 
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
 st.set_page_config(
     page_title="DataPilot AI — Navigate Your Data Career",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -18,8 +20,8 @@ st.set_page_config(
 # --------------------------------------------------
 # LOGO LOADER (base64 so it works inside HTML)
 # --------------------------------------------------
-def load_logo_b64(path: str = "assets/logo.png") -> str:
-    p = Path(path)
+def load_logo_b64(path: Path | None = None) -> str:
+    p = path or (ASSETS_DIR / "logo.png")
     if not p.exists():
         return ""
     return base64.b64encode(p.read_bytes()).decode()
@@ -437,7 +439,7 @@ st.markdown("""
 
 
 #mobile responsive css
-_responsive_css = Path("assets/css/landing_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "landing_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)

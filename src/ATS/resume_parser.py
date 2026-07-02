@@ -3,11 +3,14 @@ import re
 from pathlib import Path
 import pytesseract
 from pdf2image import convert_from_path
-from src.resume_matching.resume_parser import (extract_resume_text , 
-                                               extract_with_ocr , 
-                                               clean_resume_text , 
-                                               text_validation , 
-                                               extract_skills )
+from src.resume_matching.resume_parser import (
+    extract_resume_text,
+    extract_with_ocr,
+    clean_resume_text,
+    text_validation,
+    extract_skills,
+)
+from src.config.paths import DATA_DIR
 
 SKILLS_DB = [
 
@@ -176,7 +179,7 @@ def cleaned_resume_text(resume_text:str) -> str:
 
     
 
-resume = r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_Resume_Updated.pdf"
+resume = DATA_DIR / "resume" / "Pratham_Resume_Updated.pdf"
 
 
 
@@ -253,7 +256,7 @@ skills_from_projects = extract_skills(project_section , SKILLS_DB)
 
 # testing on 10 resumes
 # for i in range(1 , 18):
-    # resume = Path((rf"d:\Startup\Project\ai-career-coach\data\resume\resume_{i}.pdf"))
+    # resume = Path((rf"{DATA_DIR / 'resume' / 'resume_{i}.pdf'}"))
    
     # print(f'\nResume Skill Extraction For Resume No. {i}\n')
     # result_text = process_resume(resume)

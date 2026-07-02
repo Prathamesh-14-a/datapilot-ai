@@ -8,7 +8,7 @@ from src.ATS.resume_parser import(
 )
 
 from src.ATS.ats_match import get_role_skills, calculated_weighted_score
-
+from src.config.paths import DATA_DIR
 
 
 SKILL_ROADMAP = {
@@ -345,7 +345,7 @@ def generate_roadmap(ats_result):
 # MAIN
 #-----------------------------------------------------
 def main():
-    resume_file = r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_Resume_Updated.pdf"
+    resume_file = DATA_DIR / "resume" / "Pratham_Resume_Updated.pdf"
     resume_text = extract_resume_text(resume_file)
     resume_skills = extract_skills(resume_text, SKILLS_DB)
 

@@ -25,8 +25,7 @@ from src.resume_matching.resume_parser import (
 from src.ATS.master_pipeline import full_resume_analysis
 from src.llm.resume_feedback import generate_resume_feedback
 from src.text_to_pdf.text_to_pdf import text_to_pdf
-
-
+from src.config.paths import ASSETS_DIR, UPLOADS_DIR
 
 
 # ==========================================================
@@ -34,7 +33,7 @@ from src.text_to_pdf.text_to_pdf import text_to_pdf
 # ==========================================================
 st.set_page_config(
     page_title="Resume Analyzer · DataPilot AI",
-    page_icon="assets\mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -624,7 +623,7 @@ st.markdown(
 )
 
 # Mobile/Tablet responsiveness CSS block:
-_responsive_css = Path("assets/css/page4_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page4_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -787,9 +786,9 @@ if analyze_clicked:
         st.error("Please upload a resume first.")
         st.stop()
 
-    os.makedirs("uploads", exist_ok=True)
-    save_path = os.path.join("uploads", uploaded_file.name)
-    with open(save_path, "wb") as f:
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    save_path = UPLOADS_DIR / uploaded_file.name
+    with save_path.open("wb") as f:
         f.write(uploaded_file.getbuffer())
 
     saved_resume = save_resume(

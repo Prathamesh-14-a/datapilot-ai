@@ -12,6 +12,7 @@ from src.auth.session_manager import is_authenticated
 from src.database.crud import save_salary_prediction
 from src.resume_matching.resume_parser import TECHNICAL_SKILLS
 from src.text_to_pdf.text_to_pdf import text_to_pdf
+from src.config.paths import ASSETS_DIR
 from src.llm.salary_tips import generate_salary_tips
 import streamlit.components.v1 as components
 
@@ -21,7 +22,7 @@ import streamlit.components.v1 as components
 # ============================================================
 st.set_page_config(
     page_title="Salary Intelligence · DataPilot AI",
-    page_icon="assests/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -362,7 +363,7 @@ st.markdown(
 )
 
 # Mobile/Tablet responsiveness CSS block:
-_responsive_css = Path("assets/css/page6_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page6_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)

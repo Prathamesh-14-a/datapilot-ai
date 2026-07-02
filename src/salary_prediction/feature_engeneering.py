@@ -1,14 +1,14 @@
-import pandas as pd
-import numpy as np
-from pathlib import Path
 from collections import Counter
+
+import numpy as np
+import pandas as pd
+
+from src.config.paths import DATA_DIR
 
 #------------------------------------------------------
 # PATH
 #------------------------------------------------------
-BASE_PATH = Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'Salary Prediction Data'
+DATA_PATH = DATA_DIR / 'Salary Prediction Data'
 
 SALARY_DATA_FILE = DATA_PATH / 'salary_preprocessed_data.csv'
 FEATURE_DATA = DATA_PATH / "salary_feature_data.csv"

@@ -1,7 +1,9 @@
-import pandas as pd 
 import ast
-from pathlib import Path
 import logging
+
+import pandas as pd
+
+from src.config.paths import DATA_DIR
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -10,9 +12,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 # ----------------------------------------------
 # CONFIG
 # ----------------------------------------------
-BASE_PATH =  Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'processed'
+DATA_PATH = DATA_DIR / 'processed'
 
 SKILL_FILE = DATA_PATH / 'jobs_with_skills.csv'
 

@@ -76,7 +76,7 @@ def full_resume_analysis(
 
 # def main():
 #     ats_result = analyze_ats(
-#         r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_Resume_Updated.pdf",
+#         DATA_DIR / "resume" / "Pratham_Resume_Updated.pdf",
 #         "Data Analyst",
 #     )
 

@@ -1,5 +1,6 @@
 import pandas as pd
-from pathlib import Path
+
+from src.config.paths import DATA_DIR
 
 # Data for Salary Prediction Model was collected from different sources including scrapping full detailed
 # data collection code is available on salary_data_collection.ipynb
@@ -8,9 +9,7 @@ from pathlib import Path
 # PATH
 #-----------------------------------------------------
 
-BASE_PATH = Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'Salary Prediction Data'
+DATA_PATH = DATA_DIR / 'Salary Prediction Data'
 
 SALARY_DATA_FILE = DATA_PATH / 'salary_cleaned_data.csv'
 

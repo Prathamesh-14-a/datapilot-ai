@@ -1,20 +1,19 @@
 import pandas as pd
-from resume_parser import process_resume
-from pathlib import Path
+
+from src.config.paths import DATA_DIR
+from src.resume_matching.resume_parser import process_resume
 
 
 # ----------------------------------------------
 # CONFIG
 # ----------------------------------------------
-BASE_PATH =  Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'processed'
+DATA_PATH = DATA_DIR / 'processed'
 
 SKILL_BENCHMARK_FILE = DATA_PATH / 'top_skills_by_role.csv'
 
 OUTPUT_PATH = DATA_PATH / "resume_match_results.csv"
 
-RESUME_DATA_PATH = BASE_PATH / 'data' / 'resume'
+RESUME_DATA_PATH = DATA_DIR / 'resume'
 
 RESUME_1 = RESUME_DATA_PATH / 'Pratham_resume.pdf'
 

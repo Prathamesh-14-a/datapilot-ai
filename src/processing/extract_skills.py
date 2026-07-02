@@ -305,7 +305,7 @@ def role_skill_mat(role_skill_df):
 # ----------------------------------------------
 def main():
     # Load
-    df = load_data(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_cleaned.csv")
+    df = load_data(DATA_DIR / "processed" / "jobs_cleaned.csv")
 
     # Text Cleaning Pipeline
     df = combine_text(df)
@@ -337,10 +337,10 @@ def main():
     role_skill_matrix = role_skill_mat(role_skill_df)
 
     #Save outputs
-    df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_with_skills.csv", index=False)
-    skill_freq_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\skill_frequencies.csv", index=False)
-    role_skill_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\role_skill_mapping.csv", index=False)
-    role_skill_matrix.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\role_skill_matrix.csv" , index=False)
+    df.to_csv(DATA_DIR / "processed" / "jobs_with_skills.csv", index=False)
+    skill_freq_df.to_csv(DATA_DIR / "processed" / "skill_frequencies.csv", index=False)
+    role_skill_df.to_csv(DATA_DIR / "processed" / "role_skill_mapping.csv", index=False)
+    role_skill_matrix.to_csv(DATA_DIR / "processed" / "role_skill_matrix.csv", index=False)
 
     logging.info("Data Pipeline Executed Successfully!")
 

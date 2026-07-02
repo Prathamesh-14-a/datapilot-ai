@@ -4,14 +4,14 @@ import plotly.graph_objects as go
 import pandas as pd
 
 from src.auth.session_manager import is_authenticated
+from src.config.paths import ASSETS_DIR
 from src.job_fit.predictor import ROLE_SKILLS, predict_job_fit
 from components.sidebar import show_sidebar
-from pathlib import Path
 
 
 st.set_page_config(
     page_title="Career Match Engine · DataPilot AI",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
 )
 
@@ -343,7 +343,7 @@ div.stButton > button:hover {
   </style>
 """, unsafe_allow_html=True)
 
-_responsive_css = Path("assets/css/page8_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page8_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)

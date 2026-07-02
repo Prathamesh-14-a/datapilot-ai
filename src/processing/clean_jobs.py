@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import numpy as np
+from src.config.paths import DATA_DIR
 
 
 # -------------------------------
@@ -153,7 +154,7 @@ def process_experience(df):
 # -------------------------------
 def main():
     # Load
-    df = load_data(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_filtered.csv")
+    df = load_data(DATA_DIR / "processed" / "jobs_filtered.csv")
 
     # Cleaning Pipeline
     df = clean_basic(df)
@@ -167,8 +168,8 @@ def main():
     salary_df = create_salary_subset(df)
 
     # Save outputs
-    df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\jobs_cleaned.csv", index=False)
-    salary_df.to_csv(r"d:\Startup\Project\ai-career-coach\data\processed\salary_jobs.csv", index=False)
+    df.to_csv(DATA_DIR / "processed" / "jobs_cleaned.csv", index=False)
+    salary_df.to_csv(DATA_DIR / "processed" / "salary_jobs.csv", index=False)
 
     print("Data pipeline executed successfully!")
 

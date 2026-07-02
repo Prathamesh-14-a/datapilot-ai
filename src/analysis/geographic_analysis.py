@@ -1,15 +1,16 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import logging
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+from src.config.paths import DATA_DIR
 
 #--------------------------------------
 # CONFIGURATION
 # ------------------------------------
-BASE_PATH =  Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'processed'
+DATA_PATH = DATA_DIR / 'processed'
 
 SKILL_FILE = DATA_PATH / 'jobs_with_skills.csv'
 SALARY_FILE = DATA_PATH / 'salary_jobs.csv'

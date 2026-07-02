@@ -1,9 +1,13 @@
-import pdfplumber
+import logging
+import os
 import re
 from pathlib import Path
-import logging
+
+import pdfplumber
 import pytesseract
 from pdf2image import convert_from_path
+
+from src.config.paths import DATA_DIR
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -51,12 +55,11 @@ ALIASES = {
 }
 
 # ---------------------------------------------------
-# TESSERACT PATH (WINDOWS)
+# TESSERACT PATH (optional override for local installs)
 # ---------------------------------------------------
 
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-)
+if os.environ.get("TESSERACT_CMD"):
+    pytesseract.pytesseract.tesseract_cmd = os.environ["TESSERACT_CMD"]
 
 # ---------------------------------------
 # RESUME TEXT CLEAN
@@ -224,13 +227,13 @@ def process_resume(path:str) -> dict:
 
 if __name__ == "__main__":
 
-    path = Path(r"d:\Startup\Project\ai-career-coach\data\resume\Pratham_resume.pdf")
+    path = DATA_DIR / "resume" / "Pratham_resume.pdf"
     result = process_resume(path)
     print(result)
 
     # testing on 10 resumes
-    for i in range(1 , 18):
-        resume_paths = Path((rf"d:\Startup\Project\ai-career-coach\data\resume\resume_{i}.pdf"))
+    for i in range(1, 18):
+        resume_paths = DATA_DIR / "resume" / f"resume_{i}.pdf"
         result = process_resume(resume_paths)
         print(f'Resume Skill Extraction For Resume No. {i}')
         print(result)

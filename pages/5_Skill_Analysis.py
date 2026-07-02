@@ -12,6 +12,7 @@ from streamlit_tags import st_tags
 from src.resume_matching.resume_parser import TECHNICAL_SKILLS
 from src.resume_matching.master_career_intelligent import career_intelligence_pipeline
 from src.llm.skill_improvement import generate_skill_feedback
+from src.config.paths import ASSETS_DIR
 from src.text_to_pdf.text_to_pdf import text_to_pdf
 from src.ATS.ats_match import get_role_skills, calculated_weighted_score
 
@@ -24,7 +25,7 @@ if not is_authenticated():
     st.stop()
 
 st.set_page_config(page_title="Skill Analyzer · DataPilot AI", 
-                  page_icon="assets\mini_logo.png",
+                  page_icon=str(ASSETS_DIR / "mini_logo.png"),
                   layout="wide",
                   initial_sidebar_state="expanded")
 show_sidebar()
@@ -343,7 +344,7 @@ background: linear-gradient(160deg, rgba(14,26,56,0.85), rgba(8,16,38,0.85));
 """, unsafe_allow_html=True)
 
 # Mobile/Tablet responsiveness CSS block:
-_responsive_css = Path("assets/css/page5_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page5_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)

@@ -1,12 +1,11 @@
-import pandas as pd 
-from pathlib import Path
+import pandas as pd
+
+from src.config.paths import DATA_DIR
 
 # -------------------------------------------
 # DATA CONFIG 
 # ------------------------------------------
-BASE_PATH =  Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'processed'
+DATA_PATH = DATA_DIR / 'processed'
 
 BATCH_RESULT_DATA =  DATA_PATH / 'data_analyst_batch_results.csv'
 

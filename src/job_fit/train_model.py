@@ -1,14 +1,15 @@
-import pandas as pd
 import joblib
-
+import pandas as pd
 from sklearn.model_selection import train_test_split
+
+from src.config.paths import DATA_DIR, MODELS_DIR
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score 
 
 
 df = pd.read_csv(
-    r'd:\Startup\Project\ai-career-coach\data\job_fit_dataset.csv'
+    DATA_DIR / 'job_fit_dataset.csv'
 )
 
 all_skills = set()
@@ -144,6 +145,6 @@ for role, prob in zip(
     )
 
 
-joblib.dump(model, r'd:\Startup\Project\ai-career-coach\src\models\job_model.pkl')
-joblib.dump(label_encoder, r'd:\Startup\Project\ai-career-coach\src\models\label_encoder.pkl')
-joblib.dump(all_skills, r'd:\Startup\Project\ai-career-coach\src\models\skill_vocab.pkl')
+joblib.dump(model, MODELS_DIR / 'job_model.pkl')
+joblib.dump(label_encoder, MODELS_DIR / 'label_encoder.pkl')
+joblib.dump(all_skills, MODELS_DIR / 'skill_vocab.pkl')

@@ -10,8 +10,8 @@ from src.database.crud import (
     get_ai_chat_sessions,
     save_ai_chat_session,
 )
+from src.config.paths import ASSETS_DIR
 from src.llm.career_chat import ask_career_ai
-from pathlib import Path
 
 
 
@@ -20,7 +20,7 @@ from pathlib import Path
 # ============================================================
 st.set_page_config(
     page_title="AI Mentor · DataPilot AI",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -553,7 +553,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-_responsive_css = Path("assets/css/page7_responsive.css")
+_responsive_css = ASSETS_DIR / "css" / "page7_responsive.css"
 if _responsive_css.exists():
     with open(_responsive_css, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)

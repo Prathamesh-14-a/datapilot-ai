@@ -3,16 +3,15 @@
 # ============================================================
 
 import pandas as pd
-from pathlib import Path
+
+from src.config.paths import DATA_DIR
 
 
 # ============================================================
 # PATHS
 # ============================================================
 
-BASE_PATH = Path("d:/Startup/Project/ai-career-coach")
-
-DATA_PATH = BASE_PATH / 'data' / 'processed'
+DATA_PATH = DATA_DIR / 'processed'
 
 MATCH_RESULTS_PATH = DATA_PATH / 'data_analyst_batch_results.csv'
 

@@ -1,9 +1,9 @@
 import joblib
-import pandas as pd
 import numpy as np
-from pathlib import Path
+import pandas as pd
 from collections import Counter
 
+from src.config.paths import DATA_DIR, MODELS_DIR
 from src.salary_prediction.train_salary_model import preprocess_data, feature_engineering
 from src.salary_prediction.feature_engeneering import (
     create_skill_features,
@@ -17,9 +17,8 @@ from src.salary_prediction.feature_engeneering import (
     title_exp,
 )
 
-BASE_PATH = Path("d:/Startup/Project/ai-career-coach")
-RAW_DATA_FILE = BASE_PATH / 'data' / 'Salary Prediction Data' / 'salary_preprocessed_data.csv'
-MODEL_FILE = BASE_PATH / 'src' / 'models' / 'best_salary_model.pkl'
+RAW_DATA_FILE = DATA_DIR / 'Salary Prediction Data' / 'salary_preprocessed_data.csv'
+MODEL_FILE = MODELS_DIR / 'best_salary_model.pkl'
 
 
 def get_top_skills(df: pd.DataFrame, top_n: int = 25) -> list[str]:

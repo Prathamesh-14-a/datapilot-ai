@@ -7,23 +7,22 @@ import streamlit as st
 
 from src.auth.auth_service import signup
 from src.auth.session_manager import create_session, is_authenticated
+from src.config.paths import ASSETS_DIR, ROOT_DIR
 
-import base64
 
-
-def image_to_base64(path):
-    with open(path, "rb") as img:
+def image_to_base64(path: Path):
+    with path.open("rb") as img:
         return base64.b64encode(img.read()).decode()
 
 skill_icon = image_to_base64(
-    "assets/icons/brain-circuit.png"
+    ASSETS_DIR / "icons" / "brain-circuit.png"
 )
 # --------------------------------------------------
 # PAGE CONFIG
 # --------------------------------------------------
 st.set_page_config(
     page_title="DataPilot AI — Sign Up",
-    page_icon="assets/mini_logo.png",
+    page_icon=str(ASSETS_DIR / "mini_logo.png"),
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -40,10 +39,9 @@ if is_authenticated():
 # --------------------------------------------------
 def _logo_data_uri() -> str:
     """Return logo as base64 data URI (falls back to empty string)."""
-    for candidate in ["assets/logo.png", "static/logo.png", "logo.png"]:
-        p = Path(candidate)
-        if p.exists():
-            b64 = base64.b64encode(p.read_bytes()).decode()
+    for candidate in [ASSETS_DIR / "logo.png", ROOT_DIR / "static" / "logo.png", ROOT_DIR / "logo.png"]:
+        if candidate.exists():
+            b64 = base64.b64encode(candidate.read_bytes()).decode()
             return f"data:image/png;base64,{b64}"
     return ""
 
