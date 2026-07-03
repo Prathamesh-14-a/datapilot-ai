@@ -208,7 +208,7 @@ st.markdown(
         border-color: var(--dp-border-strong);
         box-shadow: var(--dp-shadow);
     }
-
+   
     /* ---------- Hero ---------- */
     .dp-hero {
         position: relative;
@@ -324,24 +324,6 @@ st.markdown(
         50% { transform: translateY(-20px); opacity: 1; }
     }
 
-    /* ---------- Floating AI Mentor button ---------- */
-    .dp-fab-wrap {
-        position: fixed; top: 18px; right: 22px; z-index: 9999;
-    }
-    .dp-fab {
-        display:inline-flex; align-items:center; gap:.55rem;
-        padding: .65rem 1.1rem;
-        border-radius: 999px;
-        background: rgba(8,16,38,0.7);
-        border: 1px solid var(--dp-border-strong);
-        color: var(--dp-text); font-weight: 600; font-size:.88rem;
-        text-decoration: none !important;
-        backdrop-filter: blur(14px);
-        box-shadow: 0 0 22px rgba(0,200,255,0.35), inset 0 0 0 1px rgba(255,255,255,0.04);
-        transition: all .25s ease;
-    }
-    .dp-fab:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0,200,255,0.55); }
-    .dp-fab svg { width: 16px; height: 16px; color: var(--dp-cyan); }
 
     /* ---------- Section title ---------- */
     .dp-section-title {
@@ -387,6 +369,23 @@ st.markdown(
     [data-baseweb="select"] > div:hover { border-color: var(--dp-border-strong) !important; }
     [data-baseweb="popover"] { background: var(--dp-bg-2) !important; }
 
+    /* Primary buttons */
+.stButton > button{
+  background:linear-gradient(135deg,#2563EB 0%, #0EA5E9 55%, #00C8FF 100%)!important;
+  color:white!important; border:0!important; border-radius:14px!important;
+  padding:12px 18px!important; font-weight:600!important;
+  box-shadow: 0 10px 30px rgba(0,200,255,0.25)!important;
+  transition: transform .15s ease, box-shadow .25s ease!important;
+}
+.stButton > button:hover{
+  transform:translateY(-2px)!important;
+  box-shadow: 0 16px 40px rgba(0,200,255,0.45)!important;
+}
+.stDownloadButton > button{
+  background:rgba(0,200,255,0.10)!important;
+  border:1px solid rgba(0,200,255,0.35)!important;
+  color:#bfeaff!important; border-radius:12px!important;
+}
     /* ---------- Buttons ---------- */
     .stButton > button {
         background: var(--dp-gradient) !important;
@@ -909,29 +908,28 @@ is_valid, error_msg = validate_resume_for_analysis()
 
 st.markdown("""
 <style>
-/* Analyze Resume Button */
-div.stButton > button {
-    background-color: #2563EB !important;   /* Blue */
+/* Only the Analyze Resume button (key="dp_analyze") */
+.st-key-dp_analyze button {
+    background-color: #2563EB !important;
     color: white !important;
     border: none !important;
     border-radius: 10px !important;
     padding: 0.75rem 1rem !important;
     font-weight: 600 !important;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease !important;
 }
-
-div.stButton > button:hover {
-    background-color: #1D4ED8 !important;   /* Darker Blue */
-    color: white !important;
+.st-key-dp_analyze button:hover {
+    background-color: #1D4ED8 !important;
 }
-
-div.stButton > button:active {
+.st-key-dp_analyze button:active {
     background-color: #1E40AF !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
 # Disable analyze button if resume not ready
 analyze_disabled = not is_valid
+
 analyze_clicked = st.button(
     "Analyze Resume",
     use_container_width=True,

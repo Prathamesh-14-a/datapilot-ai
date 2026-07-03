@@ -641,31 +641,29 @@ with st.form("salary_prediction_form"):
             unsafe_allow_html=True,
         )
 
-    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-    st.markdown("""
+  
+        st.markdown("""
         <style>
-        /* Analyze Resume Button */
-        div.stButton > button {
-            background-color: #2563EB !important;   /* Blue */
+        /* Only the Analyze Resume button (key="dp_analyze") */
+        .st-key-dp_analyze button {
+            background-color: #2563EB !important;
             color: white !important;
             border: none !important;
             border-radius: 10px !important;
             padding: 0.75rem 1rem !important;
             font-weight: 600 !important;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease !important;
         }
-
-        div.stButton > button:hover {
-            background-color: #1D4ED8 !important;   /* Darker Blue */
-            color: white !important;
+        .st-key-dp_analyze button:hover {
+            background-color: #1D4ED8 !important;
         }
-
-        div.stButton > button:active {
+        .st-key-dp_analyze button:active {
             background-color: #1E40AF !important;
         }
         </style>
         """, unsafe_allow_html=True)
-    submit_prediction = st.form_submit_button("✦  Predict Salary", use_container_width=True)
+    submit_prediction = st.form_submit_button("✦  Predict Salary", use_container_width=True
+                                        , key="dp_analyze" )
 
 # ============================================================
 # EMPTY STATE (pre-prediction)
