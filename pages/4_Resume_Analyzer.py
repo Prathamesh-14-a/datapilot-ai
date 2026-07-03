@@ -3,6 +3,7 @@ import time
 import base64
 import textwrap
 from pathlib import Path
+from io import BytesIO
 
 import streamlit as st
 import logging
@@ -31,6 +32,22 @@ from src.config.paths import ASSETS_DIR, UPLOADS_DIR
 
 
 # ==========================================================
+# LOGGING SETUP — detailed instrumentation for debugging
+# ==========================================================
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter(
+        "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+
+# ==========================================================
 # PAGE CONFIG
 # ==========================================================
 st.set_page_config(
@@ -50,6 +67,49 @@ if not is_authenticated():
 
 show_sidebar()
 user_id = st.session_state["user_id"]
+
+
+# ==========================================================
+# SESSION STATE INITIALIZATION — persist upload across reruns
+# ==========================================================
+def init_resume_upload_session():
+    """Initialize session state keys for upload pipeline."""
+    if "resume_name" not in st.session_state:
+        st.session_state["resume_name"] = None
+        logger.debug("Initialized: resume_name = None")
+    
+    if "resume_bytes" not in st.session_state:
+        st.session_state["resume_bytes"] = None
+        logger.debug("Initialized: resume_bytes = None")
+    
+    if "resume_type" not in st.session_state:
+        st.session_state["resume_type"] = None
+        logger.debug("Initialized: resume_type = None")
+    
+    if "resume_upload_complete" not in st.session_state:
+        st.session_state["resume_upload_complete"] = False
+        logger.debug("Initialized: resume_upload_complete = False")
+    
+    if "resume_cloud_url" not in st.session_state:
+        st.session_state["resume_cloud_url"] = None
+        logger.debug("Initialized: resume_cloud_url = None")
+    
+    if "resume_cloud_public_id" not in st.session_state:
+        st.session_state["resume_cloud_public_id"] = None
+        logger.debug("Initialized: resume_cloud_public_id = None")
+    
+    if "resume_upload_error" not in st.session_state:
+        st.session_state["resume_upload_error"] = None
+        logger.debug("Initialized: resume_upload_error = None")
+    
+    if "rerun_count" not in st.session_state:
+        st.session_state["rerun_count"] = 0
+        logger.debug("Initialized: rerun_count = 0")
+    else:
+        st.session_state["rerun_count"] += 1
+        logger.debug(f"Rerun count incremented: {st.session_state['rerun_count']}")
+
+init_resume_upload_session()
 
 
 # ==========================================================
@@ -718,9 +778,46 @@ with up_col:
         help="PDF format · up to 200MB",
     )
 
+    # ===== CRITICAL: Persist upload immediately to session_state =====
     if uploaded_file is not None:
-        size_kb = len(uploaded_file.getbuffer()) / 1024
+        logger.info(f"[UPLOAD] File selected: {uploaded_file.name}")
+        logger.info(f"[UPLOAD] File size: {len(uploaded_file.getbuffer())} bytes")
+        logger.info(f"[UPLOAD] MIME type: {uploaded_file.type}")
+        logger.info(f"[UPLOAD] Rerun count at upload: {st.session_state['rerun_count']}")
+        
+        # Convert to bytes immediately — this prevents stream consumption issues on mobile
+        try:
+            resume_bytes = uploaded_file.getvalue()
+            logger.info(f"[UPLOAD] Successfully extracted {len(resume_bytes)} bytes from UploadedFile")
+            
+            # Store in session_state so it survives reruns
+            st.session_state["resume_name"] = uploaded_file.name
+            st.session_state["resume_bytes"] = resume_bytes
+            st.session_state["resume_type"] = uploaded_file.type
+            logger.info(f"[UPLOAD] Persisted to session_state: name={uploaded_file.name}, size={len(resume_bytes)} bytes")
+        except Exception as e:
+            logger.error(f"[UPLOAD] Failed to extract bytes from UploadedFile: {e}", exc_info=True)
+            st.error(f"Failed to process uploaded file: {str(e)}")
+            st.stop()
+    
+    # ===== Display persisted resume if it exists (survives reruns) =====
+    if st.session_state["resume_bytes"] is not None:
+        size_kb = len(st.session_state["resume_bytes"]) / 1024
         size_str = f"{size_kb:.1f} KB" if size_kb < 1024 else f"{size_kb/1024:.2f} MB"
+        
+        # Show cloud upload status
+        status_badge = "Ready"
+        badge_class = "match"
+        if st.session_state["resume_upload_error"]:
+            status_badge = "Upload Failed"
+            badge_class = "danger"
+        elif st.session_state["resume_upload_complete"]:
+            status_badge = "Uploaded"
+            badge_class = "match"
+        elif st.session_state["resume_cloud_url"]:
+            status_badge = "Uploaded"
+            badge_class = "match"
+        
         st.markdown(
             f"""
             <div class="dp-glass" style="padding:1rem 1.2rem; margin-top:.8rem;">
@@ -729,17 +826,22 @@ with up_col:
                   {SVG['doc']}
                 </div>
                 <div style="flex:1; min-width:0;">
-                  <div style="font-weight:700; color:var(--dp-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{uploaded_file.name}</div>
+                  <div style="font-weight:700; color:var(--dp-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{st.session_state["resume_name"]}</div>
                   <div style="color:var(--dp-muted); font-size:.82rem;">
                     {size_str} · PDF · uploaded {time.strftime('%H:%M')}
                   </div>
                 </div>
-                <span class="dp-chip match">{SVG['check']} Ready</span>
+                <span class="dp-chip {badge_class}">{SVG['check']} {status_badge}</span>
               </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+        
+        # Show error message if cloud upload failed
+        if st.session_state["resume_upload_error"]:
+            st.warning(f"Cloud upload failed: {st.session_state['resume_upload_error']}")
+            st.info("The file is saved locally. Retry will attempt cloud upload again.")
 
 with role_col:
     role_options = [
@@ -770,7 +872,42 @@ with role_col:
 # ANALYZE BUTTON + WORKFLOW
 # ==========================================================
 st.markdown("<div style='height:.6rem'></div>", unsafe_allow_html=True)
-analyze_clicked = st.button("Analyze Resume", use_container_width=True, key="dp_analyze")
+
+# ===== Validation before enabling button =====
+def validate_resume_for_analysis():
+    """
+    Validate that resume is ready for analysis.
+    Returns: (is_valid: bool, error_message: str or None)
+    """
+    logger.info("[VALIDATION] Starting resume validation...")
+    
+    if st.session_state["resume_bytes"] is None:
+        logger.warning("[VALIDATION] resume_bytes is None")
+        return False, "Please upload a resume first."
+    
+    if len(st.session_state["resume_bytes"]) == 0:
+        logger.warning("[VALIDATION] resume_bytes is empty")
+        return False, "Resume file is empty. Please upload a valid PDF."
+    
+    logger.info(f"[VALIDATION] resume_bytes exists: {len(st.session_state['resume_bytes'])} bytes")
+    logger.info(f"[VALIDATION] resume_name: {st.session_state['resume_name']}")
+    logger.info(f"[VALIDATION] Cloud upload completed: {st.session_state['resume_upload_complete']}")
+    logger.info(f"[VALIDATION] Cloud URL set: {bool(st.session_state['resume_cloud_url'])}")
+    logger.info(f"[VALIDATION] Upload error: {st.session_state['resume_upload_error']}")
+    
+    return True, None
+
+is_valid, error_msg = validate_resume_for_analysis()
+
+# Disable analyze button if resume not ready
+analyze_disabled = not is_valid
+analyze_clicked = st.button(
+    "Analyze Resume",
+    use_container_width=True,
+    key="dp_analyze",
+    disabled=analyze_disabled,
+    help=error_msg if error_msg else "Analyze your resume for ATS compatibility and skill gaps"
+)
 
 
 def render_workflow(active_idx, steps):
@@ -783,56 +920,108 @@ def render_workflow(active_idx, steps):
     return html
 
 
+def upload_resume_with_retry(pdf_bytes, filename, max_retries=3):
+    """
+    Upload resume to Cloudinary with retry logic.
+    
+    Args:
+        pdf_bytes: The resume PDF as bytes
+        filename: Original filename
+        max_retries: Number of retry attempts
+    
+    Returns:
+        (success: bool, url: str or None, public_id: str or None, error: str or None)
+    """
+    for attempt in range(1, max_retries + 1):
+        try:
+            logger.info(f"[CLOUD_UPLOAD] Attempt {attempt}/{max_retries}")
+            logger.info(f"[CLOUD_UPLOAD] Uploading {len(pdf_bytes)} bytes")
+            
+            resume_url, public_id = upload_resume(pdf_bytes, filename)
+            
+            logger.info(f"[CLOUD_UPLOAD] Upload succeeded on attempt {attempt}")
+            logger.info(f"[CLOUD_UPLOAD] Cloud URL: {resume_url}")
+            logger.info(f"[CLOUD_UPLOAD] Public ID: {public_id}")
+            
+            return True, resume_url, public_id, None
+        
+        except Exception as e:
+            error_msg = str(e)
+            logger.error(f"[CLOUD_UPLOAD] Attempt {attempt} failed: {error_msg}", exc_info=True)
+            
+            if attempt < max_retries:
+                wait_time = 2 ** attempt  # Exponential backoff: 2s, 4s, 8s
+                logger.info(f"[CLOUD_UPLOAD] Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                logger.error(f"[CLOUD_UPLOAD] All {max_retries} attempts failed. Final error: {error_msg}")
+                return False, None, None, error_msg
+    
+    return False, None, None, "Unknown error after all retries"
+
+
 if analyze_clicked:
-    if uploaded_file is None:
+    logger.info(f"[ANALYZE] Analyze button clicked. Session state: resume_bytes={bool(st.session_state['resume_bytes'])}")
+    
+    # ===== REVALIDATE (defensive check) =====
+    if st.session_state["resume_bytes"] is None or len(st.session_state["resume_bytes"]) == 0:
+        logger.error("[ANALYZE] Resume validation failed at analyze time")
         st.error("Please upload a resume first.")
         st.stop()
-
+    
+    logger.info(f"[ANALYZE] Starting analysis workflow. Resume size: {len(st.session_state['resume_bytes'])} bytes")
+    
+    # ===== STAGE 1: Cloud upload (with retry) =====
+    if not st.session_state["resume_upload_complete"] or st.session_state["resume_upload_error"]:
+        logger.info("[ANALYZE] Cloud upload not completed yet. Starting upload...")
+        
+        with st.spinner("Uploading resume to cloud storage..."):
+            upload_success, cloud_url, cloud_public_id, upload_error = upload_resume_with_retry(
+                st.session_state["resume_bytes"],
+                st.session_state["resume_name"],
+                max_retries=3
+            )
+        
+        if upload_success:
+            st.session_state["resume_upload_complete"] = True
+            st.session_state["resume_cloud_url"] = cloud_url
+            st.session_state["resume_cloud_public_id"] = cloud_public_id
+            st.session_state["resume_upload_error"] = None
+            logger.info("[ANALYZE] Cloud upload completed successfully")
+        else:
+            st.session_state["resume_upload_error"] = upload_error
+            st.session_state["resume_upload_complete"] = False
+            logger.error(f"[ANALYZE] Cloud upload failed: {upload_error}")
+            st.error(f"Failed to upload resume to cloud storage after 3 attempts.\n\nError: {upload_error}\n\nThe file is saved locally. You can retry.")
+            st.stop()
+    else:
+        logger.info("[ANALYZE] Cloud upload already completed. URL: " + str(st.session_state["resume_cloud_url"])[:80])
+    
+    # ===== STAGE 2: Create temp file from session_state bytes (not original UploadedFile) =====
     import tempfile
-
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    # Read uploaded file bytes once and reuse everywhere to avoid stream consumption issues on mobile
-    try:
-        pdf_bytes = uploaded_file.getbuffer().tobytes()
-    except Exception:
-        # fallback
-        uploaded_file.seek(0)
-        pdf_bytes = uploaded_file.read()
-
-    logger.info(f"File selected: {uploaded_file.name}")
-    logger.info(f"File size bytes: {len(pdf_bytes)}")
-
-    # Create a temporary file for analysis (write bytes, flush and close)
+    
+    logger.info("[ANALYZE] Creating temporary file for analysis...")
     tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
     try:
-        tmp.write(pdf_bytes)
+        tmp.write(st.session_state["resume_bytes"])
         tmp.flush()
         tmp.close()
         save_path = Path(tmp.name)
-        logger.info(f"Temporary file created: {save_path} ({save_path.stat().st_size} bytes)")
+        logger.info(f"[ANALYZE] Temporary file created: {save_path} ({save_path.stat().st_size} bytes)")
     except Exception as e:
-        logger.exception("Failed to write temporary file")
+        logger.exception("[ANALYZE] Failed to write temporary file")
         st.error("Internal error creating temporary file for analysis.")
         st.stop()
-
-    # Upload to Cloudinary using raw bytes (upload_resume was updated to accept bytes)
-    logger.info("Starting Cloudinary upload")
-    try:
-        resume_url, public_id = upload_resume(pdf_bytes, uploaded_file.name)
-        logger.info(f"Cloudinary upload finished: {resume_url}")
-    except Exception:
-        logger.exception("Cloudinary upload failed")
-        st.error("Failed to upload resume to cloud storage.")
-        st.stop()
-
+    
+    # ===== STAGE 3: Save to database =====
+    logger.info("[ANALYZE] Saving resume record to database...")
     saved_resume = save_resume(
-            user_id=user_id,
-            resume_name=uploaded_file.name,
-            resume_url=resume_url ,
-            public_id=public_id,
-        )
+        user_id=user_id,
+        resume_name=st.session_state["resume_name"],
+        resume_url=st.session_state["resume_cloud_url"],
+        public_id=st.session_state["resume_cloud_public_id"],
+    )
+    logger.info(f"[ANALYZE] Resume saved with ID: {saved_resume.id}")
 
     steps = [
         "Parsing Resume",
@@ -847,11 +1036,19 @@ if analyze_clicked:
         wf_slot.markdown(render_workflow(i, steps), unsafe_allow_html=True)
         time.sleep(0.25)
 
-    # ===== BACKEND CALLS (unchanged) =====
-    logger.info("Starting full resume analysis")
-    result = full_resume_analysis(save_path, target_role)
-    logger.info("Full resume analysis completed")
+    # ===== STAGE 4: Backend analysis =====
+    logger.info("[ANALYZE] Starting full resume analysis...")
+    try:
+        result = full_resume_analysis(save_path, target_role)
+        logger.info("[ANALYZE] Full resume analysis completed successfully")
+    except Exception as e:
+        logger.error("[ANALYZE] Full resume analysis failed", exc_info=True)
+        st.error(f"Resume analysis failed: {str(e)}")
+        st.stop()
+    
     ats_result = result["ats"]
+    logger.info(f"[ANALYZE] ATS Score: {ats_result.get('ATS Score', 0)}, Coverage: {ats_result.get('Coverage', 0)}")
+    
     save_analysis(
         user_id=user_id,
         resume_id=saved_resume.id,
@@ -859,19 +1056,32 @@ if analyze_clicked:
         match_score=ats_result.get("Coverage", 0),
         target_role=target_role,
     )
+    logger.info("[ANALYZE] Analysis record saved to database")
 
     st.session_state["analysis_result"] = result
     st.session_state["target_role"] = target_role
     st.session_state["latest_resume_id"] = saved_resume.id
 
-    resume_text = extract_resume_text(save_path)
-    resume_skills = extract_skills(resume_text, TECHNICAL_SKILLS)
+    # ===== STAGE 5: Extract skills and job fit =====
+    logger.info("[ANALYZE] Extracting resume text and skills...")
+    try:
+        resume_text = extract_resume_text(save_path)
+        resume_skills = extract_skills(resume_text, TECHNICAL_SKILLS)
+        logger.info(f"[ANALYZE] Extracted {len(resume_skills)} skills")
+    except Exception as e:
+        logger.error("[ANALYZE] Skill extraction failed", exc_info=True)
+        resume_skills = []
+    
     st.session_state["resume_skills"] = resume_skills
 
+    logger.info("[ANALYZE] Predicting job fit...")
     job_fit_predictions = predict_job_fit(resume_skills)
     best_role, best_score = next(iter(job_fit_predictions.items()))
+    logger.info(f"[ANALYZE] Best role: {best_role} (score: {best_score})")
+    
     normalized_skills = {s.lower().strip() for s in resume_skills}
     missing_skills = [s for s in ROLE_SKILLS.get(best_role, []) if s not in normalized_skills]
+    logger.info(f"[ANALYZE] Missing skills for {best_role}: {len(missing_skills)}")
 
     save_job_fit_history(
         user_id=user_id,
@@ -881,8 +1091,10 @@ if analyze_clicked:
         predictions=job_fit_predictions,
         missing_skills=missing_skills,
     )
+    logger.info("[ANALYZE] Job fit history saved")
 
     wf_slot.markdown(render_workflow(len(steps), steps), unsafe_allow_html=True)
+    logger.info("[ANALYZE] ✅ Complete analysis pipeline finished successfully")
 
 
 # ==========================================================
@@ -1361,5 +1573,9 @@ with hist_tab2:
 
 try:
     save_path.unlink()
-except Exception:
+    logger.info(f"[CLEANUP] Temporary file deleted: {save_path}")
+except Exception as e:
+    logger.warning(f"[CLEANUP] Failed to delete temporary file: {e}")
+except NameError:
+    # save_path doesn't exist if analysis wasn't run
     pass
