@@ -23,6 +23,14 @@ show_sidebar()
 
 resume_skills = st.session_state.get("resume_skills", [])
 
+# streamlit interaction config
+config = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "staticPlot": True
+}
+
 # =========================================================
 # GLOBAL STYLES
 # =========================================================
@@ -555,7 +563,7 @@ if predictions:
         bargap=0.45,
     )
     st.markdown('<div class="dp-card" style="padding:14px 18px;">', unsafe_allow_html=True)
-    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+    st.plotly_chart(fig, use_container_width=True, config=config)
     st.markdown('</div>', unsafe_allow_html=True)
 
     # ----- SECTION 3: Verdict -----

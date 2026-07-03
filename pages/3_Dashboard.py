@@ -21,6 +21,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# streamlit interaction config
+config = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "staticPlot": True
+}
+
 # Mark the active page so the sidebar highlights it
 st.session_state["_active_nav"] = "Dashboard"   # change per page
 
@@ -752,7 +760,7 @@ with chart_l:
     if not analysis_trend.empty:
         st.plotly_chart(
             _plot_line(analysis_trend, "date", ["ats_score", "match_score"], ["ATS Score", "Skill Match"], "ATS Trend"),
-            use_container_width=True, config={"displayModeBar": False},
+            use_container_width=True, config=config
         )
     else:
         st.markdown('<div style="color:#8A95B2; padding:24px 8px;">ATS Trend will appear after your first resume analysis.</div>', unsafe_allow_html=True)
@@ -763,7 +771,7 @@ with chart_r:
     if not salary_trend.empty:
         st.plotly_chart(
             _plot_line(salary_trend, "date", ["salary_lpa"], ["Predicted Salary (LPA)"], "Salary Trend"),
-            use_container_width=True, config={"displayModeBar": False},
+            use_container_width=True, config=config
         )
     else:
         st.markdown('<div style="color:#8A95B2; padding:24px 8px;">Salary Trend will appear after your first prediction.</div>', unsafe_allow_html=True)

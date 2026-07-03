@@ -27,6 +27,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# streamlit interaction config
+config = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "staticPlot": True
+}
+
 if not is_authenticated():
     st.warning("Please login first")
     st.stop()
@@ -634,6 +642,29 @@ with st.form("salary_prediction_form"):
         )
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+        /* Analyze Resume Button */
+        div.stButton > button {
+            background-color: #2563EB !important;   /* Blue */
+            color: white !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 0.75rem 1rem !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease;
+        }
+
+        div.stButton > button:hover {
+            background-color: #1D4ED8 !important;   /* Darker Blue */
+            color: white !important;
+        }
+
+        div.stButton > button:active {
+            background-color: #1E40AF !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
     submit_prediction = st.form_submit_button("✦  Predict Salary", use_container_width=True)
 
 # ============================================================
@@ -844,7 +875,8 @@ if submit_prediction or "latest_salary_prediction" in st.session_state:
             xaxis=dict(color="#CFE2F5"),
             showlegend=False,
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True , 
+                            config = config)
 
     with mc2:
         verdict = "You are above market average" if above else "You are below market average"
@@ -923,7 +955,8 @@ if submit_prediction or "latest_salary_prediction" in st.session_state:
             paper_bgcolor="rgba(0,0,0,0)", showlegend=False,
             height=380, margin=dict(l=30, r=30, t=20, b=20),
         )
-        st.plotly_chart(radar, use_container_width=True)
+        st.plotly_chart(radar, use_container_width=True , 
+                        config = config)
 
     # ====================================================
     # CAREER COMPENSATION INSIGHTS

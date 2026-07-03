@@ -18,6 +18,14 @@ st.set_page_config(
     layout="wide"
 )
 
+# streamlit interaction config
+config = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "staticPlot": True
+}
+
 # --------------------------------------------------
 # AUTH
 # --------------------------------------------------
@@ -684,7 +692,7 @@ with g1:
     )
     fig.update_traces(marker_line_width=0, hovertemplate="<b>%{y}</b><br>Demand: %{x}<extra></extra>")
     fig.update_layout(**PLOTLY_LAYOUT, height=460, coloraxis_showscale=False, showlegend=False)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config = config )
     st.markdown('</div>', unsafe_allow_html=True)
 
 with g2:
@@ -716,7 +724,7 @@ with g2:
     ))
     fig.update_layout(**PLOTLY_LAYOUT, height=460, showlegend=False,
                       xaxis_title="Experience", yaxis_title="Median Salary (₹)")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Radar + Distribution
@@ -745,7 +753,7 @@ with g3:
         polar=dict(bgcolor="rgba(0,0,0,0)",
                    radialaxis=dict(gridcolor="rgba(56,189,248,0.15)", color="#94A3B8"),
                    angularaxis=dict(gridcolor="rgba(56,189,248,0.15)", color="#E2E8F0")))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with g4:
@@ -764,7 +772,7 @@ with g4:
                       hovertemplate="₹ %{x:,.0f}<br>%{y} roles<extra></extra>")
     fig.update_layout(**PLOTLY_LAYOUT, height=420, bargap=0.08,
                       xaxis_title="Salary (₹)", yaxis_title="Frequency")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Locations + Treemap
@@ -786,7 +794,7 @@ with g5:
     fig.update_layout(**PLOTLY_LAYOUT, height=420, showlegend=False,
                       annotations=[dict(text=f"{int(top_locations['count'].sum())}<br><span style='font-size:11px;color:#94A3B8'>TOTAL ROLES</span>",
                                         x=0.5, y=0.5, font_size=22, showarrow=False, font_color="#fff")])
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with g6:
@@ -804,7 +812,7 @@ with g6:
                       hovertemplate="<b>%{label}</b><br>Demand: %{value}<extra></extra>",
                       textfont=dict(family="Inter", size=13, color="#fff"))
     fig.update_layout(**PLOTLY_LAYOUT, height=420, coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Heatmap + Funnel
@@ -828,7 +836,7 @@ with g7:
         showscale=False
     ))
     fig.update_layout(**PLOTLY_LAYOUT, height=420)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with g8:
@@ -848,7 +856,7 @@ with g8:
         connector=dict(line=dict(color="rgba(56,189,248,0.3)", width=1))
     ))
     fig.update_layout(**PLOTLY_LAYOUT, height=420)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True , config = config)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------

@@ -133,7 +133,7 @@ html, body, [class*="css"] {
     font-size: clamp(40px, 6vw, 76px); line-height: 1.05; font-weight: 800;
     letter-spacing: -0.03em; margin: 8px 0 22px;
     background: linear-gradient(180deg,#ffffff 0%, #93c5fd 60%, #22d3ee 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    -webkit-background-clip: text; background-clip: text; color: #FFFFFF;
 }
 .dp-sub {
     font-size: clamp(16px, 1.6vw, 20px); color: #94a3b8;

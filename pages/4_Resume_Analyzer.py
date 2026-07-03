@@ -57,6 +57,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# streamlit interaction config
+config = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "staticPlot": True
+}
+
 
 # ==========================================================
 # AUTH
@@ -899,6 +907,29 @@ def validate_resume_for_analysis():
 
 is_valid, error_msg = validate_resume_for_analysis()
 
+st.markdown("""
+<style>
+/* Analyze Resume Button */
+div.stButton > button {
+    background-color: #2563EB !important;   /* Blue */
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease;
+}
+
+div.stButton > button:hover {
+    background-color: #1D4ED8 !important;   /* Darker Blue */
+    color: white !important;
+}
+
+div.stButton > button:active {
+    background-color: #1E40AF !important;
+}
+</style>
+""", unsafe_allow_html=True)
 # Disable analyze button if resume not ready
 analyze_disabled = not is_valid
 analyze_clicked = st.button(
@@ -1212,7 +1243,7 @@ if "analysis_result" in st.session_state:
         yaxis=dict(range=[0, 110], gridcolor="rgba(148,184,255,0.1)", showline=False),
         xaxis=dict(showgrid=False),
     )
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, use_container_width=True, config=config)
 
     delta_ats = ats_score - market_ats
     delta_cov = coverage - market_cov
