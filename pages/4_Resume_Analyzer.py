@@ -772,7 +772,7 @@ with hero_right:
 # UPLOAD + ROLE
 # ==========================================================
 st.markdown(
-    f'<div class="dp-section-title"><span class="ico">{SVG["doc"]}</span>Upload & Configure<span class="sub">Step 1 — provide your resume and target role</span></div>',
+    f'<div class="dp-section-title"><span class="ico">{SVG["doc"]}</span>Upload & Configure<span class="sub">Step 1 — provide your resume and target role <br> ATS score is being calculated on the basis of skills keyword according to role.</span></div>',
     unsafe_allow_html=True,
 )
 
