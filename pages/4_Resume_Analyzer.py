@@ -938,7 +938,7 @@ analyze_clicked = st.button(
     help=error_msg if error_msg else "Analyze your resume for ATS compatibility and skill gaps"
 )
 
-st.markdown("<p>Note - ATS Score is beinge calculated on the basis of skill keywords according to job role."
+st.markdown("<p>·Note - ATS Score is beinge calculated on the basis of skill keywords according to job role."
                 , unsafe_allow_html=True)
 
 

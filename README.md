@@ -36,6 +36,8 @@ DataPilot AI closes that gap by combining **resume intelligence, skill benchmark
 - Anyone who wants a private, always-available AI career coach instead of guesswork
 
 ---
+## APP Link 
+<img src="assets/mini_logo.png" alt="DataPilot AI Logo" width="20"/> https://datapilot-ai-app.streamlit.app/
 
 ## Key Features
 
