@@ -40,12 +40,7 @@ st.title("Dashboard")
 # ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────────
-st.set_page_config(
-    page_title="DataPilot AI — Dashboard",
-    page_icon=str(ASSETS_DIR / "mini_logo.png"),
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+
 
 if not is_authenticated():
     st.warning("Please login first")

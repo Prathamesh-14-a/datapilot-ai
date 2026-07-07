@@ -625,10 +625,12 @@ if signup_btn:
         st.error("Password must be at least 8 characters.")
     else:
         try:
-            user = signup(username=username, email=email, password=password)
+            user = signup(username, email, password)
             create_session(user)
+            
             st.success("Account created successfully!")
             st.switch_page("pages/3_Dashboard.py")
+            st.rerun()
         except Exception as e:
             st.error(str(e))
 
