@@ -627,7 +627,7 @@ if signup_btn:
         try:
             user = signup(username, email, password)
             create_session(user)
-            st.write(st.session_state)
+            
             st.success("Account created successfully!")
             st.switch_page("pages/3_Dashboard.py")
             st.rerun()
